@@ -30,8 +30,6 @@ library:
   source-dirs: src
   dependencies:
   - singletons >= 2.5
-  - profunctors
-  - microlens
 
 # executables:
 #   lens-typelevel-exe:
