@@ -12,9 +12,6 @@ module Data.Type.Lens.Example (
   ) where
 
 import           Data.Singletons.Prelude
-import           Data.Singletons.Prelude.Bool
-import           Data.Singletons.Prelude.Traversable
-import           Data.Singletons.Prelude.Tuple
 import           Data.Type.Lens
 
 -- |
