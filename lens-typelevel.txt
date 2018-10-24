@@ -10,34 +10,34 @@
 module Data.Type.Lens
 type ASetter s_avxK t_avxL a_avxM b_avxN = LensLike Identity s_avxK t_avxL a_avxM b_avxN
 type family Over (a_avQU :: (~>) ((~>) a_avxr (Identity b_avxs)) ((~>) s_avxp (Identity t_avxq))) (a_avQV :: (~>) a_avxr b_avxs) (a_avQW :: s_avxp) :: t_avxq
-type family Set (a_avRb :: (~>) ((~>) a_avxn (Identity b_avxo)) ((~>) s_avxl (Identity t_avxm))) (a_avRc :: b_avxo) (a_avRd :: s_avxl) :: t_avxm
-type family Sets (a_avQf :: (~>) ((~>) a_avxf b_avxg) ((~>) s_avxh t_avxi)) (a_avQg :: (~>) a_avxf (Identity b_avxg)) (a_avQh :: s_avxh) :: Identity t_avxi
 sOver :: forall s_avxp t_avxq a_avxr b_avxs (t_avS7 :: (~>) ((~>) a_avxr (Identity b_avxs)) ((~>) s_avxp (Identity t_avxq))) (t_avS8 :: (~>) a_avxr b_avxs) (t_avS9 :: s_avxp). Sing t_avS7 -> Sing t_avS8 -> Sing t_avS9 -> Sing (Apply (Apply (Apply OverSym0 t_avS7) t_avS8) t_avS9 :: t_avxq)
-sSet :: forall s_avxl t_avxm a_avxn b_avxo (t_avSd :: (~>) ((~>) a_avxn (Identity b_avxo)) ((~>) s_avxl (Identity t_avxm))) (t_avSe :: b_avxo) (t_avSf :: s_avxl). Sing t_avSd -> Sing t_avSe -> Sing t_avSf -> Sing (Apply (Apply (Apply SetSym0 t_avSd) t_avSe) t_avSf :: t_avxm)
-sSets :: forall a_avxf b_avxg s_avxh t_avxi (t_avRX :: (~>) ((~>) a_avxf b_avxg) ((~>) s_avxh t_avxi)) (t_avRY :: (~>) a_avxf (Identity b_avxg)) (t_avRZ :: s_avxh). Sing t_avRX -> Sing t_avRY -> Sing t_avRZ -> Sing (Apply (Apply (Apply SetsSym0 t_avRX) t_avRY) t_avRZ :: Identity t_avxi)
 over :: ASetter s_avxp t_avxq a_avxr b_avxs -> (a_avxr -> b_avxs) -> s_avxp -> t_avxq
+type family Set (a_avRb :: (~>) ((~>) a_avxn (Identity b_avxo)) ((~>) s_avxl (Identity t_avxm))) (a_avRc :: b_avxo) (a_avRd :: s_avxl) :: t_avxm
+sSet :: forall s_avxl t_avxm a_avxn b_avxo (t_avSd :: (~>) ((~>) a_avxn (Identity b_avxo)) ((~>) s_avxl (Identity t_avxm))) (t_avSe :: b_avxo) (t_avSf :: s_avxl). Sing t_avSd -> Sing t_avSe -> Sing t_avSf -> Sing (Apply (Apply (Apply SetSym0 t_avSd) t_avSe) t_avSf :: t_avxm)
 set :: ASetter s_avxl t_avxm a_avxn b_avxo -> b_avxo -> s_avxl -> t_avxm
+type family Sets (a_avQf :: (~>) ((~>) a_avxf b_avxg) ((~>) s_avxh t_avxi)) (a_avQg :: (~>) a_avxf (Identity b_avxg)) (a_avQh :: s_avxh) :: Identity t_avxi
+sSets :: forall a_avxf b_avxg s_avxh t_avxi (t_avRX :: (~>) ((~>) a_avxf b_avxg) ((~>) s_avxh t_avxi)) (t_avRY :: (~>) a_avxf (Identity b_avxg)) (t_avRZ :: s_avxh). Sing t_avRX -> Sing t_avRY -> Sing t_avRZ -> Sing (Apply (Apply (Apply SetsSym0 t_avRX) t_avRY) t_avRZ :: Identity t_avxi)
 sets :: ((a_avxf -> b_avxg) -> s_avxh -> t_avxi) -> ASetter s_avxh t_avxi a_avxf b_avxg
 type Getting r_avxO s_avxP a_avxQ = LensLike (Const r_avxO) s_avxP s_avxP a_avxQ a_avxQ
 type family View (a_avQH :: (~>) ((~>) a_avxj (Const a_avxj a_avxj)) ((~>) s_avxk (Const a_avxj s_avxk))) (a_avQI :: s_avxk) :: a_avxj
-type family To (a_avPY :: (~>) s_avxc a_avxd) (a_avPZ :: (~>) a_avxd (Const r_avxe a_avxd)) (a_avQ0 :: s_avxc) :: Const r_avxe s_avxc
-type family ToListOf (a_avPs :: (~>) ((~>) a_avx5 (Const [a_avx5] a_avx5)) ((~>) s_avx6 (Const [a_avx5] s_avx6))) (a_avPt :: s_avx6) :: [a_avx5]
 sView :: forall a_avxj s_avxk (t_avS3 :: (~>) ((~>) a_avxj (Const a_avxj a_avxj)) ((~>) s_avxk (Const a_avxj s_avxk))) (t_avS4 :: s_avxk). Sing t_avS3 -> Sing t_avS4 -> Sing (Apply (Apply ViewSym0 t_avS3) t_avS4 :: a_avxj)
-sTo :: forall s_avxc a_avxd r_avxe (t_avRR :: (~>) s_avxc a_avxd) (t_avRS :: (~>) a_avxd (Const r_avxe a_avxd)) (t_avRT :: s_avxc). Sing t_avRR -> Sing t_avRS -> Sing t_avRT -> Sing (Apply (Apply (Apply ToSym0 t_avRR) t_avRS) t_avRT :: Const r_avxe s_avxc)
-sToListOf :: forall a_avx5 s_avx6 (t_avRF :: (~>) ((~>) a_avx5 (Const [a_avx5] a_avx5)) ((~>) s_avx6 (Const [a_avx5] s_avx6))) (t_avRG :: s_avx6). Sing t_avRF -> Sing t_avRG -> Sing (Apply (Apply ToListOfSym0 t_avRF) t_avRG :: [a_avx5])
 view :: Getting a_avxj s_avxk a_avxj -> s_avxk -> a_avxj
+type family To (a_avPY :: (~>) s_avxc a_avxd) (a_avPZ :: (~>) a_avxd (Const r_avxe a_avxd)) (a_avQ0 :: s_avxc) :: Const r_avxe s_avxc
+sTo :: forall s_avxc a_avxd r_avxe (t_avRR :: (~>) s_avxc a_avxd) (t_avRS :: (~>) a_avxd (Const r_avxe a_avxd)) (t_avRT :: s_avxc). Sing t_avRR -> Sing t_avRS -> Sing t_avRT -> Sing (Apply (Apply (Apply ToSym0 t_avRR) t_avRS) t_avRT :: Const r_avxe s_avxc)
 to :: (s_avxc -> a_avxd) -> Getting r_avxe s_avxc a_avxd
+type family ToListOf (a_avPs :: (~>) ((~>) a_avx5 (Const [a_avx5] a_avx5)) ((~>) s_avx6 (Const [a_avx5] s_avx6))) (a_avPt :: s_avx6) :: [a_avx5]
+sToListOf :: forall a_avx5 s_avx6 (t_avRF :: (~>) ((~>) a_avx5 (Const [a_avx5] a_avx5)) ((~>) s_avx6 (Const [a_avx5] s_avx6))) (t_avRG :: s_avx6). Sing t_avRF -> Sing t_avRG -> Sing (Apply (Apply ToListOfSym0 t_avRF) t_avRG :: [a_avx5])
 toListOf :: Getting [a_avx5] s_avx6 a_avx5 -> s_avx6 -> [a_avx5]
 type LensLike f_avxF s_avxG t_avxH a_avxI b_avxJ = (a_avxI -> f_avxF b_avxJ) -> s_avxG -> f_avxF t_avxH
 type family MkLens (a_avPM :: (~>) s_avx8 a_avx9) (a_avPN :: (~>) s_avx8 ((~>) b_avxa t_avxb)) (a_avPO :: (~>) a_avx9 (f_avx7 b_avxa)) (a_avPP :: s_avx8) :: f_avx7 t_avxb
 sMkLens :: forall f_avx7 s_avx8 a_avx9 b_avxa t_avxb (t_avRJ :: (~>) s_avx8 a_avx9) (t_avRK :: (~>) s_avx8 ((~>) b_avxa t_avxb)) (t_avRL :: (~>) a_avx9 (f_avx7 b_avxa)) (t_avRM :: s_avx8). SFunctor f_avx7 => Sing t_avRJ -> Sing t_avRK -> Sing t_avRL -> Sing t_avRM -> Sing (Apply (Apply (Apply (Apply MkLensSym0 t_avRJ) t_avRK) t_avRL) t_avRM :: f_avx7 t_avxb)
 mkLens :: Functor f_avx7 => (s_avx8 -> a_avx9) -> (s_avx8 -> b_avxa -> t_avxb) -> LensLike f_avx7 s_avx8 t_avxb a_avx9 b_avxa
-type family FirstLens (a_avPd :: (~>) a_avx2 (f_avx1 b_avx4)) (a_avPe :: (a_avx2, c_avx3)) :: f_avx1 (b_avx4, c_avx3)
-type family SecondLens (a_avOY :: (~>) b_avwZ (f_avwX c_avx0)) (a_avOZ :: (a_avwY, b_avwZ)) :: f_avwX (a_avwY, c_avx0)
-sFirstLens :: forall f_avx1 a_avx2 c_avx3 b_avx4 (t_avRB :: (~>) a_avx2 (f_avx1 b_avx4)) (t_avRC :: (a_avx2, c_avx3)). SFunctor f_avx1 => Sing t_avRB -> Sing t_avRC -> Sing (Apply (Apply FirstLensSym0 t_avRB) t_avRC :: f_avx1 (b_avx4, c_avx3))
-sSecondLens :: forall f_avwX a_avwY b_avwZ c_avx0 (t_avRx :: (~>) b_avwZ (f_avwX c_avx0)) (t_avRy :: (a_avwY, b_avwZ)). SFunctor f_avwX => Sing t_avRx -> Sing t_avRy -> Sing (Apply (Apply SecondLensSym0 t_avRx) t_avRy :: f_avwX (a_avwY, c_avx0))
-firstLens :: Functor f_avx1 => LensLike f_avx1 (a_avx2, c_avx3) (b_avx4, c_avx3) a_avx2 b_avx4
-secondLens :: Functor f_avwX => LensLike f_avwX (a_avwY, b_avwZ) (a_avwY, c_avx0) b_avwZ c_avx0
+type family L1 (a_avPd :: (~>) a_avx2 (f_avx1 b_avx4)) (a_avPe :: (a_avx2, c_avx3)) :: f_avx1 (b_avx4, c_avx3)
+sL1 :: forall f_avx1 a_avx2 c_avx3 b_avx4 (t_avRB :: (~>) a_avx2 (f_avx1 b_avx4)) (t_avRC :: (a_avx2, c_avx3)). SFunctor f_avx1 => Sing t_avRB -> Sing t_avRC -> Sing (Apply (Apply L1Sym0 t_avRB) t_avRC :: f_avx1 (b_avx4, c_avx3))
+l1 :: Functor f_avx1 => LensLike f_avx1 (a_avx2, c_avx3) (b_avx4, c_avx3) a_avx2 b_avx4
+type family L2 (a_avOY :: (~>) b_avwZ (f_avwX c_avx0)) (a_avOZ :: (a_avwY, b_avwZ)) :: f_avwX (a_avwY, c_avx0)
+sL2 :: forall f_avwX a_avwY b_avwZ c_avx0 (t_avRx :: (~>) b_avwZ (f_avwX c_avx0)) (t_avRy :: (a_avwY, b_avwZ)). SFunctor f_avwX => Sing t_avRx -> Sing t_avRy -> Sing (Apply (Apply L2Sym0 t_avRx) t_avRy :: f_avwX (a_avwY, c_avx0))
+l2 :: Functor f_avwX => LensLike f_avwX (a_avwY, b_avwZ) (a_avwY, c_avx0) b_avwZ c_avx0
 data ASetterSym0 s6989586621679131048
 data ASetterSym1 s6989586621679131048 t6989586621679131049
 data ASetterSym2 s6989586621679131048 t6989586621679131049 a6989586621679131050
@@ -80,12 +80,12 @@ data MkLensSym1 (a6989586621679132166 :: (~>) s6989586621679131010 a698958662167
 data MkLensSym2 (a6989586621679132166 :: (~>) s6989586621679131010 a6989586621679131011) (a6989586621679132167 :: (~>) s6989586621679131010 ((~>) b6989586621679131012 t6989586621679131013)) :: forall f6989586621679131009. (~>) ((~>) a6989586621679131011 (f6989586621679131009 b6989586621679131012)) ((~>) s6989586621679131010 (f6989586621679131009 t6989586621679131013))
 data MkLensSym3 (a6989586621679132166 :: (~>) s6989586621679131010 a6989586621679131011) (a6989586621679132167 :: (~>) s6989586621679131010 ((~>) b6989586621679131012 t6989586621679131013)) (a6989586621679132168 :: (~>) a6989586621679131011 (f6989586621679131009 b6989586621679131012)) :: (~>) s6989586621679131010 (f6989586621679131009 t6989586621679131013)
 type MkLensSym4 (a6989586621679132166 :: (~>) s6989586621679131010 a6989586621679131011) (a6989586621679132167 :: (~>) s6989586621679131010 ((~>) b6989586621679131012 t6989586621679131013)) (a6989586621679132168 :: (~>) a6989586621679131011 (f6989586621679131009 b6989586621679131012)) (a6989586621679132169 :: s6989586621679131010) = MkLens a6989586621679132166 a6989586621679132167 a6989586621679132168 a6989586621679132169
-data FirstLensSym0 :: forall a6989586621679131004 b6989586621679131006 c6989586621679131005 f6989586621679131003. (~>) ((~>) a6989586621679131004 (f6989586621679131003 b6989586621679131006)) ((~>) (a6989586621679131004, c6989586621679131005) (f6989586621679131003 (b6989586621679131006, c6989586621679131005)))
-data FirstLensSym1 (a6989586621679132131 :: (~>) a6989586621679131004 (f6989586621679131003 b6989586621679131006)) :: forall c6989586621679131005. (~>) (a6989586621679131004, c6989586621679131005) (f6989586621679131003 (b6989586621679131006, c6989586621679131005))
-type FirstLensSym2 (a6989586621679132131 :: (~>) a6989586621679131004 (f6989586621679131003 b6989586621679131006)) (a6989586621679132132 :: (a6989586621679131004, c6989586621679131005)) = FirstLens a6989586621679132131 a6989586621679132132
-data SecondLensSym0 :: forall a6989586621679131000 b6989586621679131001 c6989586621679131002 f6989586621679130999. (~>) ((~>) b6989586621679131001 (f6989586621679130999 c6989586621679131002)) ((~>) (a6989586621679131000, b6989586621679131001) (f6989586621679130999 (a6989586621679131000, c6989586621679131002)))
-data SecondLensSym1 (a6989586621679132116 :: (~>) b6989586621679131001 (f6989586621679130999 c6989586621679131002)) :: forall a6989586621679131000. (~>) (a6989586621679131000, b6989586621679131001) (f6989586621679130999 (a6989586621679131000, c6989586621679131002))
-type SecondLensSym2 (a6989586621679132116 :: (~>) b6989586621679131001 (f6989586621679130999 c6989586621679131002)) (a6989586621679132117 :: (a6989586621679131000, b6989586621679131001)) = SecondLens a6989586621679132116 a6989586621679132117
+data L1Sym0 :: forall a6989586621679131004 b6989586621679131006 c6989586621679131005 f6989586621679131003. (~>) ((~>) a6989586621679131004 (f6989586621679131003 b6989586621679131006)) ((~>) (a6989586621679131004, c6989586621679131005) (f6989586621679131003 (b6989586621679131006, c6989586621679131005)))
+data L1Sym1 (a6989586621679132131 :: (~>) a6989586621679131004 (f6989586621679131003 b6989586621679131006)) :: forall c6989586621679131005. (~>) (a6989586621679131004, c6989586621679131005) (f6989586621679131003 (b6989586621679131006, c6989586621679131005))
+type L1Sym2 (a6989586621679132131 :: (~>) a6989586621679131004 (f6989586621679131003 b6989586621679131006)) (a6989586621679132132 :: (a6989586621679131004, c6989586621679131005)) = L1 a6989586621679132131 a6989586621679132132
+data L2Sym0 :: forall a6989586621679131000 b6989586621679131001 c6989586621679131002 f6989586621679130999. (~>) ((~>) b6989586621679131001 (f6989586621679130999 c6989586621679131002)) ((~>) (a6989586621679131000, b6989586621679131001) (f6989586621679130999 (a6989586621679131000, c6989586621679131002)))
+data L2Sym1 (a6989586621679132116 :: (~>) b6989586621679131001 (f6989586621679130999 c6989586621679131002)) :: forall a6989586621679131000. (~>) (a6989586621679131000, b6989586621679131001) (f6989586621679130999 (a6989586621679131000, c6989586621679131002))
+type L2Sym2 (a6989586621679132116 :: (~>) b6989586621679131001 (f6989586621679130999 c6989586621679131002)) (a6989586621679132117 :: (a6989586621679131000, b6989586621679131001)) = L2 a6989586621679132116 a6989586621679132117
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.SetSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.SetSym0
 instance forall a6989586621679131025 b6989586621679131026 s6989586621679131023 t6989586621679131024 (a6989586621679132253 :: (a6989586621679131025 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679131026) Data.Singletons.Internal.~> (s6989586621679131023 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679131024)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetSym1 a6989586621679132253)
@@ -126,14 +126,14 @@ instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type
 instance Data.Singletons.Internal.SingI Data.Type.Lens.ToListOfSym0
 instance forall a6989586621679131007 s6989586621679131008 (a6989586621679132146 :: (a6989586621679131007 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679131007] a6989586621679131007) Data.Singletons.Internal.~> (s6989586621679131008 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679131007] s6989586621679131008)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ToListOfSym1 a6989586621679132146)
 instance forall a s (d :: (a Data.Singletons.Internal.~> Data.Functor.Const.Const [a] a) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Const.Const [a] s)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.ToListOfSym1 d)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.FirstLensSym0
-instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.FirstLensSym0
-instance forall c6989586621679131005 a6989586621679131004 (f6989586621679131003 :: * -> *) b6989586621679131006 (a6989586621679132131 :: a6989586621679131004 Data.Singletons.Internal.~> f6989586621679131003 b6989586621679131006). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.FirstLensSym1 a6989586621679132131)
-instance forall a (f :: * -> *) b c (d :: a Data.Singletons.Internal.~> f b). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.FirstLensSym1 d)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.SecondLensSym0
-instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.SecondLensSym0
-instance forall a6989586621679131000 b6989586621679131001 (f6989586621679130999 :: * -> *) c6989586621679131002 (a6989586621679132116 :: b6989586621679131001 Data.Singletons.Internal.~> f6989586621679130999 c6989586621679131002). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SecondLensSym1 a6989586621679132116)
-instance forall b (f :: * -> *) c a (d :: b Data.Singletons.Internal.~> f c). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.SecondLensSym1 d)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.L1Sym0
+instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.L1Sym0
+instance forall c6989586621679131005 a6989586621679131004 (f6989586621679131003 :: * -> *) b6989586621679131006 (a6989586621679132131 :: a6989586621679131004 Data.Singletons.Internal.~> f6989586621679131003 b6989586621679131006). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.L1Sym1 a6989586621679132131)
+instance forall a (f :: * -> *) b c (d :: a Data.Singletons.Internal.~> f b). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.L1Sym1 d)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.L2Sym0
+instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.L2Sym0
+instance forall a6989586621679131000 b6989586621679131001 (f6989586621679130999 :: * -> *) c6989586621679131002 (a6989586621679132116 :: b6989586621679131001 Data.Singletons.Internal.~> f6989586621679130999 c6989586621679131002). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.L2Sym1 a6989586621679132116)
+instance forall b (f :: * -> *) c a (d :: b Data.Singletons.Internal.~> f c). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.L2Sym1 d)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679132264Sym0
 instance forall k1 k2 k3 k4 (l6989586621679132261 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679132264Sym1 l6989586621679132261)
 instance forall k1 k2 k3 k4 (y6989586621679132262 :: k4) (l6989586621679132261 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679132264Sym2 y6989586621679132262 l6989586621679132261)
