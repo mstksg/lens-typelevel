@@ -1,15 +1,10 @@
-{-# LANGUAGE ConstrainedClassMethods #-}
-{-# LANGUAGE GADTs                   #-}
-{-# LANGUAGE KindSignatures          #-}
-{-# LANGUAGE PolyKinds               #-}
-{-# LANGUAGE RankNTypes              #-}
-{-# LANGUAGE ScopedTypeVariables     #-}
-{-# LANGUAGE TemplateHaskell         #-}
-{-# LANGUAGE TupleSections           #-}
-{-# LANGUAGE TypeFamilies            #-}
-{-# LANGUAGE TypeInType              #-}
-{-# LANGUAGE TypeOperators           #-}
-{-# LANGUAGE UndecidableInstances    #-}
+{-# LANGUAGE GADTs                #-}
+{-# LANGUAGE PolyKinds            #-}
+{-# LANGUAGE ScopedTypeVariables  #-}
+{-# LANGUAGE TemplateHaskell      #-}
+{-# LANGUAGE TypeFamilies         #-}
+{-# LANGUAGE TypeInType           #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module Data.Type.Lens (
   -- * Setting
@@ -25,6 +20,8 @@ module Data.Type.Lens (
   -- * Lenses
   , LensLike
   , MkLens, sMkLens, mkLens
+  -- * Traversals
+  , Traverse_
   -- * Samples
   , L1_, L1, sL1, l1
   , L2_, L2, sL2, l2
@@ -48,7 +45,6 @@ import           Data.Functor.Identity
 import           Data.Singletons.Prelude.Const
 import           Data.Singletons.Prelude.Functor
 import           Data.Singletons.Prelude.Identity
-import           Data.Singletons.Prelude.Tuple
 import           Data.Singletons.TH
 
 $(singletons [d|
@@ -92,12 +88,10 @@ $(singletons [d|
   l2 f (x, y) = (\y' -> (x, y')) <$> f y
   |])
 
--- type MyTuple = Set  L1Sym0 'True     '("hello", 6)
--- type MyNat   = View L2Sym0           '("hello", 6)
--- type MyNat'  = View (ToSym1 SndSym0) '("hello", 6)
-
 type To_   f = ToSym1   f
 type Sets_ f = SetsSym1 f
 
 type L1_ = L1Sym0
 type L2_ = L2Sym0
+
+type Traverse_ = TraverseSym0
