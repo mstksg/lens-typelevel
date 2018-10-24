@@ -1,26 +1,26 @@
 # lens-typelevel
 
 ```haskell
-ghci> :kind! '("hello", 6     )         &   L1_       .~ 'True
+ghci> :kind! '("hello", 6 ) & L1_ .~ 'True
 '( 'True, 6 )
 
-ghci> :kind! '("hello", 6     )         ^.  L2_
+ghci> :kind! '("hello", 6 ) ^. L2_
 6
 
-ghci> :kind! '("hello", 6     )         ^.  To_ SndSym0
+ghci> :kind! '("hello", 6 ) ^. To_ SndSym0
 6
 
-ghci> :kind! '("hello", 'True )         &   L2_       %~ NotSym0
+ghci> :kind! '("hello", 'True ) & L2_ %~ NotSym0
 '("hello", 'False )
 
-ghci> :kind! '[ 'True, 'False, 'False ] &   Traverse_ %~ NotSym0
+ghci> :kind! '[ 'True, 'False, 'False ] & Traverse_ %~ NotSym0
 '[ 'False, 'True, 'True ]
 
-ghci> :kind! '("hello", '(6, 'False ) ) ^.  L2_ .@ L1_
+ghci> :kind! '("hello", '(6, 'False ) ) ^. L2_ .@ L1_
 6
 
 ghci> type TestList = '[ '("hello", 'True), '("world", 'False), '("curry", 'False)]
-ghci> :kind! TestLst                    ^.. Traverse_ .@ L1_
+ghci> :kind! TestLst ^.. Traverse_ .@ L1_
 '["hello", "world", "curry"]
 ```
 
