@@ -16,18 +16,18 @@ module Data.Type.Lens (
     ASetter
   , Over, sOver, over
   , Set, sSet, set
-  , Sets, sSets, sets
+  , Sets_, Sets, sSets, sets
   -- * Getting
   , Getting
   , View, sView, view
-  , To, sTo, to
+  , To_, To, sTo, to
   , ToListOf, sToListOf, toListOf
   -- * Lenses
   , LensLike
   , MkLens, sMkLens, mkLens
   -- * Samples
-  , L1, sL1, l1
-  , L2, sL2, l2
+  , L1_, L1, sL1, l1
+  , L2_, L2, sL2, l2
   -- * Defunctionalization Symbols
   , ASetterSym0, ASetterSym1, ASetterSym2, ASetterSym3, ASetterSym4
   , OverSym0, OverSym1, OverSym2, OverSym3
@@ -92,6 +92,12 @@ $(singletons [d|
   l2 f (x, y) = (\y' -> (x, y')) <$> f y
   |])
 
--- type MyTuple = Set  FirstLensSym0 'True '("hello", 6)
--- type MyNat   = View SecondLensSym0 '("hello", 6)
--- type MyNat'   = View (ToSym1 SndSym0) '("hello", 6)
+-- type MyTuple = Set  L1Sym0 'True     '("hello", 6)
+-- type MyNat   = View L2Sym0           '("hello", 6)
+-- type MyNat'  = View (ToSym1 SndSym0) '("hello", 6)
+
+type To_   f = ToSym1   f
+type Sets_ f = SetsSym1 f
+
+type L1_ = L1Sym0
+type L2_ = L2Sym0

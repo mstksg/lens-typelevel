@@ -11,13 +11,13 @@ extra-source-files:
 - CHANGELOG.md
 
 # Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
+synopsis:            Type-level lenses using singletons
+category:            Dependent Types, Lenses
 
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/mstksg/lens-typelevel#readme>
+description:         Have you ever wanted lenses, but at the TYPE LEVEL????
 
 ghc-options:
 - -Wall
