@@ -1,4 +1,9 @@
-# lens-typelevel
+# [lens-typelevel][]
+
+van Laarhoven lenses at the type level using *[singletons][]* defunctionalization.
+
+[lens-typelevel]: https://mstksg.github.io/lens-typelevel
+[singletons]: https://hackage.haskell.org/package/singletons
 
 ```haskell
 ghci> :kind! '("hello", 6 ) & L1_ .~ 'True
@@ -23,6 +28,8 @@ ghci> type TestList = '[ '("hello", 'True), '("world", 'False), '("curry", 'Fals
 ghci> :kind! TestLst ^.. Traverse_ .@ L1_
 '["hello", "world", "curry"]
 ```
+
+Using prefix function names:
 
 ```haskell
 ghci> :kind! Set  L1_       'True        '("hello", 6     )

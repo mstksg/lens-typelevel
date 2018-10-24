@@ -24,7 +24,6 @@ module Data.Type.Lens (
   -- * Lenses
   , LensLike
   , MkLens, sMkLens, mkLens
-  -- TODO: Store
   -- * Folds
   , Preview, type (^?), sPreview, preview
   , ToListOf, type (^..), sToListOf, toListOf
