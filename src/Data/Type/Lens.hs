@@ -23,13 +23,17 @@ module Data.Type.Lens (
   , To_, To, sTo, to
   -- * Lenses
   , LensLike
-  , MkLens, sMkLens, mkLens
-  -- * Folds
+  -- ** Making
+  , MkLens_, MkLens, sMkLens, mkLens
+  -- * Traversals and Folds
+  -- ** Using
   , Preview, type (^?), sPreview, preview
   , ToListOf, type (^..), sToListOf, toListOf
   , UnsafePreview, type (^?!), sUnsafePreview, unsafePreview
-  -- * Traversals
-  , Traverse_
+  -- ** Making
+  , Folding_, Folding, sFolding, folding
+  , Folded_, Folded, sFolded, folded
+  , Traverse_, Traverse, sTraverse, traverse
   -- * Util
   , type (.@)
   -- * Samples
@@ -46,14 +50,18 @@ module Data.Type.Lens (
   , ToListOfSym0, ToListOfSym1, ToListOfSym2
   , LensLikeSym0, LensLikeSym1, LensLikeSym2, LensLikeSym3, LensLikeSym4, LensLikeSym5
   , MkLensSym0, MkLensSym1, MkLensSym2, MkLensSym3, MkLensSym4
+  , FoldingSym0, FoldingSym1, FoldingSym2, FoldingSym3
+  , FoldedSym0, FoldedSym1, FoldedSym2
   , L1Sym0, L1Sym1, L1Sym2
   , L2Sym0, L2Sym1, L2Sym2
   ) where
 
 import           Control.Applicative
+import           Data.Foldable
 import           Data.Functor.Identity
 import           Data.Monoid
 import           Data.Singletons.Prelude.Const
+import           Data.Singletons.Prelude.Foldable hiding (Traverse_)
 import           Data.Singletons.Prelude.Functor
 import           Data.Singletons.Prelude.Identity
 import           Data.Singletons.Prelude.Maybe
@@ -103,6 +111,14 @@ $(singletons [d|
       Just y  -> y
       Nothing -> error "Failed indexing into empty traversal"
 
+  folding :: (Foldable f, Monoid r) => (s -> f a) -> Getting r s a
+  folding f g x = case traverse_ g (f x) of
+      Const y -> Const y
+
+  folded :: (Foldable f, Monoid r) => Getting r (f a) a
+  folded f x = case traverse_ f x of
+      Const y -> Const y
+
   l1 :: Functor f => LensLike f (a, c) (b, c) a b
   l1 f (x, y) = (\x' -> (x', y)) <$> f x
 
@@ -128,10 +144,13 @@ type f .@ g = f .@#@$$$ g
 
 infixr 9 .@
 
-type To_   f = ToSym1   f
-type Sets_ f = SetsSym1 f
+type To_     f   = ToSym1   f
+type Sets_   f   = SetsSym1 f
+type MkLens_ f g = MkLensSym2 f g
 
 type L1_ = L1Sym0
 type L2_ = L2Sym0
 
 type Traverse_ = TraverseSym0
+type Folding_ f = FoldingSym1 f
+type Folded_   = FoldedSym0
