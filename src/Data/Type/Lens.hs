@@ -14,23 +14,20 @@
 module Data.Type.Lens (
   -- * Setting
     ASetter
-  , Over, Set, Sets
-  , sOver, sSet, sSets
-  , over, set, sets
+  , Over, sOver, over
+  , Set, sSet, set
+  , Sets, sSets, sets
   -- * Getting
   , Getting
-  , View, To, ToListOf
-  , sView, sTo, sToListOf
-  , view, to, toListOf
+  , View, sView, view
+  , To, sTo, to
+  , ToListOf, sToListOf, toListOf
   -- * Lenses
   , LensLike
-  , MkLens
-  , sMkLens
-  , mkLens
+  , MkLens, sMkLens, mkLens
   -- * Samples
-  , FirstLens, SecondLens
-  , sFirstLens, sSecondLens
-  , firstLens , secondLens
+  , L1, sL1, l1
+  , L2, sL2, l2
   -- * Defunctionalization Symbols
   , ASetterSym0, ASetterSym1, ASetterSym2, ASetterSym3, ASetterSym4
   , OverSym0, OverSym1, OverSym2, OverSym3
@@ -42,8 +39,8 @@ module Data.Type.Lens (
   , ToListOfSym0, ToListOfSym1, ToListOfSym2
   , LensLikeSym0, LensLikeSym1, LensLikeSym2, LensLikeSym3, LensLikeSym4, LensLikeSym5
   , MkLensSym0, MkLensSym1, MkLensSym2, MkLensSym3, MkLensSym4
-  , FirstLensSym0, FirstLensSym1, FirstLensSym2
-  , SecondLensSym0, SecondLensSym1, SecondLensSym2
+  , L1Sym0, L1Sym1, L1Sym2
+  , L2Sym0, L2Sym1, L2Sym2
   ) where
 
 import           Control.Applicative
@@ -88,14 +85,13 @@ $(singletons [d|
   toListOf l x = case l (Const . (:[])) x of
       Const ys -> ys
 
-  firstLens :: Functor f => LensLike f (a, c) (b, c) a b
-  firstLens f (x, y) = (\x' -> (x', y)) <$> f x
+  l1 :: Functor f => LensLike f (a, c) (b, c) a b
+  l1 f (x, y) = (\x' -> (x', y)) <$> f x
 
-  secondLens :: Functor f => LensLike f (a, b) (a, c) b c
-  secondLens f (x, y) = (\y' -> (x, y')) <$> f y
-
+  l2 :: Functor f => LensLike f (a, b) (a, c) b c
+  l2 f (x, y) = (\y' -> (x, y')) <$> f y
   |])
 
 -- type MyTuple = Set  FirstLensSym0 'True '("hello", 6)
 -- type MyNat   = View SecondLensSym0 '("hello", 6)
--- type MyNat'   = View (ToSym1 FstSym0) '("hello", 6)
+-- type MyNat'   = View (ToSym1 SndSym0) '("hello", 6)
