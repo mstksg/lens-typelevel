@@ -2,8 +2,9 @@
 -- See Hoogle, http://www.haskell.org/hoogle/
 
 
--- | Please see the README on GitHub at
---   <a>https://github.com/mstksg/lens-typelevel#readme</a>
+-- | Type-level lenses using singletons
+--   
+--   Have you ever wanted lenses, but at the TYPE LEVEL????
 @package lens-typelevel
 @version 0.1.0.0
 
@@ -15,6 +16,7 @@ over :: ASetter s_avxp t_avxq a_avxr b_avxs -> (a_avxr -> b_avxs) -> s_avxp -> t
 type family Set (a_avRb :: (~>) ((~>) a_avxn (Identity b_avxo)) ((~>) s_avxl (Identity t_avxm))) (a_avRc :: b_avxo) (a_avRd :: s_avxl) :: t_avxm
 sSet :: forall s_avxl t_avxm a_avxn b_avxo (t_avSd :: (~>) ((~>) a_avxn (Identity b_avxo)) ((~>) s_avxl (Identity t_avxm))) (t_avSe :: b_avxo) (t_avSf :: s_avxl). Sing t_avSd -> Sing t_avSe -> Sing t_avSf -> Sing (Apply (Apply (Apply SetSym0 t_avSd) t_avSe) t_avSf :: t_avxm)
 set :: ASetter s_avxl t_avxm a_avxn b_avxo -> b_avxo -> s_avxl -> t_avxm
+type Sets_ f = SetsSym1 f
 type family Sets (a_avQf :: (~>) ((~>) a_avxf b_avxg) ((~>) s_avxh t_avxi)) (a_avQg :: (~>) a_avxf (Identity b_avxg)) (a_avQh :: s_avxh) :: Identity t_avxi
 sSets :: forall a_avxf b_avxg s_avxh t_avxi (t_avRX :: (~>) ((~>) a_avxf b_avxg) ((~>) s_avxh t_avxi)) (t_avRY :: (~>) a_avxf (Identity b_avxg)) (t_avRZ :: s_avxh). Sing t_avRX -> Sing t_avRY -> Sing t_avRZ -> Sing (Apply (Apply (Apply SetsSym0 t_avRX) t_avRY) t_avRZ :: Identity t_avxi)
 sets :: ((a_avxf -> b_avxg) -> s_avxh -> t_avxi) -> ASetter s_avxh t_avxi a_avxf b_avxg
@@ -22,6 +24,7 @@ type Getting r_avxO s_avxP a_avxQ = LensLike (Const r_avxO) s_avxP s_avxP a_avxQ
 type family View (a_avQH :: (~>) ((~>) a_avxj (Const a_avxj a_avxj)) ((~>) s_avxk (Const a_avxj s_avxk))) (a_avQI :: s_avxk) :: a_avxj
 sView :: forall a_avxj s_avxk (t_avS3 :: (~>) ((~>) a_avxj (Const a_avxj a_avxj)) ((~>) s_avxk (Const a_avxj s_avxk))) (t_avS4 :: s_avxk). Sing t_avS3 -> Sing t_avS4 -> Sing (Apply (Apply ViewSym0 t_avS3) t_avS4 :: a_avxj)
 view :: Getting a_avxj s_avxk a_avxj -> s_avxk -> a_avxj
+type To_ f = ToSym1 f
 type family To (a_avPY :: (~>) s_avxc a_avxd) (a_avPZ :: (~>) a_avxd (Const r_avxe a_avxd)) (a_avQ0 :: s_avxc) :: Const r_avxe s_avxc
 sTo :: forall s_avxc a_avxd r_avxe (t_avRR :: (~>) s_avxc a_avxd) (t_avRS :: (~>) a_avxd (Const r_avxe a_avxd)) (t_avRT :: s_avxc). Sing t_avRR -> Sing t_avRS -> Sing t_avRT -> Sing (Apply (Apply (Apply ToSym0 t_avRR) t_avRS) t_avRT :: Const r_avxe s_avxc)
 to :: (s_avxc -> a_avxd) -> Getting r_avxe s_avxc a_avxd
@@ -32,9 +35,12 @@ type LensLike f_avxF s_avxG t_avxH a_avxI b_avxJ = (a_avxI -> f_avxF b_avxJ) -> 
 type family MkLens (a_avPM :: (~>) s_avx8 a_avx9) (a_avPN :: (~>) s_avx8 ((~>) b_avxa t_avxb)) (a_avPO :: (~>) a_avx9 (f_avx7 b_avxa)) (a_avPP :: s_avx8) :: f_avx7 t_avxb
 sMkLens :: forall f_avx7 s_avx8 a_avx9 b_avxa t_avxb (t_avRJ :: (~>) s_avx8 a_avx9) (t_avRK :: (~>) s_avx8 ((~>) b_avxa t_avxb)) (t_avRL :: (~>) a_avx9 (f_avx7 b_avxa)) (t_avRM :: s_avx8). SFunctor f_avx7 => Sing t_avRJ -> Sing t_avRK -> Sing t_avRL -> Sing t_avRM -> Sing (Apply (Apply (Apply (Apply MkLensSym0 t_avRJ) t_avRK) t_avRL) t_avRM :: f_avx7 t_avxb)
 mkLens :: Functor f_avx7 => (s_avx8 -> a_avx9) -> (s_avx8 -> b_avxa -> t_avxb) -> LensLike f_avx7 s_avx8 t_avxb a_avx9 b_avxa
+type Traverse_ = TraverseSym0
+type L1_ = L1Sym0
 type family L1 (a_avPd :: (~>) a_avx2 (f_avx1 b_avx4)) (a_avPe :: (a_avx2, c_avx3)) :: f_avx1 (b_avx4, c_avx3)
 sL1 :: forall f_avx1 a_avx2 c_avx3 b_avx4 (t_avRB :: (~>) a_avx2 (f_avx1 b_avx4)) (t_avRC :: (a_avx2, c_avx3)). SFunctor f_avx1 => Sing t_avRB -> Sing t_avRC -> Sing (Apply (Apply L1Sym0 t_avRB) t_avRC :: f_avx1 (b_avx4, c_avx3))
 l1 :: Functor f_avx1 => LensLike f_avx1 (a_avx2, c_avx3) (b_avx4, c_avx3) a_avx2 b_avx4
+type L2_ = L2Sym0
 type family L2 (a_avOY :: (~>) b_avwZ (f_avwX c_avx0)) (a_avOZ :: (a_avwY, b_avwZ)) :: f_avwX (a_avwY, c_avx0)
 sL2 :: forall f_avwX a_avwY b_avwZ c_avx0 (t_avRx :: (~>) b_avwZ (f_avwX c_avx0)) (t_avRy :: (a_avwY, b_avwZ)). SFunctor f_avwX => Sing t_avRx -> Sing t_avRy -> Sing (Apply (Apply L2Sym0 t_avRx) t_avRy :: f_avwX (a_avwY, c_avx0))
 l2 :: Functor f_avwX => LensLike f_avwX (a_avwY, b_avwZ) (a_avwY, c_avx0) b_avwZ c_avx0
@@ -179,3 +185,47 @@ instance forall k (f6989586621679131043 :: k -> *). Data.Singletons.SuppressUnus
 instance forall k (s6989586621679131044 :: k -> *) f6989586621679131043. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym2 s6989586621679131044 f6989586621679131043)
 instance forall k (t6989586621679131045 :: k -> *) s6989586621679131044 (f6989586621679131043 :: k). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym3 t6989586621679131045 s6989586621679131044 f6989586621679131043)
 instance forall k (a6989586621679131046 :: k -> *) t6989586621679131045 (s6989586621679131044 :: k) f6989586621679131043. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym4 a6989586621679131046 t6989586621679131045 s6989586621679131044 f6989586621679131043)
+
+module Data.Type.Lens.Example
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! SetExample
+--   '( 'True, 6 )
+--   </pre>
+type SetExample = Set L1_  'True '("hello", 6)
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! ViewExample
+--   6
+--   </pre>
+type ViewExample = View L2_ '("hello", 6)
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! ToExample
+--   6
+--   </pre>
+type ToExample = View (To_ SndSym0) '("hello", 6)
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! TraversalExample
+--   '( "hello", 'False )
+--   </pre>
+type OverExample = Over L2_ NotSym0 '("hello",  'True)
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! TraversalExample
+--   '[ 'False, 'True, 'True ]
+--   </pre>
+type TraversalExample = Over Traverse_ NotSym0 '[ 'True,  'False,  'False]
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! NestedExample
+--   6
+--   </pre>
+type NestedExample = View (L2_ .@#@$$$ L1_) '("hello", '(6,  'False))
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! FoldExample
+--   '["hello", "world", "curry"]
+--   </pre>
+type FoldExample = ToListOf (Traverse_ .@#@$$$ L1_) '['("hello",  'True), '("world",  'False), '("curry",  'False)]
