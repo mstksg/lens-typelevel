@@ -4,24 +4,35 @@
 {-# LANGUAGE TemplateHaskell      #-}
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE TypeInType           #-}
+{-# LANGUAGE TypeOperators        #-}
 {-# LANGUAGE UndecidableInstances #-}
 
 module Data.Type.Lens (
   -- * Setting
     ASetter
-  , Over, sOver, over
-  , Set, sSet, set
+  -- ** Using
+  , Over, type (%~), sOver, over
+  , Set, type (.~), sSet, set
+  -- ** Making
   , Sets_, Sets, sSets, sets
   -- * Getting
   , Getting
-  , View, sView, view
+  -- ** Using
+  , View, type (^.), sView, view
+  -- ** Making
   , To_, To, sTo, to
-  , ToListOf, sToListOf, toListOf
   -- * Lenses
   , LensLike
   , MkLens, sMkLens, mkLens
+  -- TODO: Store
+  -- * Folds
+  , Preview, type (^?), sPreview, preview
+  , ToListOf, type (^..), sToListOf, toListOf
+  , UnsafePreview, type (^?!), sUnsafePreview, unsafePreview
   -- * Traversals
   , Traverse_
+  -- * Util
+  , type (.@)
   -- * Samples
   , L1_, L1, sL1, l1
   , L2_, L2, sL2, l2
@@ -42,9 +53,12 @@ module Data.Type.Lens (
 
 import           Control.Applicative
 import           Data.Functor.Identity
+import           Data.Monoid
 import           Data.Singletons.Prelude.Const
 import           Data.Singletons.Prelude.Functor
 import           Data.Singletons.Prelude.Identity
+import           Data.Singletons.Prelude.Maybe
+import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
 
 $(singletons [d|
@@ -81,12 +95,39 @@ $(singletons [d|
   toListOf l x = case l (Const . (:[])) x of
       Const ys -> ys
 
+  preview :: Getting (First a) s a -> s -> Maybe a
+  preview l x = case l (Const . First . Just) x of
+      Const (First y) -> y
+
+  unsafePreview :: Getting (First a) s a -> s -> a
+  unsafePreview l x = case preview l x of
+      Just y  -> y
+      Nothing -> error "Failed indexing into empty traversal"
+
   l1 :: Functor f => LensLike f (a, c) (b, c) a b
   l1 f (x, y) = (\x' -> (x', y)) <$> f x
 
   l2 :: Functor f => LensLike f (a, b) (a, c) b c
   l2 f (x, y) = (\y' -> (x, y')) <$> f y
   |])
+
+type l %~  f = OverSym2 l f
+type l .~  x = SetSym2 l x
+type x ^.  l = View l x
+type x ^?  l = Preview l x
+type x ^?! l = UnsafePreview l x
+type x ^.. l = ToListOf l x
+
+infixr 4 %~
+infixr 4 .~
+infixl 8 ^.
+infixl 8 ^?
+infixl 8 ^?!
+infixl 8 ^..
+
+type f .@ g = f .@#@$$$ g
+
+infixr 9 .@
 
 type To_   f = ToSym1   f
 type Sets_ f = SetsSym1 f
