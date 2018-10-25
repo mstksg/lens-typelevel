@@ -13,38 +13,38 @@ module Data.Type.Lens (
   -- * Setting
     ASetter
   -- ** Using
-  , Over, type (%~), sOver, over
-  , Set, type (.~), sSet, set
+  , Over, type (%~), sOver
+  , Set, type (.~), sSet
   -- ** Making
-  , Sets_, Sets, sSets, sets
+  , Sets_, Sets, sSets
   -- * Getting
   , Getting
   -- ** Using
-  , View, type (^.), sView, view
+  , View, type (^.), sView
   -- ** Making
-  , To_, To, sTo, to
+  , To_, To, sTo
   -- * Lenses
   , LensLike, LensLike'
   -- ** Making
-  , MkLens_, MkLens, sMkLens, mkLens
+  , MkLens_, MkLens, sMkLens
   -- * Traversals and Folds
   -- ** Using
-  , Preview, type (^?), sPreview, preview
-  , ToListOf, type (^..), sToListOf, toListOf
-  , UnsafePreview, type (^?!), sUnsafePreview, unsafePreview
+  , Preview, type (^?), sPreview
+  , ToListOf, type (^..), sToListOf
+  , UnsafePreview, type (^?!), sUnsafePreview
   -- ** Making
-  , Folding_, Folding, sFolding, folding
-  , Folded_, Folded, sFolded, folded
-  , Traverse_, Traverse, sTraverse, traverse
+  , Folding_, Folding, sFolding
+  , Folded_, Folded, sFolded
+  , Traverse_, Traverse, sTraverse
   -- * Util
   , type (.@)
   -- * Samples
   -- ** Tuple
-  , L1_, L1, sL1, l1
-  , L2_, L2, sL2, l2
+  , L1_, L1, sL1
+  , L2_, L2, sL2
   -- ** List
   , N(..), SN
-  , IxList_, IxList, sIxList, ixList
+  , IxList_, IxList, sIxList
   -- * Defunctionalization Symbols
   , ASetterSym0, ASetterSym1, ASetterSym2, ASetterSym3, ASetterSym4
   , OverSym0, OverSym1, OverSym2, OverSym3
@@ -85,6 +85,10 @@ $(singletons [d|
   type ASetter     s t a b = LensLike Identity  s t a b
   type Getting   r s   a   = LensLike (Const r) s s a a
 
+  data N = Z | S N
+  |])
+
+$(singletonsOnly [d|
   over :: ASetter s t a b -> (a -> b) -> (s -> t)
   over l f x = case l (Identity . f) x of
       Identity y -> y
@@ -136,8 +140,6 @@ $(singletons [d|
 
   l2 :: Functor f => LensLike f (a, b) (a, c) b c
   l2 f (x, y) = (\y' -> (x, y')) <$> f y
-
-  data N = Z | S N
 
   ixList :: Applicative f => N -> LensLike' f [a] a
   ixList _     _ []     = pure []
