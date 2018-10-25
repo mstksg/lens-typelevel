@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE GADTs                #-}
 {-# LANGUAGE PolyKinds            #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
@@ -5,6 +6,7 @@
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE TypeInType           #-}
 {-# LANGUAGE TypeOperators        #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 
 module Data.Type.Lens (
@@ -22,7 +24,7 @@ module Data.Type.Lens (
   -- ** Making
   , To_, To, sTo, to
   -- * Lenses
-  , LensLike
+  , LensLike, LensLike'
   -- ** Making
   , MkLens_, MkLens, sMkLens, mkLens
   -- * Traversals and Folds
@@ -37,8 +39,12 @@ module Data.Type.Lens (
   -- * Util
   , type (.@)
   -- * Samples
+  -- ** Tuple
   , L1_, L1, sL1, l1
   , L2_, L2, sL2, l2
+  -- ** List
+  , N(..), SN
+  , IxList_, IxList, sIxList, ixList
   -- * Defunctionalization Symbols
   , ASetterSym0, ASetterSym1, ASetterSym2, ASetterSym3, ASetterSym4
   , OverSym0, OverSym1, OverSym2, OverSym3
@@ -49,11 +55,16 @@ module Data.Type.Lens (
   , ToSym0, ToSym1, ToSym2, ToSym3
   , ToListOfSym0, ToListOfSym1, ToListOfSym2
   , LensLikeSym0, LensLikeSym1, LensLikeSym2, LensLikeSym3, LensLikeSym4, LensLikeSym5
+  , LensLike'Sym0, LensLike'Sym1, LensLike'Sym2, LensLike'Sym3
   , MkLensSym0, MkLensSym1, MkLensSym2, MkLensSym3, MkLensSym4
   , FoldingSym0, FoldingSym1, FoldingSym2, FoldingSym3
   , FoldedSym0, FoldedSym1, FoldedSym2
   , L1Sym0, L1Sym1, L1Sym2
   , L2Sym0, L2Sym1, L2Sym2
+  , ZSym0, SSym0, SSym1
+  , IxListSym0, IxListSym1, IxListSym2, IxListSym3
+  -- * Sing
+  , Sing (SZ, SS)
   ) where
 
 import           Control.Applicative
@@ -69,9 +80,10 @@ import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
 
 $(singletons [d|
-  type LensLike f s t a b = (a -> f b) -> (s -> f t)
-  type ASetter    s t a b = LensLike Identity  s t a b
-  type Getting  r s   a   = LensLike (Const r) s s a a
+  type LensLike  f s t a b = (a -> f b) -> (s -> f t)
+  type LensLike' f s   a   = LensLike f         s s a a
+  type ASetter     s t a b = LensLike Identity  s t a b
+  type Getting   r s   a   = LensLike (Const r) s s a a
 
   over :: ASetter s t a b -> (a -> b) -> (s -> t)
   over l f x = case l (Identity . f) x of
@@ -124,6 +136,13 @@ $(singletons [d|
 
   l2 :: Functor f => LensLike f (a, b) (a, c) b c
   l2 f (x, y) = (\y' -> (x, y')) <$> f y
+
+  data N = Z | S N
+
+  ixList :: Applicative f => N -> LensLike' f [a] a
+  ixList _     _ []     = pure []
+  ixList Z     f (x:xs) = (:xs) <$> f x
+  ixList (S i) f (x:xs) = (x:)  <$> ixList i f xs
   |])
 
 type l %~  f = OverSym2 l f
@@ -148,9 +167,11 @@ type To_     f   = ToSym1   f
 type Sets_   f   = SetsSym1 f
 type MkLens_ f g = MkLensSym2 f g
 
-type L1_ = L1Sym0
-type L2_ = L2Sym0
-
-type Traverse_ = TraverseSym0
+type Traverse_  = TraverseSym0
 type Folding_ f = FoldingSym1 f
-type Folded_   = FoldedSym0
+type Folded_    = FoldedSym0
+
+type L1_       = L1Sym0
+type L2_       = L2Sym0
+type IxList_ i = IxListSym1 i
+
