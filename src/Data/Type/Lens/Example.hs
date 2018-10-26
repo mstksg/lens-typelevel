@@ -1,6 +1,17 @@
 {-# LANGUAGE DataKinds     #-}
 {-# LANGUAGE TypeOperators #-}
 
+-- |
+-- Module      : Data.Type.Lens.Example
+-- Copyright   : (c) Justin Le 2018
+-- License     : BSD3
+--
+-- Maintainer  : justin@jle.im
+-- Stability   : experimental
+-- Portability : non-portable
+--
+-- See source for examples of using type-level lenses from
+-- "Data.Type.Lens".
 module Data.Type.Lens.Example (
   -- * Prefix functions
     SetExample

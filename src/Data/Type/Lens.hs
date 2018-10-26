@@ -32,8 +32,9 @@
 -- reserve the underscoreless identifiers for the fully applied type family
 -- as per /singletons/ library convention.
 module Data.Type.Lens (
+    LensLike, LensLike'
   -- * Setting
-    ASetter
+  , ASetter
   -- ** Using
   -- | Ways of consuming a setter.
   , Over, type (%~), sOver
@@ -50,10 +51,13 @@ module Data.Type.Lens (
   -- | Ways of creating a getter-only.
   , To_, To, sTo
   -- * Lenses
-  , LensLike, LensLike'
+  , ALens
   -- ** Making
   -- | Ways of creating a lens
   , MkLens_, MkLens, sMkLens
+  -- ** Cloning
+  , CloneLens_, CloneLens, sCloneLens
+  , Context(..)
   -- * Traversals and Folds
   -- ** Using
   -- | Ways of consuming traversals and folds
@@ -75,7 +79,7 @@ module Data.Type.Lens (
   , IxList_, IxList, sIxList
   -- * Util
   , type (.@)
-  , Sing (SZ, SS)
+  , Sing (SZ, SS, SMkContext)
   -- * Defunctionalization Symbols
   , ASetterSym0, ASetterSym1, ASetterSym2, ASetterSym3, ASetterSym4
   , OverSym0, OverSym1, OverSym2, OverSym3
@@ -88,6 +92,8 @@ module Data.Type.Lens (
   , LensLikeSym0, LensLikeSym1, LensLikeSym2, LensLikeSym3, LensLikeSym4, LensLikeSym5
   , LensLike'Sym0, LensLike'Sym1, LensLike'Sym2, LensLike'Sym3
   , MkLensSym0, MkLensSym1, MkLensSym2, MkLensSym3, MkLensSym4
+  , CloneLensSym0, CloneLensSym1, CloneLensSym2, CloneLensSym3
+  , MkContextSym0, MkContextSym1, MkContextSym2
   , FoldingSym0, FoldingSym1, FoldingSym2, FoldingSym3
   , FoldedSym0, FoldedSym1, FoldedSym2
   , L1Sym0, L1Sym1, L1Sym2
@@ -98,22 +104,26 @@ module Data.Type.Lens (
 
 import           Control.Applicative
 import           Data.Foldable
+import           Data.Function
 import           Data.Functor.Identity
+import           Data.Kind
 import           Data.Monoid
 import           Data.Singletons.Prelude.Const
 import           Data.Singletons.Prelude.Foldable hiding (Traverse_)
+import           Data.Singletons.Prelude.Function hiding (Const, ConstSym0)
 import           Data.Singletons.Prelude.Functor
 import           Data.Singletons.Prelude.Identity
 import           Data.Singletons.Prelude.Maybe
 import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
+import           Data.Type.Lens.Internal
 
 -- | The general shape of optics in this library. ("van Laarhoven")
 --
 -- For different levels of polymorphism on @f@, you get different types of
 -- optics:
 --
---     * If @f@ can be any 'Functor', you have a Lens.
+--     * If @f@ can be any 'Functor', you have a Lens (see 'ALens')
 --     * If @f@ is only 'Identity', you have a setter (see 'ASetter')
 --     * If @f@ is only @'Const' R@ for a specific @R@, you have a getter
 --       of @R@ (see 'Getting')
@@ -153,6 +163,12 @@ data N = Z | S N
 
 genSingletons [''LensLike, ''LensLike', ''ASetter, ''Getting, ''N]
 
+-- | If a function expects an 'ALens', it can be given any Lens (a
+-- @'LensLike' f@ that works for any 'Functor' f).
+--
+-- You can use an 'ALens' as a normal lens by using 'CloneLens_'.
+type ALens s t a b = LensLike (Context a b) s t a b
+
 $(singletonsOnly [d|
   over :: ASetter s t a b -> (a -> b) -> (s -> t)
   over l f x = case l (Identity . f) x of
@@ -178,6 +194,13 @@ $(singletonsOnly [d|
       -> (s -> b -> t)
       -> LensLike f s t a b
   mkLens v s f x = s x <$> f (v x)
+
+  cloneLens
+      :: Functor f
+      => LensLike (Context a b) s t a b
+      -> LensLike f s t a b
+  cloneLens l f x = case l (\y -> MkContext id y) x of
+      MkContext g y -> g <$> f y
 
   toListOf :: Getting [a] s a -> s -> [a]
   toListOf l x = case l (Const . (:[])) x of
@@ -266,6 +289,21 @@ type Sets_   f   = SetsSym1 f
 -- @
 type MkLens_ f g = MkLensSym2 f g
 
+-- | "Clone" a polymorphic lens so it can be used as more than one type of
+-- thing (getter or setter).
+--
+-- @
+-- 'CloneLens_'
+--     :: 'Functor' f
+--     => 'LensLike' (Context a b) s t a b
+--     -> 'LensLike' f s t a b
+-- @
+--
+-- Useful for writing a function that takes a lens and uses it in more than
+-- one way; if you have it take an 'ALens', you can then use 'CloneLens_' to
+-- use it as a getter or setter.
+type CloneLens_ l = CloneLensSym1 l
+
 -- | The canonical Traversal for any instance of 'Traversable'.
 --
 -- @
@@ -311,3 +349,39 @@ type L2_       = L2Sym0
 -- @
 type IxList_ i = IxListSym1 i
 
+-- data Bazaar a b t = Done t
+--                   | More a (Bazaar a b (b -> t))
+
+-- instance Functor (Bazaar a b) where
+--     fmap f (Done t)   = Done (f t)
+--     fmap f (More x b) = More x (fmap (f .) b)
+
+-- instance Applicative (Bazaar a b) where
+--     pure = Done
+--     Done f   <*> c = f <$> c
+--     More a b <*> c = More a $ flip <$> b <*> c
+
+-- unBazaar :: Applicative f => (a -> f b) -> Bazaar a b t -> f t
+-- unBazaar f (Done x)   = pure x
+-- unBazaar f (More x b) = (&) <$> f x <*> unBazaar f b
+
+-- cloneTraversal
+--     :: Applicative f
+--     => LensLike (Bazaar a b) s t a b
+--     -> LensLike f s t a b
+-- cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
+
+
+-- cloneTraversal l f xs = case l (`More` Done id) xs of
+--     Done x   -> pure x
+--     More x b -> _ <$> f x
+--     Done x   -> pure x
+--     More x b -> _ <$> f x
+    -- MkBazaar g ys -> _
+
+--   cloneLens
+--       :: Functor f
+--       => LensLike (Context a b) s t a b
+--       -> LensLike f s t a b
+--   cloneLens l f x = case l (\y -> MkContext id y) x of
+--       MkContext g y -> g <$> f y
