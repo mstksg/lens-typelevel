@@ -9,8 +9,12 @@
 @version 0.1.0.0
 
 module Data.Type.Lens.Internal
+
+-- | A partially applied lens
 data Context a b t
 MkContext :: (b ~> t) -> a -> Context a b t
+
+-- | A partially applied traversal
 data Bazaar a b t
 Done :: t -> Bazaar a b t
 More :: a -> Bazaar a b (b ~> t) -> Bazaar a b t
@@ -597,8 +601,24 @@ type NestedExample = View (L2_ .@ L1_) '("hello", '(6,  'False))
 --   '["hello", "world", "curry"]
 --   </pre>
 type FoldExample = ToListOf (Traverse_ .@ L1_) '['("hello",  'True), '("world",  'False), '("curry",  'False)]
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! UnsafeExample
+--   Error "Failed indexing into empty traversal"
+--   </pre>
 type UnsafeExample = UnsafePreview Traverse_ '[]
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! IxExample
+--   '["hello", "haskell", "curry"]
+--   </pre>
 type IxExample = Set (IxList_ ( 'S  'Z)) "haskell" '["hello", "world", "curry"]
+
+-- | <pre>
+--   &gt;&gt;&gt; :kind! CloneExample
+--   "hello"
+--   </pre>
+type CloneExample = View (CloneLens_ L1_) '("hello", 6)
 type SetExample' = '("hello", 6) & L1_ .~  'True
 type ViewExample' = '("hello", 6) ^. L2_
 type ToExample' = '("hello", 6) ^. To_ SndSym0
@@ -608,3 +628,4 @@ type NestedExample' = '("hello", '(6,  'False)) ^. L2_ .@ L1_
 type FoldExample' = '['("hello",  'True), '("world",  'False), '("curry",  'False)] ^.. Traverse_ .@ L1_
 type IxExample' = '["hello", "world", "curry"] & IxList_ ( 'S  'Z) .~ "haskell"
 type UnsafeExample' = '[] ^?! Traverse_
+type CloneExample' = '("hello", 6) ^. CloneLens_ L1_
