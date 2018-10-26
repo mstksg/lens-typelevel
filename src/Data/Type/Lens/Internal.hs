@@ -80,7 +80,7 @@ $(singletonsOnly [d|
 
   unBazaar :: Applicative f => (a -> f b) -> Bazaar a b t -> f t
   unBazaar _ (Done x  ) = pure x
-  unBazaar f (More x b) = (&) <$> f x <*> unBazaar f b
+  unBazaar f (More x b) = liftA2 (&) (f x) (unBazaar f b)
   |])
 
 instance PFunctor (Bazaar a b) where

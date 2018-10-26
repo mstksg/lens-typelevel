@@ -73,6 +73,7 @@ module Data.Type.Lens (
   , CloneTraversal_, CloneTraversal, sCloneTraversal
   -- * Samples
   -- | Some sample lenses and traversals
+  --
   -- ** Tuple
   , L1_, L1, sL1
   , L2_, L2, sL2
