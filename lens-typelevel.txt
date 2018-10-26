@@ -8,6 +8,65 @@
 @package lens-typelevel
 @version 0.1.0.0
 
+module Data.Type.Lens.Internal
+data Context a b t
+MkContext :: (b ~> t) -> a -> Context a b t
+data Bazaar a b t
+Done :: t -> Bazaar a b t
+More :: a -> Bazaar a b (b ~> t) -> Bazaar a b t
+type family UnBazaar (a_aFo5 :: (~>) a_aF7E (f_aF7D b_aF7F)) (a_aFo6 :: Bazaar a_aF7E b_aF7F t_aF7G) :: f_aF7D t_aF7G
+sUnBazaar :: forall f_aF7D a_aF7E b_aF7F t_aF7G (t_aFp2 :: (~>) a_aF7E (f_aF7D b_aF7F)) (t_aFp3 :: Bazaar a_aF7E b_aF7F t_aF7G). SApplicative f_aF7D => Sing t_aFp2 -> Sing t_aFp3 -> Sing (Apply (Apply UnBazaarSym0 t_aFp2) t_aFp3 :: f_aF7D t_aF7G)
+
+-- | The singleton kind-indexed data family.
+data family Sing (a :: k) :: Type
+type MkContextSym0 = TyCon2  'MkContext
+type MkContextSym1 f = TyCon1 ( 'MkContext f)
+type MkContextSym2 f x =  'MkContext f x
+type DoneSym0 = TyCon1  'Done
+type DoneSym1 x =  'Done x
+type MoreSym0 = TyCon2  'More
+type MoreSym1 x = TyCon1 ( 'More x)
+type MoreSym2 x b =  'More x b
+data UnBazaarSym0 :: forall a6989586621679167870 b6989586621679167871 f6989586621679167869 t6989586621679167872. (~>) ((~>) a6989586621679167870 (f6989586621679167869 b6989586621679167871)) ((~>) (Bazaar a6989586621679167870 b6989586621679167871 t6989586621679167872) (f6989586621679167869 t6989586621679167872))
+data UnBazaarSym1 (a6989586621679168889 :: (~>) a6989586621679167870 (f6989586621679167869 b6989586621679167871)) :: forall t6989586621679167872. (~>) (Bazaar a6989586621679167870 b6989586621679167871 t6989586621679167872) (f6989586621679167869 t6989586621679167872)
+type UnBazaarSym2 (a6989586621679168889 :: (~>) a6989586621679167870 (f6989586621679167869 b6989586621679167871)) (a6989586621679168890 :: Bazaar a6989586621679167870 b6989586621679167871 t6989586621679167872) = UnBazaar a6989586621679168889 a6989586621679168890
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Internal.ApBazaarSym0
+instance Data.Singletons.Internal.SingI Data.Type.Lens.Internal.ApBazaarSym0
+instance forall a6989586621679167873 b6989586621679167874 t6989586621679167875 q6989586621679167876 (a6989586621679168939 :: Data.Type.Lens.Internal.Bazaar a6989586621679167873 b6989586621679167874 (t6989586621679167875 Data.Singletons.Internal.~> q6989586621679167876)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.ApBazaarSym1 a6989586621679168939)
+instance forall a b t q (d :: Data.Type.Lens.Internal.Bazaar a b (t Data.Singletons.Internal.~> q)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.Internal.ApBazaarSym1 d)
+instance Data.Singletons.Prelude.Monad.Internal.PApplicative (Data.Type.Lens.Internal.Bazaar a b)
+instance forall a6989586621679167880 b6989586621679167881 t6989586621679167877 r6989586621679167878 s6989586621679167879 (a6989586621679168912 :: t6989586621679167877 Data.Singletons.Internal.~> (r6989586621679167878 Data.Singletons.Internal.~> s6989586621679167879)) (a6989586621679168911 :: Data.Type.Lens.Internal.Bazaar a6989586621679167880 b6989586621679167881 t6989586621679167877). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.LiftA2BazaarSym2 a6989586621679168912 a6989586621679168911)
+instance forall a6989586621679167880 b6989586621679167881 t6989586621679167877 r6989586621679167878 s6989586621679167879 (a6989586621679168911 :: t6989586621679167877 Data.Singletons.Internal.~> (r6989586621679167878 Data.Singletons.Internal.~> s6989586621679167879)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.LiftA2BazaarSym1 a6989586621679168911)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Internal.LiftA2BazaarSym0
+instance Data.Singletons.Internal.SingI Data.Type.Lens.Internal.LiftA2BazaarSym0
+instance forall t r s a b (d :: t Data.Singletons.Internal.~> (r Data.Singletons.Internal.~> s)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.Internal.LiftA2BazaarSym1 d)
+instance forall t r s a b (d1 :: t Data.Singletons.Internal.~> (r Data.Singletons.Internal.~> s)) (d2 :: Data.Type.Lens.Internal.Bazaar a b t). (Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.Internal.LiftA2BazaarSym2 d1 d2)
+instance forall a6989586621679167887 b6989586621679167888 t6989586621679167885 q6989586621679167886 (a6989586621679168902 :: t6989586621679167885 Data.Singletons.Internal.~> q6989586621679167886). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.FmapBazaarSym1 a6989586621679168902)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Internal.FmapBazaarSym0
+instance Data.Singletons.Internal.SingI Data.Type.Lens.Internal.FmapBazaarSym0
+instance forall t q a b (d :: t Data.Singletons.Internal.~> q). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.Internal.FmapBazaarSym1 d)
+instance Data.Singletons.Prelude.Monad.Internal.PFunctor (Data.Type.Lens.Internal.Bazaar a b)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Internal.PureBazaarSym0
+instance Data.Singletons.Internal.SingI Data.Type.Lens.Internal.PureBazaarSym0
+instance forall t6989586621679167872 a6989586621679167870 (f6989586621679167869 :: * -> *) b6989586621679167871 (a6989586621679168889 :: a6989586621679167870 Data.Singletons.Internal.~> f6989586621679167869 b6989586621679167871). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.UnBazaarSym1 a6989586621679168889)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Internal.UnBazaarSym0
+instance Data.Singletons.Prelude.Monad.Internal.SApplicative f => Data.Singletons.Internal.SingI Data.Type.Lens.Internal.UnBazaarSym0
+instance forall a (f :: * -> *) b t (d :: a Data.Singletons.Internal.~> f b). (Data.Singletons.Prelude.Monad.Internal.SApplicative f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.Internal.UnBazaarSym1 d)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Internal.Lambda_6989586621679168924Sym0
+instance forall k2 k3 k4 k5 k6 k7 k8 (f6989586621679168920 :: k6 Data.Singletons.Internal.~> (k7 Data.Singletons.Internal.~> k8)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.Lambda_6989586621679168924Sym1 f6989586621679168920)
+instance forall k2 k3 k4 k5 k6 k7 k8 (x6989586621679168921 :: k6 Data.Singletons.Internal.~> (k7 Data.Singletons.Internal.~> k8)) (f6989586621679168920 :: k5). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.Lambda_6989586621679168924Sym2 x6989586621679168921 f6989586621679168920)
+instance forall k2 k3 k4 k5 k6 k7 k8 (b6989586621679168922 :: k6 Data.Singletons.Internal.~> (k7 Data.Singletons.Internal.~> k8)) (x6989586621679168921 :: k5) (f6989586621679168920 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.Lambda_6989586621679168924Sym3 b6989586621679168922 x6989586621679168921 f6989586621679168920)
+instance forall k2 k3 k4 k5 k6 k7 k8 (c6989586621679168923 :: k6 Data.Singletons.Internal.~> (k7 Data.Singletons.Internal.~> k8)) (b6989586621679168922 :: k5) (x6989586621679168921 :: k4) (f6989586621679168920 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.Lambda_6989586621679168924Sym4 c6989586621679168923 b6989586621679168922 x6989586621679168921 f6989586621679168920)
+instance forall k2 k3 k4 k5 k6 k7 k8 (t6989586621679168929 :: k6 Data.Singletons.Internal.~> (k7 Data.Singletons.Internal.~> k8)) (c6989586621679168923 :: k5) (b6989586621679168922 :: k4) (x6989586621679168921 :: k3) (f6989586621679168920 :: k2 Data.Singletons.Internal.~> k6). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.Lambda_6989586621679168924Sym5 t6989586621679168929 c6989586621679168923 b6989586621679168922 x6989586621679168921 f6989586621679168920)
+instance forall k2 k3 k4 k5 k6 k7 k8 (t6989586621679168930 :: k6 Data.Singletons.Internal.~> (k7 Data.Singletons.Internal.~> k8)) (t6989586621679168929 :: k5) (c6989586621679168923 :: k4) (b6989586621679168922 :: k3) (x6989586621679168921 :: k2 Data.Singletons.Internal.~> k6) (f6989586621679168920 :: k7). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.Lambda_6989586621679168924Sym6 t6989586621679168930 t6989586621679168929 c6989586621679168923 b6989586621679168922 x6989586621679168921 f6989586621679168920)
+instance Data.Singletons.Prelude.Monad.Internal.SFunctor (Data.Type.Lens.Internal.Bazaar a b)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Internal.FmapContextSym0
+instance Data.Singletons.Internal.SingI Data.Type.Lens.Internal.FmapContextSym0
+instance forall a6989586621679161666 b6989586621679161667 t6989586621679161664 q6989586621679161665 (a6989586621679161711 :: t6989586621679161664 Data.Singletons.Internal.~> q6989586621679161665). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Internal.FmapContextSym1 a6989586621679161711)
+instance forall t q a b (d :: t Data.Singletons.Internal.~> q). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.Internal.FmapContextSym1 d)
+instance Data.Singletons.Prelude.Monad.Internal.PFunctor (Data.Type.Lens.Internal.Context a b)
+instance Data.Singletons.Prelude.Monad.Internal.SFunctor (Data.Type.Lens.Internal.Context a b)
+
 
 -- | Lenses and optics for manipulating DataKind-based types, powered by
 --   <i>singletons</i> defunctionalization.
@@ -26,23 +85,49 @@
 --   library convention.
 module Data.Type.Lens
 
+-- | The general shape of optics in this library. ("van Laarhoven")
+--   
+--   For different levels of polymorphism on <tt>f</tt>, you get different
+--   types of optics:
+--   
+--   <ul>
+--   <li>If <tt>f</tt> can be any <a>Functor</a>, you have a Lens (see
+--   <a>ALens</a>)</li>
+--   <li>If <tt>f</tt> is only <a>Identity</a>, you have a setter (see
+--   <a>ASetter</a>)</li>
+--   <li>If <tt>f</tt> is only <tt><a>Const</a> R</tt> for a specific
+--   <tt>R</tt>, you have a getter of <tt>R</tt> (see <a>Getting</a>)</li>
+--   <li>If <tt>f</tt> can be <tt><a>Const</a> r</tt> for any <a>Monoid</a>
+--   <tt>r</tt>, you have a Fold.</li>
+--   <li>If <tt>f</tt> can be any <a>Applicative</a>, you have a Traversal
+--   (see <a>ATraversal</a>)</li>
+--   </ul>
+--   
+--   Normal lens libraries implement the constraints for lenses, folds, and
+--   traversals using RankN types, but we don't do that here to avoid
+--   working with RankN kinds.
+type LensLike f s t a b = (a -> f b) -> (s -> f t)
+
+-- | A <a>LensLike</a> that does not change any types.
+type LensLike' f s a = LensLike f s s a a
+
 -- | A settable "lens". Usable with <a>Over</a> (<a>%~</a>), constructable
 --   with <a>To</a> or any of the general lens constructors.
 --   
 --   See <a>LensLike</a> for more information.
 type ASetter s t a b = LensLike Identity s t a b
-type family Over (a_aGAt :: (~>) ((~>) a_aFqZ (Identity b_aFr0)) ((~>) s_aFqX (Identity t_aFqY))) (a_aGAu :: (~>) a_aFqZ b_aFr0) (a_aGAv :: s_aFqX) :: t_aFqY
+type family Over (a_aQgM :: (~>) ((~>) a_aP9y (Identity b_aP9z)) ((~>) s_aP9w (Identity t_aP9x))) (a_aQgN :: (~>) a_aP9y b_aP9z) (a_aQgO :: s_aP9w) :: t_aP9x
 
 -- | Infix application of <a>Over</a>
 type l %~ f = OverSym2 l f
 infixr 4 %~
-sOver :: forall s_aFqX t_aFqY a_aFqZ b_aFr0 (t_aGC4 :: (~>) ((~>) a_aFqZ (Identity b_aFr0)) ((~>) s_aFqX (Identity t_aFqY))) (t_aGC5 :: (~>) a_aFqZ b_aFr0) (t_aGC6 :: s_aFqX). Sing t_aGC4 -> Sing t_aGC5 -> Sing t_aGC6 -> Sing (Apply (Apply (Apply OverSym0 t_aGC4) t_aGC5) t_aGC6 :: t_aFqY)
-type family Set (a_aGAK :: (~>) ((~>) a_aFqV (Identity b_aFqW)) ((~>) s_aFqT (Identity t_aFqU))) (a_aGAL :: b_aFqW) (a_aGAM :: s_aFqT) :: t_aFqU
+sOver :: forall s_aP9w t_aP9x a_aP9y b_aP9z (t_aQiz :: (~>) ((~>) a_aP9y (Identity b_aP9z)) ((~>) s_aP9w (Identity t_aP9x))) (t_aQiA :: (~>) a_aP9y b_aP9z) (t_aQiB :: s_aP9w). Sing t_aQiz -> Sing t_aQiA -> Sing t_aQiB -> Sing (Apply (Apply (Apply OverSym0 t_aQiz) t_aQiA) t_aQiB :: t_aP9x)
+type family Set (a_aQh3 :: (~>) ((~>) a_aP9u (Identity b_aP9v)) ((~>) s_aP9s (Identity t_aP9t))) (a_aQh4 :: b_aP9v) (a_aQh5 :: s_aP9s) :: t_aP9t
 
 -- | Infix application of <a>Set</a>
 type l .~ x = SetSym2 l x
 infixr 4 .~
-sSet :: forall s_aFqT t_aFqU a_aFqV b_aFqW (t_aGCa :: (~>) ((~>) a_aFqV (Identity b_aFqW)) ((~>) s_aFqT (Identity t_aFqU))) (t_aGCb :: b_aFqW) (t_aGCc :: s_aFqT). Sing t_aGCa -> Sing t_aGCb -> Sing t_aGCc -> Sing (Apply (Apply (Apply SetSym0 t_aGCa) t_aGCb) t_aGCc :: t_aFqU)
+sSet :: forall s_aP9s t_aP9t a_aP9u b_aP9v (t_aQiF :: (~>) ((~>) a_aP9u (Identity b_aP9v)) ((~>) s_aP9s (Identity t_aP9t))) (t_aQiG :: b_aP9v) (t_aQiH :: s_aP9s). Sing t_aQiF -> Sing t_aQiG -> Sing t_aQiH -> Sing (Apply (Apply (Apply SetSym0 t_aQiF) t_aQiG) t_aQiH :: t_aP9t)
 
 -- | Create a Setter from a setting function.
 --   
@@ -50,8 +135,8 @@ sSet :: forall s_aFqT t_aFqU a_aFqV b_aFqW (t_aGCa :: (~>) ((~>) a_aFqV (Identit
 --   <a>Sets_</a> :: ((a ~&gt; b) ~&gt; (s ~&gt; t)) -&gt; <a>ASetter</a> s t a b
 --   </pre>
 type Sets_ f = SetsSym1 f
-type family Sets (a_aGzO :: (~>) ((~>) a_aFqN b_aFqO) ((~>) s_aFqP t_aFqQ)) (a_aGzP :: (~>) a_aFqN (Identity b_aFqO)) (a_aGzQ :: s_aFqP) :: Identity t_aFqQ
-sSets :: forall a_aFqN b_aFqO s_aFqP t_aFqQ (t_aGBU :: (~>) ((~>) a_aFqN b_aFqO) ((~>) s_aFqP t_aFqQ)) (t_aGBV :: (~>) a_aFqN (Identity b_aFqO)) (t_aGBW :: s_aFqP). Sing t_aGBU -> Sing t_aGBV -> Sing t_aGBW -> Sing (Apply (Apply (Apply SetsSym0 t_aGBU) t_aGBV) t_aGBW :: Identity t_aFqQ)
+type family Sets (a_aQg7 :: (~>) ((~>) a_aP9m b_aP9n) ((~>) s_aP9o t_aP9p)) (a_aQg8 :: (~>) a_aP9m (Identity b_aP9n)) (a_aQg9 :: s_aP9o) :: Identity t_aP9p
+sSets :: forall a_aP9m b_aP9n s_aP9o t_aP9p (t_aQip :: (~>) ((~>) a_aP9m b_aP9n) ((~>) s_aP9o t_aP9p)) (t_aQiq :: (~>) a_aP9m (Identity b_aP9n)) (t_aQir :: s_aP9o). Sing t_aQip -> Sing t_aQiq -> Sing t_aQir -> Sing (Apply (Apply (Apply SetsSym0 t_aQip) t_aQiq) t_aQir :: Identity t_aP9p)
 
 -- | A retrieving "lens". If <tt>r</tt> is fixed to a type, it's a Getter
 --   for that type. If <tt>r</tt> is polymorphic over all <a>Monoid</a>,
@@ -65,12 +150,12 @@ sSets :: forall a_aFqN b_aFqO s_aFqP t_aFqQ (t_aGBU :: (~>) ((~>) a_aFqN b_aFqO)
 --   
 --   See <a>LensLike</a> for more information.
 type Getting r s a = LensLike (Const r) s s a a
-type family View (a_aGAg :: (~>) ((~>) a_aFqR ((Const a_aFqR :: Type -> Type) a_aFqR)) ((~>) s_aFqS ((Const a_aFqR :: Type -> Type) s_aFqS))) (a_aGAh :: s_aFqS) :: a_aFqR
+type family View (a_aQgz :: (~>) ((~>) a_aP9q ((Const a_aP9q :: Type -> Type) a_aP9q)) ((~>) s_aP9r ((Const a_aP9q :: Type -> Type) s_aP9r))) (a_aQgA :: s_aP9r) :: a_aP9q
 
 -- | Infix application of <a>View</a>
 type x ^. l = View l x
 infixl 8 ^.
-sView :: forall a_aFqR s_aFqS (t_aGC0 :: (~>) ((~>) a_aFqR ((Const a_aFqR :: Type -> Type) a_aFqR)) ((~>) s_aFqS ((Const a_aFqR :: Type -> Type) s_aFqS))) (t_aGC1 :: s_aFqS). Sing t_aGC0 -> Sing t_aGC1 -> Sing (Apply (Apply ViewSym0 t_aGC0) t_aGC1 :: a_aFqR)
+sView :: forall a_aP9q s_aP9r (t_aQiv :: (~>) ((~>) a_aP9q ((Const a_aP9q :: Type -> Type) a_aP9q)) ((~>) s_aP9r ((Const a_aP9q :: Type -> Type) s_aP9r))) (t_aQiw :: s_aP9r). Sing t_aQiv -> Sing t_aQiw -> Sing (Apply (Apply ViewSym0 t_aQiv) t_aQiw :: a_aP9q)
 
 -- | Create a Getter from a getting function.
 --   
@@ -78,33 +163,15 @@ sView :: forall a_aFqR s_aFqS (t_aGC0 :: (~>) ((~>) a_aFqR ((Const a_aFqR :: Typ
 --   <a>To_</a> :: (a ~&gt; b) -&gt; <a>Getting</a> b a b
 --   </pre>
 type To_ f = ToSym1 f
-type family To (a_aGzx :: (~>) s_aFqK a_aFqL) (a_aGzy :: (~>) a_aFqL ((Const r_aFqM :: Type -> Type) a_aFqL)) (a_aGzz :: s_aFqK) :: (Const r_aFqM :: Type -> Type) s_aFqK
-sTo :: forall s_aFqK a_aFqL r_aFqM (t_aGBO :: (~>) s_aFqK a_aFqL) (t_aGBP :: (~>) a_aFqL ((Const r_aFqM :: Type -> Type) a_aFqL)) (t_aGBQ :: s_aFqK). Sing t_aGBO -> Sing t_aGBP -> Sing t_aGBQ -> Sing (Apply (Apply (Apply ToSym0 t_aGBO) t_aGBP) t_aGBQ :: (Const r_aFqM :: Type -> Type) s_aFqK)
+type family To (a_aQfQ :: (~>) s_aP9j a_aP9k) (a_aQfR :: (~>) a_aP9k ((Const r_aP9l :: Type -> Type) a_aP9k)) (a_aQfS :: s_aP9j) :: (Const r_aP9l :: Type -> Type) s_aP9j
+sTo :: forall s_aP9j a_aP9k r_aP9l (t_aQij :: (~>) s_aP9j a_aP9k) (t_aQik :: (~>) a_aP9k ((Const r_aP9l :: Type -> Type) a_aP9k)) (t_aQil :: s_aP9j). Sing t_aQij -> Sing t_aQik -> Sing t_aQil -> Sing (Apply (Apply (Apply ToSym0 t_aQij) t_aQik) t_aQil :: (Const r_aP9l :: Type -> Type) s_aP9j)
 
--- | The general shape of optics in this library. ("van Laarhoven")
+-- | If a function expects an <a>ALens</a>, it can be given any Lens (a
+--   <tt><a>LensLike</a> f</tt> that works for any <a>Functor</a> f).
 --   
---   For different levels of polymorphism on <tt>f</tt>, you get different
---   types of optics:
---   
---   <ul>
---   <li>If <tt>f</tt> can be any <a>Functor</a>, you have a Lens.</li>
---   <li>If <tt>f</tt> is only <a>Identity</a>, you have a setter (see
---   <a>ASetter</a>)</li>
---   <li>If <tt>f</tt> is only <tt><a>Const</a> R</tt> for a specific
---   <tt>R</tt>, you have a getter of <tt>R</tt> (see <a>Getting</a>)</li>
---   <li>If <tt>f</tt> can be <tt><a>Const</a> r</tt> for any <a>Monoid</a>
---   <tt>r</tt>, you have a Fold.</li>
---   <li>If <tt>f</tt> can be any <a>Applicative</a>, you have a
---   Traversal.</li>
---   </ul>
---   
---   Normal lens libraries implement the constraints for lenses, folds, and
---   traversals using RankN types, but we don't do that here to avoid
---   working with RankN kinds.
-type LensLike f s t a b = (a -> f b) -> (s -> f t)
-
--- | A <a>LensLike</a> that does not change any types.
-type LensLike' f s a = LensLike f s s a a
+--   You can use an <a>ALens</a> as a normal lens by using
+--   <a>CloneLens_</a>.
+type ALens s t a b = LensLike (Context a b) s t a b
 
 -- | Create a Lens from a setter and a getter.
 --   
@@ -116,26 +183,51 @@ type LensLike' f s a = LensLike f s s a a
 --       -&gt; <a>LensLike</a> f s t a b
 --   </pre>
 type MkLens_ f g = MkLensSym2 f g
-type family MkLens (a_aGzl :: (~>) s_aFqG a_aFqH) (a_aGzm :: (~>) s_aFqG ((~>) b_aFqI t_aFqJ)) (a_aGzn :: (~>) a_aFqH (f_aFqF b_aFqI)) (a_aGzo :: s_aFqG) :: f_aFqF t_aFqJ
-sMkLens :: forall f_aFqF s_aFqG a_aFqH b_aFqI t_aFqJ (t_aGBG :: (~>) s_aFqG a_aFqH) (t_aGBH :: (~>) s_aFqG ((~>) b_aFqI t_aFqJ)) (t_aGBI :: (~>) a_aFqH (f_aFqF b_aFqI)) (t_aGBJ :: s_aFqG). SFunctor f_aFqF => Sing t_aGBG -> Sing t_aGBH -> Sing t_aGBI -> Sing t_aGBJ -> Sing (Apply (Apply (Apply (Apply MkLensSym0 t_aGBG) t_aGBH) t_aGBI) t_aGBJ :: f_aFqF t_aFqJ)
-type family Preview (a_aGyB :: (~>) ((~>) a_aFqB ((Const (First a_aFqB) :: Type -> Type) a_aFqB)) ((~>) s_aFqC ((Const (First a_aFqB) :: Type -> Type) s_aFqC))) (a_aGyC :: s_aFqC) :: Maybe a_aFqB
+type family MkLens (a_aQfE :: (~>) s_aP9f a_aP9g) (a_aQfF :: (~>) s_aP9f ((~>) b_aP9h t_aP9i)) (a_aQfG :: (~>) a_aP9g (f_aP9e b_aP9h)) (a_aQfH :: s_aP9f) :: f_aP9e t_aP9i
+sMkLens :: forall f_aP9e s_aP9f a_aP9g b_aP9h t_aP9i (t_aQib :: (~>) s_aP9f a_aP9g) (t_aQic :: (~>) s_aP9f ((~>) b_aP9h t_aP9i)) (t_aQid :: (~>) a_aP9g (f_aP9e b_aP9h)) (t_aQie :: s_aP9f). SFunctor f_aP9e => Sing t_aQib -> Sing t_aQic -> Sing t_aQid -> Sing t_aQie -> Sing (Apply (Apply (Apply (Apply MkLensSym0 t_aQib) t_aQic) t_aQid) t_aQie :: f_aP9e t_aP9i)
+
+-- | <a>Clone</a> a polymorphic lens so it can be used as more than one
+--   type of thing (getter or setter).
+--   
+--   <pre>
+--   <a>CloneLens_</a>
+--       :: <a>Functor</a> f
+--       =&gt; <a>LensLike</a> (Context a b) s t a b
+--       -&gt; <a>LensLike</a> f s t a b
+--   </pre>
+--   
+--   Useful for writing a function that takes a lens and uses it in more
+--   than one way; if you have it take an <a>ALens</a>, you can then use
+--   <a>CloneLens_</a> to use it as a getter or setter.
+type CloneLens_ l = CloneLensSym1 l
+type family CloneLens (a_aQfe :: (~>) ((~>) a_aP9a (Context a_aP9a b_aP9b b_aP9b)) ((~>) s_aP9c (Context a_aP9a b_aP9b t_aP9d))) (a_aQff :: (~>) a_aP9a (f_aP99 b_aP9b)) (a_aQfg :: s_aP9c) :: f_aP99 t_aP9d
+sCloneLens :: forall f_aP99 a_aP9a b_aP9b s_aP9c t_aP9d (t_aQi5 :: (~>) ((~>) a_aP9a (Context a_aP9a b_aP9b b_aP9b)) ((~>) s_aP9c (Context a_aP9a b_aP9b t_aP9d))) (t_aQi6 :: (~>) a_aP9a (f_aP99 b_aP9b)) (t_aQi7 :: s_aP9c). SFunctor f_aP99 => Sing t_aQi5 -> Sing t_aQi6 -> Sing t_aQi7 -> Sing (Apply (Apply (Apply CloneLensSym0 t_aQi5) t_aQi6) t_aQi7 :: f_aP99 t_aP9d)
+
+-- | If a function expects an <a>ATraversal</a>, it can be given any
+--   Traversal (a <tt><a>LensLike</a> f</tt> that works for any
+--   <a>Applicative</a> f).
+--   
+--   You can use an <a>ATraversal</a> as a normal traversal by using
+--   <a>CloneTraversal_</a>.
+type ATraversal s t a b = LensLike (Bazaar a b) s t a b
+type family Preview (a_aQeu :: (~>) ((~>) a_aP95 ((Const (First a_aP95) :: Type -> Type) a_aP95)) ((~>) s_aP96 ((Const (First a_aP95) :: Type -> Type) s_aP96))) (a_aQev :: s_aP96) :: Maybe a_aP95
 
 -- | Infix application of <a>Preview</a>
 type x ^? l = Preview l x
 infixl 8 ^?
-sPreview :: forall a_aFqB s_aFqC (t_aGBu :: (~>) ((~>) a_aFqB ((Const (First a_aFqB) :: Type -> Type) a_aFqB)) ((~>) s_aFqC ((Const (First a_aFqB) :: Type -> Type) s_aFqC))) (t_aGBv :: s_aFqC). Sing t_aGBu -> Sing t_aGBv -> Sing (Apply (Apply PreviewSym0 t_aGBu) t_aGBv :: Maybe a_aFqB)
-type family ToListOf (a_aGz1 :: (~>) ((~>) a_aFqD ((Const [a_aFqD] :: Type -> Type) a_aFqD)) ((~>) s_aFqE ((Const [a_aFqD] :: Type -> Type) s_aFqE))) (a_aGz2 :: s_aFqE) :: [a_aFqD]
+sPreview :: forall a_aP95 s_aP96 (t_aQhT :: (~>) ((~>) a_aP95 ((Const (First a_aP95) :: Type -> Type) a_aP95)) ((~>) s_aP96 ((Const (First a_aP95) :: Type -> Type) s_aP96))) (t_aQhU :: s_aP96). Sing t_aQhT -> Sing t_aQhU -> Sing (Apply (Apply PreviewSym0 t_aQhT) t_aQhU :: Maybe a_aP95)
+type family ToListOf (a_aQeU :: (~>) ((~>) a_aP97 ((Const [a_aP97] :: Type -> Type) a_aP97)) ((~>) s_aP98 ((Const [a_aP97] :: Type -> Type) s_aP98))) (a_aQeV :: s_aP98) :: [a_aP97]
 
 -- | Infix application of <a>ToListOf</a>
 type x ^.. l = ToListOf l x
 infixl 8 ^..
-sToListOf :: forall a_aFqD s_aFqE (t_aGBC :: (~>) ((~>) a_aFqD ((Const [a_aFqD] :: Type -> Type) a_aFqD)) ((~>) s_aFqE ((Const [a_aFqD] :: Type -> Type) s_aFqE))) (t_aGBD :: s_aFqE). Sing t_aGBC -> Sing t_aGBD -> Sing (Apply (Apply ToListOfSym0 t_aGBC) t_aGBD :: [a_aFqD])
-type family UnsafePreview (a_aGyO :: (~>) ((~>) a_aFqz ((Const (First a_aFqz) :: Type -> Type) a_aFqz)) ((~>) s_aFqA ((Const (First a_aFqz) :: Type -> Type) s_aFqA))) (a_aGyP :: s_aFqA) :: a_aFqz
+sToListOf :: forall a_aP97 s_aP98 (t_aQi1 :: (~>) ((~>) a_aP97 ((Const [a_aP97] :: Type -> Type) a_aP97)) ((~>) s_aP98 ((Const [a_aP97] :: Type -> Type) s_aP98))) (t_aQi2 :: s_aP98). Sing t_aQi1 -> Sing t_aQi2 -> Sing (Apply (Apply ToListOfSym0 t_aQi1) t_aQi2 :: [a_aP97])
+type family UnsafePreview (a_aQeH :: (~>) ((~>) a_aP93 ((Const (First a_aP93) :: Type -> Type) a_aP93)) ((~>) s_aP94 ((Const (First a_aP93) :: Type -> Type) s_aP94))) (a_aQeI :: s_aP94) :: a_aP93
 
 -- | Infix application of <a>UnsafePreview</a>
 type x ^?! l = UnsafePreview l x
 infixl 8 ^?!
-sUnsafePreview :: forall a_aFqz s_aFqA (t_aGBy :: (~>) ((~>) a_aFqz ((Const (First a_aFqz) :: Type -> Type) a_aFqz)) ((~>) s_aFqA ((Const (First a_aFqz) :: Type -> Type) s_aFqA))) (t_aGBz :: s_aFqA). Sing t_aGBy -> Sing t_aGBz -> Sing (Apply (Apply UnsafePreviewSym0 t_aGBy) t_aGBz :: a_aFqz)
+sUnsafePreview :: forall a_aP93 s_aP94 (t_aQhX :: (~>) ((~>) a_aP93 ((Const (First a_aP93) :: Type -> Type) a_aP93)) ((~>) s_aP94 ((Const (First a_aP93) :: Type -> Type) s_aP94))) (t_aQhY :: s_aP94). Sing t_aQhX -> Sing t_aQhY -> Sing (Apply (Apply UnsafePreviewSym0 t_aQhX) t_aQhY :: a_aP93)
 
 -- | Create a Fold from a "folding function":
 --   
@@ -146,8 +238,8 @@ sUnsafePreview :: forall a_aFqz s_aFqA (t_aGBy :: (~>) ((~>) a_aFqz ((Const (Fir
 --       -&gt; <a>Getting</a> r s a
 --   </pre>
 type Folding_ f = FoldingSym1 f
-type family Folding (a_aGyk :: (~>) s_aFqx (f_aFqv a_aFqy)) (a_aGyl :: (~>) a_aFqy ((Const r_aFqw :: Type -> Type) a_aFqy)) (a_aGym :: s_aFqx) :: (Const r_aFqw :: Type -> Type) s_aFqx
-sFolding :: forall f_aFqv r_aFqw s_aFqx a_aFqy (t_aGBo :: (~>) s_aFqx (f_aFqv a_aFqy)) (t_aGBp :: (~>) a_aFqy ((Const r_aFqw :: Type -> Type) a_aFqy)) (t_aGBq :: s_aFqx). (SFoldable f_aFqv, SMonoid r_aFqw) => Sing t_aGBo -> Sing t_aGBp -> Sing t_aGBq -> Sing (Apply (Apply (Apply FoldingSym0 t_aGBo) t_aGBp) t_aGBq :: (Const r_aFqw :: Type -> Type) s_aFqx)
+type family Folding (a_aQed :: (~>) s_aP91 (f_aP8Z a_aP92)) (a_aQee :: (~>) a_aP92 ((Const r_aP90 :: Type -> Type) a_aP92)) (a_aQef :: s_aP91) :: (Const r_aP90 :: Type -> Type) s_aP91
+sFolding :: forall f_aP8Z r_aP90 s_aP91 a_aP92 (t_aQhN :: (~>) s_aP91 (f_aP8Z a_aP92)) (t_aQhO :: (~>) a_aP92 ((Const r_aP90 :: Type -> Type) a_aP92)) (t_aQhP :: s_aP91). (SFoldable f_aP8Z, SMonoid r_aP90) => Sing t_aQhN -> Sing t_aQhO -> Sing t_aQhP -> Sing (Apply (Apply (Apply FoldingSym0 t_aQhN) t_aQhO) t_aQhP :: (Const r_aP90 :: Type -> Type) s_aP91)
 
 -- | The canonical Fold for any instance of <a>Foldable</a>.
 --   
@@ -157,8 +249,8 @@ sFolding :: forall f_aFqv r_aFqw s_aFqx a_aFqy (t_aGBo :: (~>) s_aFqx (f_aFqv a_
 --       =&gt; <a>Getting</a> r (t a) a
 --   </pre>
 type Folded_ = FoldedSym0
-type family Folded (a_aGy7 :: (~>) a_aFqu ((Const r_aFqt :: Type -> Type) a_aFqu)) (a_aGy8 :: f_aFqs a_aFqu) :: (Const r_aFqt :: Type -> Type) (f_aFqs a_aFqu)
-sFolded :: forall f_aFqs r_aFqt a_aFqu (t_aGBk :: (~>) a_aFqu ((Const r_aFqt :: Type -> Type) a_aFqu)) (t_aGBl :: f_aFqs a_aFqu). (SFoldable f_aFqs, SMonoid r_aFqt) => Sing t_aGBk -> Sing t_aGBl -> Sing (Apply (Apply FoldedSym0 t_aGBk) t_aGBl :: (Const r_aFqt :: Type -> Type) (f_aFqs a_aFqu))
+type family Folded (a_aQe0 :: (~>) a_aP8Y ((Const r_aP8X :: Type -> Type) a_aP8Y)) (a_aQe1 :: f_aP8W a_aP8Y) :: (Const r_aP8X :: Type -> Type) (f_aP8W a_aP8Y)
+sFolded :: forall f_aP8W r_aP8X a_aP8Y (t_aQhJ :: (~>) a_aP8Y ((Const r_aP8X :: Type -> Type) a_aP8Y)) (t_aQhK :: f_aP8W a_aP8Y). (SFoldable f_aP8W, SMonoid r_aP8X) => Sing t_aQhJ -> Sing t_aQhK -> Sing (Apply (Apply FoldedSym0 t_aQhJ) t_aQhK :: (Const r_aP8X :: Type -> Type) (f_aP8W a_aP8Y))
 
 -- | The canonical Traversal for any instance of <a>Traversable</a>.
 --   
@@ -171,15 +263,33 @@ type Traverse_ = TraverseSym0
 type family Traverse (arg :: a ~> f b) (arg1 :: t a) :: f t b
 sTraverse :: (STraversable t, SApplicative f) => Sing t1 -> Sing t2 -> Sing (Apply (Apply (TraverseSym0 :: TyFun (a ~> f b) (t a ~> f (t b)) -> Type) t1) t2)
 
+-- | <a>Clone</a> a polymorphic traversal so it can be used as more than
+--   one type of thing (fold, traversal, getter, setter...).
+--   
+--   <pre>
+--   <a>CloneTraversal_</a>
+--       :: <a>Functor</a> f
+--       =&gt; <a>LensLike</a> (Bazaar a b) s t a b
+--       -&gt; <a>LensLike</a> f s t a b
+--   </pre>
+--   
+--   Useful for writing a function that takes a traversal and uses it in
+--   more than one way; if you have it take an <a>ATraversal</a>, you can
+--   then use <a>CloneTraversal_</a> to use it as a fold or traversal or
+--   anything else.
+type CloneTraversal_ l = CloneTraversalSym1 l
+type family CloneTraversal (a_aQdJ :: (~>) ((~>) a_aP8S (Bazaar a_aP8S b_aP8T b_aP8T)) ((~>) s_aP8U (Bazaar a_aP8S b_aP8T t_aP8V))) (a_aQdK :: (~>) a_aP8S (f_aP8R b_aP8T)) (a_aQdL :: s_aP8U) :: f_aP8R t_aP8V
+sCloneTraversal :: forall f_aP8R a_aP8S b_aP8T s_aP8U t_aP8V (t_aQhD :: (~>) ((~>) a_aP8S (Bazaar a_aP8S b_aP8T b_aP8T)) ((~>) s_aP8U (Bazaar a_aP8S b_aP8T t_aP8V))) (t_aQhE :: (~>) a_aP8S (f_aP8R b_aP8T)) (t_aQhF :: s_aP8U). SApplicative f_aP8R => Sing t_aQhD -> Sing t_aQhE -> Sing t_aQhF -> Sing (Apply (Apply (Apply CloneTraversalSym0 t_aQhD) t_aQhE) t_aQhF :: f_aP8R t_aP8V)
+
 -- | Lens into the first field of a tuple
 type L1_ = L1Sym0
-type family L1 (a_aGxS :: (~>) a_aFqp (f_aFqo b_aFqr)) (a_aGxT :: (a_aFqp, c_aFqq)) :: f_aFqo (b_aFqr, c_aFqq)
-sL1 :: forall f_aFqo a_aFqp c_aFqq b_aFqr (t_aGBg :: (~>) a_aFqp (f_aFqo b_aFqr)) (t_aGBh :: (a_aFqp, c_aFqq)). SFunctor f_aFqo => Sing t_aGBg -> Sing t_aGBh -> Sing (Apply (Apply L1Sym0 t_aGBg) t_aGBh :: f_aFqo (b_aFqr, c_aFqq))
+type family L1 (a_aQdu :: (~>) a_aP8O (f_aP8N b_aP8Q)) (a_aQdv :: (a_aP8O, c_aP8P)) :: f_aP8N (b_aP8Q, c_aP8P)
+sL1 :: forall f_aP8N a_aP8O c_aP8P b_aP8Q (t_aQhz :: (~>) a_aP8O (f_aP8N b_aP8Q)) (t_aQhA :: (a_aP8O, c_aP8P)). SFunctor f_aP8N => Sing t_aQhz -> Sing t_aQhA -> Sing (Apply (Apply L1Sym0 t_aQhz) t_aQhA :: f_aP8N (b_aP8Q, c_aP8P))
 
 -- | Lens into the second field of a tuple
 type L2_ = L2Sym0
-type family L2 (a_aGxD :: (~>) b_aFqm (f_aFqk c_aFqn)) (a_aGxE :: (a_aFql, b_aFqm)) :: f_aFqk (a_aFql, c_aFqn)
-sL2 :: forall f_aFqk a_aFql b_aFqm c_aFqn (t_aGBc :: (~>) b_aFqm (f_aFqk c_aFqn)) (t_aGBd :: (a_aFql, b_aFqm)). SFunctor f_aFqk => Sing t_aGBc -> Sing t_aGBd -> Sing (Apply (Apply L2Sym0 t_aGBc) t_aGBd :: f_aFqk (a_aFql, c_aFqn))
+type family L2 (a_aQdf :: (~>) b_aP8L (f_aP8J c_aP8M)) (a_aQdg :: (a_aP8K, b_aP8L)) :: f_aP8J (a_aP8K, c_aP8M)
+sL2 :: forall f_aP8J a_aP8K b_aP8L c_aP8M (t_aQhv :: (~>) b_aP8L (f_aP8J c_aP8M)) (t_aQhw :: (a_aP8K, b_aP8L)). SFunctor f_aP8J => Sing t_aQhv -> Sing t_aQhw -> Sing (Apply (Apply L2Sym0 t_aQhv) t_aQhw :: f_aP8J (a_aP8K, c_aP8M))
 
 -- | Peano nats, used for implementation of list index traversals in a
 --   termination-sane way.
@@ -199,8 +309,8 @@ type SN = (Sing :: N -> Type)
 --       -&gt; <a>LensLike'</a> f [a] a
 --   </pre>
 type IxList_ i = IxListSym1 i
-type family IxList (a_aGxi :: N) (a_aGxj :: (~>) a_aFqj (f_aFqi a_aFqj)) (a_aGxk :: [a_aFqj]) :: f_aFqi [a_aFqj]
-sIxList :: forall f_aFqi a_aFqj (t_aGB6 :: N) (t_aGB7 :: (~>) a_aFqj (f_aFqi a_aFqj)) (t_aGB8 :: [a_aFqj]). SApplicative f_aFqi => Sing t_aGB6 -> Sing t_aGB7 -> Sing t_aGB8 -> Sing (Apply (Apply (Apply IxListSym0 t_aGB6) t_aGB7) t_aGB8 :: f_aFqi [a_aFqj])
+type family IxList (a_aQcU :: N) (a_aQcV :: (~>) a_aP8I (f_aP8H a_aP8I)) (a_aQcW :: [a_aP8I]) :: f_aP8H [a_aP8I]
+sIxList :: forall f_aP8H a_aP8I (t_aQhp :: N) (t_aQhq :: (~>) a_aP8I (f_aP8H a_aP8I)) (t_aQhr :: [a_aP8I]). SApplicative f_aP8H => Sing t_aQhp -> Sing t_aQhq -> Sing t_aQhr -> Sing (Apply (Apply (Apply IxListSym0 t_aQhp) t_aQhq) t_aQhr :: f_aP8H [a_aP8I])
 
 -- | Shorter name for type-level function composition
 type f .@ g = f .@#@$$$ g
@@ -208,212 +318,242 @@ infixr 9 .@
 
 -- | The singleton kind-indexed data family.
 data family Sing (a :: k) :: Type
-data ASetterSym0 s6989586621679120345
-data ASetterSym1 (s6989586621679120345 :: Type) t6989586621679120346
-data ASetterSym2 (s6989586621679120345 :: Type) (t6989586621679120346 :: Type) a6989586621679120347
-data ASetterSym3 (s6989586621679120345 :: Type) (t6989586621679120346 :: Type) (a6989586621679120347 :: Type) b6989586621679120348
-type ASetterSym4 (s6989586621679120345 :: Type) (t6989586621679120346 :: Type) (a6989586621679120347 :: Type) (b6989586621679120348 :: Type) = ASetter s6989586621679120345 t6989586621679120346 a6989586621679120347 b6989586621679120348
-data OverSym0 :: forall a6989586621679169069 b6989586621679169070 s6989586621679169067 t6989586621679169068. (~>) ((~>) ((~>) a6989586621679169069 (Identity b6989586621679169070)) ((~>) s6989586621679169067 (Identity t6989586621679169068))) ((~>) ((~>) a6989586621679169069 b6989586621679169070) ((~>) s6989586621679169067 t6989586621679169068))
-data OverSym1 (a6989586621679173501 :: (~>) ((~>) a6989586621679169069 (Identity b6989586621679169070)) ((~>) s6989586621679169067 (Identity t6989586621679169068))) :: (~>) ((~>) a6989586621679169069 b6989586621679169070) ((~>) s6989586621679169067 t6989586621679169068)
-data OverSym2 (a6989586621679173501 :: (~>) ((~>) a6989586621679169069 (Identity b6989586621679169070)) ((~>) s6989586621679169067 (Identity t6989586621679169068))) (a6989586621679173502 :: (~>) a6989586621679169069 b6989586621679169070) :: (~>) s6989586621679169067 t6989586621679169068
-type OverSym3 (a6989586621679173501 :: (~>) ((~>) a6989586621679169069 (Identity b6989586621679169070)) ((~>) s6989586621679169067 (Identity t6989586621679169068))) (a6989586621679173502 :: (~>) a6989586621679169069 b6989586621679169070) (a6989586621679173503 :: s6989586621679169067) = Over a6989586621679173501 a6989586621679173502 a6989586621679173503
-data SetSym0 :: forall a6989586621679169065 b6989586621679169066 s6989586621679169063 t6989586621679169064. (~>) ((~>) ((~>) a6989586621679169065 (Identity b6989586621679169066)) ((~>) s6989586621679169063 (Identity t6989586621679169064))) ((~>) b6989586621679169066 ((~>) s6989586621679169063 t6989586621679169064))
-data SetSym1 (a6989586621679173518 :: (~>) ((~>) a6989586621679169065 (Identity b6989586621679169066)) ((~>) s6989586621679169063 (Identity t6989586621679169064))) :: (~>) b6989586621679169066 ((~>) s6989586621679169063 t6989586621679169064)
-data SetSym2 (a6989586621679173518 :: (~>) ((~>) a6989586621679169065 (Identity b6989586621679169066)) ((~>) s6989586621679169063 (Identity t6989586621679169064))) (a6989586621679173519 :: b6989586621679169066) :: (~>) s6989586621679169063 t6989586621679169064
-type SetSym3 (a6989586621679173518 :: (~>) ((~>) a6989586621679169065 (Identity b6989586621679169066)) ((~>) s6989586621679169063 (Identity t6989586621679169064))) (a6989586621679173519 :: b6989586621679169066) (a6989586621679173520 :: s6989586621679169063) = Set a6989586621679173518 a6989586621679173519 a6989586621679173520
-data SetsSym0 :: forall a6989586621679169057 b6989586621679169058 s6989586621679169059 t6989586621679169060. (~>) ((~>) ((~>) a6989586621679169057 b6989586621679169058) ((~>) s6989586621679169059 t6989586621679169060)) ((~>) ((~>) a6989586621679169057 (Identity b6989586621679169058)) ((~>) s6989586621679169059 (Identity t6989586621679169060)))
-data SetsSym1 (a6989586621679173460 :: (~>) ((~>) a6989586621679169057 b6989586621679169058) ((~>) s6989586621679169059 t6989586621679169060)) :: (~>) ((~>) a6989586621679169057 (Identity b6989586621679169058)) ((~>) s6989586621679169059 (Identity t6989586621679169060))
-data SetsSym2 (a6989586621679173460 :: (~>) ((~>) a6989586621679169057 b6989586621679169058) ((~>) s6989586621679169059 t6989586621679169060)) (a6989586621679173461 :: (~>) a6989586621679169057 (Identity b6989586621679169058)) :: (~>) s6989586621679169059 (Identity t6989586621679169060)
-type SetsSym3 (a6989586621679173460 :: (~>) ((~>) a6989586621679169057 b6989586621679169058) ((~>) s6989586621679169059 t6989586621679169060)) (a6989586621679173461 :: (~>) a6989586621679169057 (Identity b6989586621679169058)) (a6989586621679173462 :: s6989586621679169059) = Sets a6989586621679173460 a6989586621679173461 a6989586621679173462
-data GettingSym0 r6989586621679120342
-data GettingSym1 (r6989586621679120342 :: Type) s6989586621679120343
-data GettingSym2 (r6989586621679120342 :: Type) (s6989586621679120343 :: Type) a6989586621679120344
-type GettingSym3 (r6989586621679120342 :: Type) (s6989586621679120343 :: Type) (a6989586621679120344 :: Type) = Getting r6989586621679120342 s6989586621679120343 a6989586621679120344
-data ViewSym0 :: forall a6989586621679169061 s6989586621679169062. (~>) ((~>) ((~>) a6989586621679169061 ((Const a6989586621679169061 :: Type -> Type) a6989586621679169061)) ((~>) s6989586621679169062 ((Const a6989586621679169061 :: Type -> Type) s6989586621679169062))) ((~>) s6989586621679169062 a6989586621679169061)
-data ViewSym1 (a6989586621679173488 :: (~>) ((~>) a6989586621679169061 ((Const a6989586621679169061 :: Type -> Type) a6989586621679169061)) ((~>) s6989586621679169062 ((Const a6989586621679169061 :: Type -> Type) s6989586621679169062))) :: (~>) s6989586621679169062 a6989586621679169061
-type ViewSym2 (a6989586621679173488 :: (~>) ((~>) a6989586621679169061 ((Const a6989586621679169061 :: Type -> Type) a6989586621679169061)) ((~>) s6989586621679169062 ((Const a6989586621679169061 :: Type -> Type) s6989586621679169062))) (a6989586621679173489 :: s6989586621679169062) = View a6989586621679173488 a6989586621679173489
-data ToSym0 :: forall a6989586621679169055 r6989586621679169056 s6989586621679169054. (~>) ((~>) s6989586621679169054 a6989586621679169055) ((~>) ((~>) a6989586621679169055 ((Const r6989586621679169056 :: Type -> Type) a6989586621679169055)) ((~>) s6989586621679169054 ((Const r6989586621679169056 :: Type -> Type) s6989586621679169054)))
-data ToSym1 (a6989586621679173443 :: (~>) s6989586621679169054 a6989586621679169055) :: forall r6989586621679169056. (~>) ((~>) a6989586621679169055 ((Const r6989586621679169056 :: Type -> Type) a6989586621679169055)) ((~>) s6989586621679169054 ((Const r6989586621679169056 :: Type -> Type) s6989586621679169054))
-data ToSym2 (a6989586621679173443 :: (~>) s6989586621679169054 a6989586621679169055) (a6989586621679173444 :: (~>) a6989586621679169055 ((Const r6989586621679169056 :: Type -> Type) a6989586621679169055)) :: (~>) s6989586621679169054 ((Const r6989586621679169056 :: Type -> Type) s6989586621679169054)
-type ToSym3 (a6989586621679173443 :: (~>) s6989586621679169054 a6989586621679169055) (a6989586621679173444 :: (~>) a6989586621679169055 ((Const r6989586621679169056 :: Type -> Type) a6989586621679169055)) (a6989586621679173445 :: s6989586621679169054) = To a6989586621679173443 a6989586621679173444 a6989586621679173445
-data ToListOfSym0 :: forall a6989586621679169047 s6989586621679169048. (~>) ((~>) ((~>) a6989586621679169047 ((Const [a6989586621679169047] :: Type -> Type) a6989586621679169047)) ((~>) s6989586621679169048 ((Const [a6989586621679169047] :: Type -> Type) s6989586621679169048))) ((~>) s6989586621679169048 [a6989586621679169047])
-data ToListOfSym1 (a6989586621679173411 :: (~>) ((~>) a6989586621679169047 ((Const [a6989586621679169047] :: Type -> Type) a6989586621679169047)) ((~>) s6989586621679169048 ((Const [a6989586621679169047] :: Type -> Type) s6989586621679169048))) :: (~>) s6989586621679169048 [a6989586621679169047]
-type ToListOfSym2 (a6989586621679173411 :: (~>) ((~>) a6989586621679169047 ((Const [a6989586621679169047] :: Type -> Type) a6989586621679169047)) ((~>) s6989586621679169048 ((Const [a6989586621679169047] :: Type -> Type) s6989586621679169048))) (a6989586621679173412 :: s6989586621679169048) = ToListOf a6989586621679173411 a6989586621679173412
-data LensLikeSym0 f6989586621679120352
-data LensLikeSym1 (f6989586621679120352 :: k6989586621679120367 -> Type) s6989586621679120353
-data LensLikeSym2 (f6989586621679120352 :: k6989586621679120367 -> Type) (s6989586621679120353 :: Type) t6989586621679120354
-data LensLikeSym3 (f6989586621679120352 :: k6989586621679120367 -> Type) (s6989586621679120353 :: Type) (t6989586621679120354 :: k6989586621679120367) a6989586621679120355
-data LensLikeSym4 (f6989586621679120352 :: k6989586621679120367 -> Type) (s6989586621679120353 :: Type) (t6989586621679120354 :: k6989586621679120367) (a6989586621679120355 :: Type) b6989586621679120356
-type LensLikeSym5 (f6989586621679120352 :: k6989586621679120367 -> Type) (s6989586621679120353 :: Type) (t6989586621679120354 :: k6989586621679120367) (a6989586621679120355 :: Type) (b6989586621679120356 :: k6989586621679120367) = LensLike f6989586621679120352 s6989586621679120353 t6989586621679120354 a6989586621679120355 b6989586621679120356
-data LensLike'Sym0 f6989586621679120349
-data LensLike'Sym1 (f6989586621679120349 :: Type -> Type) s6989586621679120350
-data LensLike'Sym2 (f6989586621679120349 :: Type -> Type) (s6989586621679120350 :: Type) a6989586621679120351
-type LensLike'Sym3 (f6989586621679120349 :: Type -> Type) (s6989586621679120350 :: Type) (a6989586621679120351 :: Type) = LensLike' f6989586621679120349 s6989586621679120350 a6989586621679120351
-data MkLensSym0 :: forall a6989586621679169051 b6989586621679169052 f6989586621679169049 s6989586621679169050 t6989586621679169053. (~>) ((~>) s6989586621679169050 a6989586621679169051) ((~>) ((~>) s6989586621679169050 ((~>) b6989586621679169052 t6989586621679169053)) ((~>) ((~>) a6989586621679169051 (f6989586621679169049 b6989586621679169052)) ((~>) s6989586621679169050 (f6989586621679169049 t6989586621679169053))))
-data MkLensSym1 (a6989586621679173431 :: (~>) s6989586621679169050 a6989586621679169051) :: forall b6989586621679169052 f6989586621679169049 t6989586621679169053. (~>) ((~>) s6989586621679169050 ((~>) b6989586621679169052 t6989586621679169053)) ((~>) ((~>) a6989586621679169051 (f6989586621679169049 b6989586621679169052)) ((~>) s6989586621679169050 (f6989586621679169049 t6989586621679169053)))
-data MkLensSym2 (a6989586621679173431 :: (~>) s6989586621679169050 a6989586621679169051) (a6989586621679173432 :: (~>) s6989586621679169050 ((~>) b6989586621679169052 t6989586621679169053)) :: forall f6989586621679169049. (~>) ((~>) a6989586621679169051 (f6989586621679169049 b6989586621679169052)) ((~>) s6989586621679169050 (f6989586621679169049 t6989586621679169053))
-data MkLensSym3 (a6989586621679173431 :: (~>) s6989586621679169050 a6989586621679169051) (a6989586621679173432 :: (~>) s6989586621679169050 ((~>) b6989586621679169052 t6989586621679169053)) (a6989586621679173433 :: (~>) a6989586621679169051 (f6989586621679169049 b6989586621679169052)) :: (~>) s6989586621679169050 (f6989586621679169049 t6989586621679169053)
-type MkLensSym4 (a6989586621679173431 :: (~>) s6989586621679169050 a6989586621679169051) (a6989586621679173432 :: (~>) s6989586621679169050 ((~>) b6989586621679169052 t6989586621679169053)) (a6989586621679173433 :: (~>) a6989586621679169051 (f6989586621679169049 b6989586621679169052)) (a6989586621679173434 :: s6989586621679169050) = MkLens a6989586621679173431 a6989586621679173432 a6989586621679173433 a6989586621679173434
-data FoldingSym0 :: forall a6989586621679169042 f6989586621679169039 r6989586621679169040 s6989586621679169041. (~>) ((~>) s6989586621679169041 (f6989586621679169039 a6989586621679169042)) ((~>) ((~>) a6989586621679169042 ((Const r6989586621679169040 :: Type -> Type) a6989586621679169042)) ((~>) s6989586621679169041 ((Const r6989586621679169040 :: Type -> Type) s6989586621679169041)))
-data FoldingSym1 (a6989586621679173368 :: (~>) s6989586621679169041 (f6989586621679169039 a6989586621679169042)) :: forall r6989586621679169040. (~>) ((~>) a6989586621679169042 ((Const r6989586621679169040 :: Type -> Type) a6989586621679169042)) ((~>) s6989586621679169041 ((Const r6989586621679169040 :: Type -> Type) s6989586621679169041))
-data FoldingSym2 (a6989586621679173368 :: (~>) s6989586621679169041 (f6989586621679169039 a6989586621679169042)) (a6989586621679173369 :: (~>) a6989586621679169042 ((Const r6989586621679169040 :: Type -> Type) a6989586621679169042)) :: (~>) s6989586621679169041 ((Const r6989586621679169040 :: Type -> Type) s6989586621679169041)
-type FoldingSym3 (a6989586621679173368 :: (~>) s6989586621679169041 (f6989586621679169039 a6989586621679169042)) (a6989586621679173369 :: (~>) a6989586621679169042 ((Const r6989586621679169040 :: Type -> Type) a6989586621679169042)) (a6989586621679173370 :: s6989586621679169041) = Folding a6989586621679173368 a6989586621679173369 a6989586621679173370
-data FoldedSym0 :: forall a6989586621679169038 f6989586621679169036 r6989586621679169037. (~>) ((~>) a6989586621679169038 ((Const r6989586621679169037 :: Type -> Type) a6989586621679169038)) ((~>) (f6989586621679169036 a6989586621679169038) ((Const r6989586621679169037 :: Type -> Type) (f6989586621679169036 a6989586621679169038)))
-data FoldedSym1 (a6989586621679173355 :: (~>) a6989586621679169038 ((Const r6989586621679169037 :: Type -> Type) a6989586621679169038)) :: forall f6989586621679169036. (~>) (f6989586621679169036 a6989586621679169038) ((Const r6989586621679169037 :: Type -> Type) (f6989586621679169036 a6989586621679169038))
-type FoldedSym2 (a6989586621679173355 :: (~>) a6989586621679169038 ((Const r6989586621679169037 :: Type -> Type) a6989586621679169038)) (a6989586621679173356 :: f6989586621679169036 a6989586621679169038) = Folded a6989586621679173355 a6989586621679173356
-data L1Sym0 :: forall a6989586621679169033 b6989586621679169035 c6989586621679169034 f6989586621679169032. (~>) ((~>) a6989586621679169033 (f6989586621679169032 b6989586621679169035)) ((~>) (a6989586621679169033, c6989586621679169034) (f6989586621679169032 (b6989586621679169035, c6989586621679169034)))
-data L1Sym1 (a6989586621679173340 :: (~>) a6989586621679169033 (f6989586621679169032 b6989586621679169035)) :: forall c6989586621679169034. (~>) (a6989586621679169033, c6989586621679169034) (f6989586621679169032 (b6989586621679169035, c6989586621679169034))
-type L1Sym2 (a6989586621679173340 :: (~>) a6989586621679169033 (f6989586621679169032 b6989586621679169035)) (a6989586621679173341 :: (a6989586621679169033, c6989586621679169034)) = L1 a6989586621679173340 a6989586621679173341
-data L2Sym0 :: forall a6989586621679169029 b6989586621679169030 c6989586621679169031 f6989586621679169028. (~>) ((~>) b6989586621679169030 (f6989586621679169028 c6989586621679169031)) ((~>) (a6989586621679169029, b6989586621679169030) (f6989586621679169028 (a6989586621679169029, c6989586621679169031)))
-data L2Sym1 (a6989586621679173325 :: (~>) b6989586621679169030 (f6989586621679169028 c6989586621679169031)) :: forall a6989586621679169029. (~>) (a6989586621679169029, b6989586621679169030) (f6989586621679169028 (a6989586621679169029, c6989586621679169031))
-type L2Sym2 (a6989586621679173325 :: (~>) b6989586621679169030 (f6989586621679169028 c6989586621679169031)) (a6989586621679173326 :: (a6989586621679169029, b6989586621679169030)) = L2 a6989586621679173325 a6989586621679173326
+data ASetterSym0 s6989586621679201803
+data ASetterSym1 (s6989586621679201803 :: Type) t6989586621679201804
+data ASetterSym2 (s6989586621679201803 :: Type) (t6989586621679201804 :: Type) a6989586621679201805
+data ASetterSym3 (s6989586621679201803 :: Type) (t6989586621679201804 :: Type) (a6989586621679201805 :: Type) b6989586621679201806
+type ASetterSym4 (s6989586621679201803 :: Type) (t6989586621679201804 :: Type) (a6989586621679201805 :: Type) (b6989586621679201806 :: Type) = ASetter s6989586621679201803 t6989586621679201804 a6989586621679201805 b6989586621679201806
+data OverSym0 :: forall a6989586621679206428 b6989586621679206429 s6989586621679206426 t6989586621679206427. (~>) ((~>) ((~>) a6989586621679206428 (Identity b6989586621679206429)) ((~>) s6989586621679206426 (Identity t6989586621679206427))) ((~>) ((~>) a6989586621679206428 b6989586621679206429) ((~>) s6989586621679206426 t6989586621679206427))
+data OverSym1 (a6989586621679210720 :: (~>) ((~>) a6989586621679206428 (Identity b6989586621679206429)) ((~>) s6989586621679206426 (Identity t6989586621679206427))) :: (~>) ((~>) a6989586621679206428 b6989586621679206429) ((~>) s6989586621679206426 t6989586621679206427)
+data OverSym2 (a6989586621679210720 :: (~>) ((~>) a6989586621679206428 (Identity b6989586621679206429)) ((~>) s6989586621679206426 (Identity t6989586621679206427))) (a6989586621679210721 :: (~>) a6989586621679206428 b6989586621679206429) :: (~>) s6989586621679206426 t6989586621679206427
+type OverSym3 (a6989586621679210720 :: (~>) ((~>) a6989586621679206428 (Identity b6989586621679206429)) ((~>) s6989586621679206426 (Identity t6989586621679206427))) (a6989586621679210721 :: (~>) a6989586621679206428 b6989586621679206429) (a6989586621679210722 :: s6989586621679206426) = Over a6989586621679210720 a6989586621679210721 a6989586621679210722
+data SetSym0 :: forall a6989586621679206424 b6989586621679206425 s6989586621679206422 t6989586621679206423. (~>) ((~>) ((~>) a6989586621679206424 (Identity b6989586621679206425)) ((~>) s6989586621679206422 (Identity t6989586621679206423))) ((~>) b6989586621679206425 ((~>) s6989586621679206422 t6989586621679206423))
+data SetSym1 (a6989586621679210737 :: (~>) ((~>) a6989586621679206424 (Identity b6989586621679206425)) ((~>) s6989586621679206422 (Identity t6989586621679206423))) :: (~>) b6989586621679206425 ((~>) s6989586621679206422 t6989586621679206423)
+data SetSym2 (a6989586621679210737 :: (~>) ((~>) a6989586621679206424 (Identity b6989586621679206425)) ((~>) s6989586621679206422 (Identity t6989586621679206423))) (a6989586621679210738 :: b6989586621679206425) :: (~>) s6989586621679206422 t6989586621679206423
+type SetSym3 (a6989586621679210737 :: (~>) ((~>) a6989586621679206424 (Identity b6989586621679206425)) ((~>) s6989586621679206422 (Identity t6989586621679206423))) (a6989586621679210738 :: b6989586621679206425) (a6989586621679210739 :: s6989586621679206422) = Set a6989586621679210737 a6989586621679210738 a6989586621679210739
+data SetsSym0 :: forall a6989586621679206416 b6989586621679206417 s6989586621679206418 t6989586621679206419. (~>) ((~>) ((~>) a6989586621679206416 b6989586621679206417) ((~>) s6989586621679206418 t6989586621679206419)) ((~>) ((~>) a6989586621679206416 (Identity b6989586621679206417)) ((~>) s6989586621679206418 (Identity t6989586621679206419)))
+data SetsSym1 (a6989586621679210679 :: (~>) ((~>) a6989586621679206416 b6989586621679206417) ((~>) s6989586621679206418 t6989586621679206419)) :: (~>) ((~>) a6989586621679206416 (Identity b6989586621679206417)) ((~>) s6989586621679206418 (Identity t6989586621679206419))
+data SetsSym2 (a6989586621679210679 :: (~>) ((~>) a6989586621679206416 b6989586621679206417) ((~>) s6989586621679206418 t6989586621679206419)) (a6989586621679210680 :: (~>) a6989586621679206416 (Identity b6989586621679206417)) :: (~>) s6989586621679206418 (Identity t6989586621679206419)
+type SetsSym3 (a6989586621679210679 :: (~>) ((~>) a6989586621679206416 b6989586621679206417) ((~>) s6989586621679206418 t6989586621679206419)) (a6989586621679210680 :: (~>) a6989586621679206416 (Identity b6989586621679206417)) (a6989586621679210681 :: s6989586621679206418) = Sets a6989586621679210679 a6989586621679210680 a6989586621679210681
+data GettingSym0 r6989586621679201800
+data GettingSym1 (r6989586621679201800 :: Type) s6989586621679201801
+data GettingSym2 (r6989586621679201800 :: Type) (s6989586621679201801 :: Type) a6989586621679201802
+type GettingSym3 (r6989586621679201800 :: Type) (s6989586621679201801 :: Type) (a6989586621679201802 :: Type) = Getting r6989586621679201800 s6989586621679201801 a6989586621679201802
+data ViewSym0 :: forall a6989586621679206420 s6989586621679206421. (~>) ((~>) ((~>) a6989586621679206420 ((Const a6989586621679206420 :: Type -> Type) a6989586621679206420)) ((~>) s6989586621679206421 ((Const a6989586621679206420 :: Type -> Type) s6989586621679206421))) ((~>) s6989586621679206421 a6989586621679206420)
+data ViewSym1 (a6989586621679210707 :: (~>) ((~>) a6989586621679206420 ((Const a6989586621679206420 :: Type -> Type) a6989586621679206420)) ((~>) s6989586621679206421 ((Const a6989586621679206420 :: Type -> Type) s6989586621679206421))) :: (~>) s6989586621679206421 a6989586621679206420
+type ViewSym2 (a6989586621679210707 :: (~>) ((~>) a6989586621679206420 ((Const a6989586621679206420 :: Type -> Type) a6989586621679206420)) ((~>) s6989586621679206421 ((Const a6989586621679206420 :: Type -> Type) s6989586621679206421))) (a6989586621679210708 :: s6989586621679206421) = View a6989586621679210707 a6989586621679210708
+data ToSym0 :: forall a6989586621679206414 r6989586621679206415 s6989586621679206413. (~>) ((~>) s6989586621679206413 a6989586621679206414) ((~>) ((~>) a6989586621679206414 ((Const r6989586621679206415 :: Type -> Type) a6989586621679206414)) ((~>) s6989586621679206413 ((Const r6989586621679206415 :: Type -> Type) s6989586621679206413)))
+data ToSym1 (a6989586621679210662 :: (~>) s6989586621679206413 a6989586621679206414) :: forall r6989586621679206415. (~>) ((~>) a6989586621679206414 ((Const r6989586621679206415 :: Type -> Type) a6989586621679206414)) ((~>) s6989586621679206413 ((Const r6989586621679206415 :: Type -> Type) s6989586621679206413))
+data ToSym2 (a6989586621679210662 :: (~>) s6989586621679206413 a6989586621679206414) (a6989586621679210663 :: (~>) a6989586621679206414 ((Const r6989586621679206415 :: Type -> Type) a6989586621679206414)) :: (~>) s6989586621679206413 ((Const r6989586621679206415 :: Type -> Type) s6989586621679206413)
+type ToSym3 (a6989586621679210662 :: (~>) s6989586621679206413 a6989586621679206414) (a6989586621679210663 :: (~>) a6989586621679206414 ((Const r6989586621679206415 :: Type -> Type) a6989586621679206414)) (a6989586621679210664 :: s6989586621679206413) = To a6989586621679210662 a6989586621679210663 a6989586621679210664
+data ToListOfSym0 :: forall a6989586621679206401 s6989586621679206402. (~>) ((~>) ((~>) a6989586621679206401 ((Const [a6989586621679206401] :: Type -> Type) a6989586621679206401)) ((~>) s6989586621679206402 ((Const [a6989586621679206401] :: Type -> Type) s6989586621679206402))) ((~>) s6989586621679206402 [a6989586621679206401])
+data ToListOfSym1 (a6989586621679210604 :: (~>) ((~>) a6989586621679206401 ((Const [a6989586621679206401] :: Type -> Type) a6989586621679206401)) ((~>) s6989586621679206402 ((Const [a6989586621679206401] :: Type -> Type) s6989586621679206402))) :: (~>) s6989586621679206402 [a6989586621679206401]
+type ToListOfSym2 (a6989586621679210604 :: (~>) ((~>) a6989586621679206401 ((Const [a6989586621679206401] :: Type -> Type) a6989586621679206401)) ((~>) s6989586621679206402 ((Const [a6989586621679206401] :: Type -> Type) s6989586621679206402))) (a6989586621679210605 :: s6989586621679206402) = ToListOf a6989586621679210604 a6989586621679210605
+data LensLikeSym0 f6989586621679201810
+data LensLikeSym1 (f6989586621679201810 :: k6989586621679201825 -> Type) s6989586621679201811
+data LensLikeSym2 (f6989586621679201810 :: k6989586621679201825 -> Type) (s6989586621679201811 :: Type) t6989586621679201812
+data LensLikeSym3 (f6989586621679201810 :: k6989586621679201825 -> Type) (s6989586621679201811 :: Type) (t6989586621679201812 :: k6989586621679201825) a6989586621679201813
+data LensLikeSym4 (f6989586621679201810 :: k6989586621679201825 -> Type) (s6989586621679201811 :: Type) (t6989586621679201812 :: k6989586621679201825) (a6989586621679201813 :: Type) b6989586621679201814
+type LensLikeSym5 (f6989586621679201810 :: k6989586621679201825 -> Type) (s6989586621679201811 :: Type) (t6989586621679201812 :: k6989586621679201825) (a6989586621679201813 :: Type) (b6989586621679201814 :: k6989586621679201825) = LensLike f6989586621679201810 s6989586621679201811 t6989586621679201812 a6989586621679201813 b6989586621679201814
+data LensLike'Sym0 f6989586621679201807
+data LensLike'Sym1 (f6989586621679201807 :: Type -> Type) s6989586621679201808
+data LensLike'Sym2 (f6989586621679201807 :: Type -> Type) (s6989586621679201808 :: Type) a6989586621679201809
+type LensLike'Sym3 (f6989586621679201807 :: Type -> Type) (s6989586621679201808 :: Type) (a6989586621679201809 :: Type) = LensLike' f6989586621679201807 s6989586621679201808 a6989586621679201809
+data MkLensSym0 :: forall a6989586621679206410 b6989586621679206411 f6989586621679206408 s6989586621679206409 t6989586621679206412. (~>) ((~>) s6989586621679206409 a6989586621679206410) ((~>) ((~>) s6989586621679206409 ((~>) b6989586621679206411 t6989586621679206412)) ((~>) ((~>) a6989586621679206410 (f6989586621679206408 b6989586621679206411)) ((~>) s6989586621679206409 (f6989586621679206408 t6989586621679206412))))
+data MkLensSym1 (a6989586621679210650 :: (~>) s6989586621679206409 a6989586621679206410) :: forall b6989586621679206411 f6989586621679206408 t6989586621679206412. (~>) ((~>) s6989586621679206409 ((~>) b6989586621679206411 t6989586621679206412)) ((~>) ((~>) a6989586621679206410 (f6989586621679206408 b6989586621679206411)) ((~>) s6989586621679206409 (f6989586621679206408 t6989586621679206412)))
+data MkLensSym2 (a6989586621679210650 :: (~>) s6989586621679206409 a6989586621679206410) (a6989586621679210651 :: (~>) s6989586621679206409 ((~>) b6989586621679206411 t6989586621679206412)) :: forall f6989586621679206408. (~>) ((~>) a6989586621679206410 (f6989586621679206408 b6989586621679206411)) ((~>) s6989586621679206409 (f6989586621679206408 t6989586621679206412))
+data MkLensSym3 (a6989586621679210650 :: (~>) s6989586621679206409 a6989586621679206410) (a6989586621679210651 :: (~>) s6989586621679206409 ((~>) b6989586621679206411 t6989586621679206412)) (a6989586621679210652 :: (~>) a6989586621679206410 (f6989586621679206408 b6989586621679206411)) :: (~>) s6989586621679206409 (f6989586621679206408 t6989586621679206412)
+type MkLensSym4 (a6989586621679210650 :: (~>) s6989586621679206409 a6989586621679206410) (a6989586621679210651 :: (~>) s6989586621679206409 ((~>) b6989586621679206411 t6989586621679206412)) (a6989586621679210652 :: (~>) a6989586621679206410 (f6989586621679206408 b6989586621679206411)) (a6989586621679210653 :: s6989586621679206409) = MkLens a6989586621679210650 a6989586621679210651 a6989586621679210652 a6989586621679210653
+data CloneLensSym0 :: forall a6989586621679206404 b6989586621679206405 f6989586621679206403 s6989586621679206406 t6989586621679206407. (~>) ((~>) ((~>) a6989586621679206404 (Context a6989586621679206404 b6989586621679206405 b6989586621679206405)) ((~>) s6989586621679206406 (Context a6989586621679206404 b6989586621679206405 t6989586621679206407))) ((~>) ((~>) a6989586621679206404 (f6989586621679206403 b6989586621679206405)) ((~>) s6989586621679206406 (f6989586621679206403 t6989586621679206407)))
+data CloneLensSym1 (a6989586621679210624 :: (~>) ((~>) a6989586621679206404 (Context a6989586621679206404 b6989586621679206405 b6989586621679206405)) ((~>) s6989586621679206406 (Context a6989586621679206404 b6989586621679206405 t6989586621679206407))) :: forall f6989586621679206403. (~>) ((~>) a6989586621679206404 (f6989586621679206403 b6989586621679206405)) ((~>) s6989586621679206406 (f6989586621679206403 t6989586621679206407))
+data CloneLensSym2 (a6989586621679210624 :: (~>) ((~>) a6989586621679206404 (Context a6989586621679206404 b6989586621679206405 b6989586621679206405)) ((~>) s6989586621679206406 (Context a6989586621679206404 b6989586621679206405 t6989586621679206407))) (a6989586621679210625 :: (~>) a6989586621679206404 (f6989586621679206403 b6989586621679206405)) :: (~>) s6989586621679206406 (f6989586621679206403 t6989586621679206407)
+type CloneLensSym3 (a6989586621679210624 :: (~>) ((~>) a6989586621679206404 (Context a6989586621679206404 b6989586621679206405 b6989586621679206405)) ((~>) s6989586621679206406 (Context a6989586621679206404 b6989586621679206405 t6989586621679206407))) (a6989586621679210625 :: (~>) a6989586621679206404 (f6989586621679206403 b6989586621679206405)) (a6989586621679210626 :: s6989586621679206406) = CloneLens a6989586621679210624 a6989586621679210625 a6989586621679210626
+data FoldingSym0 :: forall a6989586621679206396 f6989586621679206393 r6989586621679206394 s6989586621679206395. (~>) ((~>) s6989586621679206395 (f6989586621679206393 a6989586621679206396)) ((~>) ((~>) a6989586621679206396 ((Const r6989586621679206394 :: Type -> Type) a6989586621679206396)) ((~>) s6989586621679206395 ((Const r6989586621679206394 :: Type -> Type) s6989586621679206395)))
+data FoldingSym1 (a6989586621679210561 :: (~>) s6989586621679206395 (f6989586621679206393 a6989586621679206396)) :: forall r6989586621679206394. (~>) ((~>) a6989586621679206396 ((Const r6989586621679206394 :: Type -> Type) a6989586621679206396)) ((~>) s6989586621679206395 ((Const r6989586621679206394 :: Type -> Type) s6989586621679206395))
+data FoldingSym2 (a6989586621679210561 :: (~>) s6989586621679206395 (f6989586621679206393 a6989586621679206396)) (a6989586621679210562 :: (~>) a6989586621679206396 ((Const r6989586621679206394 :: Type -> Type) a6989586621679206396)) :: (~>) s6989586621679206395 ((Const r6989586621679206394 :: Type -> Type) s6989586621679206395)
+type FoldingSym3 (a6989586621679210561 :: (~>) s6989586621679206395 (f6989586621679206393 a6989586621679206396)) (a6989586621679210562 :: (~>) a6989586621679206396 ((Const r6989586621679206394 :: Type -> Type) a6989586621679206396)) (a6989586621679210563 :: s6989586621679206395) = Folding a6989586621679210561 a6989586621679210562 a6989586621679210563
+data FoldedSym0 :: forall a6989586621679206392 f6989586621679206390 r6989586621679206391. (~>) ((~>) a6989586621679206392 ((Const r6989586621679206391 :: Type -> Type) a6989586621679206392)) ((~>) (f6989586621679206390 a6989586621679206392) ((Const r6989586621679206391 :: Type -> Type) (f6989586621679206390 a6989586621679206392)))
+data FoldedSym1 (a6989586621679210548 :: (~>) a6989586621679206392 ((Const r6989586621679206391 :: Type -> Type) a6989586621679206392)) :: forall f6989586621679206390. (~>) (f6989586621679206390 a6989586621679206392) ((Const r6989586621679206391 :: Type -> Type) (f6989586621679206390 a6989586621679206392))
+type FoldedSym2 (a6989586621679210548 :: (~>) a6989586621679206392 ((Const r6989586621679206391 :: Type -> Type) a6989586621679206392)) (a6989586621679210549 :: f6989586621679206390 a6989586621679206392) = Folded a6989586621679210548 a6989586621679210549
+data L1Sym0 :: forall a6989586621679206382 b6989586621679206384 c6989586621679206383 f6989586621679206381. (~>) ((~>) a6989586621679206382 (f6989586621679206381 b6989586621679206384)) ((~>) (a6989586621679206382, c6989586621679206383) (f6989586621679206381 (b6989586621679206384, c6989586621679206383)))
+data L1Sym1 (a6989586621679210516 :: (~>) a6989586621679206382 (f6989586621679206381 b6989586621679206384)) :: forall c6989586621679206383. (~>) (a6989586621679206382, c6989586621679206383) (f6989586621679206381 (b6989586621679206384, c6989586621679206383))
+type L1Sym2 (a6989586621679210516 :: (~>) a6989586621679206382 (f6989586621679206381 b6989586621679206384)) (a6989586621679210517 :: (a6989586621679206382, c6989586621679206383)) = L1 a6989586621679210516 a6989586621679210517
+data L2Sym0 :: forall a6989586621679206378 b6989586621679206379 c6989586621679206380 f6989586621679206377. (~>) ((~>) b6989586621679206379 (f6989586621679206377 c6989586621679206380)) ((~>) (a6989586621679206378, b6989586621679206379) (f6989586621679206377 (a6989586621679206378, c6989586621679206380)))
+data L2Sym1 (a6989586621679210501 :: (~>) b6989586621679206379 (f6989586621679206377 c6989586621679206380)) :: forall a6989586621679206378. (~>) (a6989586621679206378, b6989586621679206379) (f6989586621679206377 (a6989586621679206378, c6989586621679206380))
+type L2Sym2 (a6989586621679210501 :: (~>) b6989586621679206379 (f6989586621679206377 c6989586621679206380)) (a6989586621679210502 :: (a6989586621679206378, b6989586621679206379)) = L2 a6989586621679210501 a6989586621679210502
 type ZSym0 =  'Z
 data SSym0 :: (~>) N N
-type SSym1 (t6989586621679131570 :: N) =  'S t6989586621679131570
-data IxListSym0 :: forall a6989586621679169027 f6989586621679169026. (~>) N ((~>) ((~>) a6989586621679169027 (f6989586621679169026 a6989586621679169027)) ((~>) [a6989586621679169027] (f6989586621679169026 [a6989586621679169027])))
-data IxListSym1 (a6989586621679173304 :: N) :: forall a6989586621679169027 f6989586621679169026. (~>) ((~>) a6989586621679169027 (f6989586621679169026 a6989586621679169027)) ((~>) [a6989586621679169027] (f6989586621679169026 [a6989586621679169027]))
-data IxListSym2 (a6989586621679173304 :: N) (a6989586621679173305 :: (~>) a6989586621679169027 (f6989586621679169026 a6989586621679169027)) :: (~>) [a6989586621679169027] (f6989586621679169026 [a6989586621679169027])
-type IxListSym3 (a6989586621679173304 :: N) (a6989586621679173305 :: (~>) a6989586621679169027 (f6989586621679169026 a6989586621679169027)) (a6989586621679173306 :: [a6989586621679169027]) = IxList a6989586621679173304 a6989586621679173305 a6989586621679173306
+type SSym1 (t6989586621679202049 :: N) =  'S t6989586621679202049
+data IxListSym0 :: forall a6989586621679206376 f6989586621679206375. (~>) N ((~>) ((~>) a6989586621679206376 (f6989586621679206375 a6989586621679206376)) ((~>) [a6989586621679206376] (f6989586621679206375 [a6989586621679206376])))
+data IxListSym1 (a6989586621679210480 :: N) :: forall a6989586621679206376 f6989586621679206375. (~>) ((~>) a6989586621679206376 (f6989586621679206375 a6989586621679206376)) ((~>) [a6989586621679206376] (f6989586621679206375 [a6989586621679206376]))
+data IxListSym2 (a6989586621679210480 :: N) (a6989586621679210481 :: (~>) a6989586621679206376 (f6989586621679206375 a6989586621679206376)) :: (~>) [a6989586621679206376] (f6989586621679206375 [a6989586621679206376])
+type IxListSym3 (a6989586621679210480 :: N) (a6989586621679210481 :: (~>) a6989586621679206376 (f6989586621679206375 a6989586621679206376)) (a6989586621679210482 :: [a6989586621679206376]) = IxList a6989586621679210480 a6989586621679210481 a6989586621679210482
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.SetSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.SetSym0
-instance forall a6989586621679169065 b6989586621679169066 s6989586621679169063 t6989586621679169064 (a6989586621679173518 :: (a6989586621679169065 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679169066) Data.Singletons.Internal.~> (s6989586621679169063 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679169064)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetSym1 a6989586621679173518)
+instance forall a6989586621679206424 b6989586621679206425 s6989586621679206422 t6989586621679206423 (a6989586621679210737 :: (a6989586621679206424 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679206425) Data.Singletons.Internal.~> (s6989586621679206422 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679206423)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetSym1 a6989586621679210737)
 instance forall a b s t (d :: (a Data.Singletons.Internal.~> Data.Functor.Identity.Identity b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Identity.Identity t)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.SetSym1 d)
-instance forall a6989586621679169065 b6989586621679169066 s6989586621679169063 t6989586621679169064 (a6989586621679173519 :: (a6989586621679169065 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679169066) Data.Singletons.Internal.~> (s6989586621679169063 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679169064)) (a6989586621679173518 :: b6989586621679169066). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetSym2 a6989586621679173519 a6989586621679173518)
+instance forall a6989586621679206424 b6989586621679206425 s6989586621679206422 t6989586621679206423 (a6989586621679210738 :: (a6989586621679206424 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679206425) Data.Singletons.Internal.~> (s6989586621679206422 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679206423)) (a6989586621679210737 :: b6989586621679206425). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetSym2 a6989586621679210738 a6989586621679210737)
 instance forall a b s t (d1 :: (a Data.Singletons.Internal.~> Data.Functor.Identity.Identity b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Identity.Identity t)) (d2 :: b). (Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.SetSym2 d1 d2)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.OverSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.OverSym0
-instance forall a6989586621679169069 b6989586621679169070 s6989586621679169067 t6989586621679169068 (a6989586621679173501 :: (a6989586621679169069 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679169070) Data.Singletons.Internal.~> (s6989586621679169067 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679169068)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.OverSym1 a6989586621679173501)
+instance forall a6989586621679206428 b6989586621679206429 s6989586621679206426 t6989586621679206427 (a6989586621679210720 :: (a6989586621679206428 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679206429) Data.Singletons.Internal.~> (s6989586621679206426 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679206427)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.OverSym1 a6989586621679210720)
 instance forall a b s t (d :: (a Data.Singletons.Internal.~> Data.Functor.Identity.Identity b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Identity.Identity t)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.OverSym1 d)
-instance forall a6989586621679169069 b6989586621679169070 s6989586621679169067 t6989586621679169068 (a6989586621679173502 :: (a6989586621679169069 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679169070) Data.Singletons.Internal.~> (s6989586621679169067 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679169068)) (a6989586621679173501 :: a6989586621679169069 Data.Singletons.Internal.~> b6989586621679169070). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.OverSym2 a6989586621679173502 a6989586621679173501)
+instance forall a6989586621679206428 b6989586621679206429 s6989586621679206426 t6989586621679206427 (a6989586621679210721 :: (a6989586621679206428 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679206429) Data.Singletons.Internal.~> (s6989586621679206426 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679206427)) (a6989586621679210720 :: a6989586621679206428 Data.Singletons.Internal.~> b6989586621679206429). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.OverSym2 a6989586621679210721 a6989586621679210720)
 instance forall a b s t (d1 :: (a Data.Singletons.Internal.~> Data.Functor.Identity.Identity b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Identity.Identity t)) (d2 :: a Data.Singletons.Internal.~> b). (Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.OverSym2 d1 d2)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.ViewSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.ViewSym0
-instance forall a6989586621679169061 s6989586621679169062 (a6989586621679173488 :: (a6989586621679169061 Data.Singletons.Internal.~> Data.Functor.Const.Const a6989586621679169061 a6989586621679169061) Data.Singletons.Internal.~> (s6989586621679169062 Data.Singletons.Internal.~> Data.Functor.Const.Const a6989586621679169061 s6989586621679169062)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ViewSym1 a6989586621679173488)
+instance forall a6989586621679206420 s6989586621679206421 (a6989586621679210707 :: (a6989586621679206420 Data.Singletons.Internal.~> Data.Functor.Const.Const a6989586621679206420 a6989586621679206420) Data.Singletons.Internal.~> (s6989586621679206421 Data.Singletons.Internal.~> Data.Functor.Const.Const a6989586621679206420 s6989586621679206421)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ViewSym1 a6989586621679210707)
 instance forall a s (d :: (a Data.Singletons.Internal.~> Data.Functor.Const.Const a a) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Const.Const a s)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.ViewSym1 d)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.SetsSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.SetsSym0
-instance forall a6989586621679169057 b6989586621679169058 s6989586621679169059 t6989586621679169060 (a6989586621679173460 :: (a6989586621679169057 Data.Singletons.Internal.~> b6989586621679169058) Data.Singletons.Internal.~> (s6989586621679169059 Data.Singletons.Internal.~> t6989586621679169060)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetsSym1 a6989586621679173460)
+instance forall a6989586621679206416 b6989586621679206417 s6989586621679206418 t6989586621679206419 (a6989586621679210679 :: (a6989586621679206416 Data.Singletons.Internal.~> b6989586621679206417) Data.Singletons.Internal.~> (s6989586621679206418 Data.Singletons.Internal.~> t6989586621679206419)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetsSym1 a6989586621679210679)
 instance forall a b s t (d :: (a Data.Singletons.Internal.~> b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> t)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.SetsSym1 d)
-instance forall a6989586621679169057 b6989586621679169058 s6989586621679169059 t6989586621679169060 (a6989586621679173461 :: (a6989586621679169057 Data.Singletons.Internal.~> b6989586621679169058) Data.Singletons.Internal.~> (s6989586621679169059 Data.Singletons.Internal.~> t6989586621679169060)) (a6989586621679173460 :: a6989586621679169057 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679169058). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetsSym2 a6989586621679173461 a6989586621679173460)
+instance forall a6989586621679206416 b6989586621679206417 s6989586621679206418 t6989586621679206419 (a6989586621679210680 :: (a6989586621679206416 Data.Singletons.Internal.~> b6989586621679206417) Data.Singletons.Internal.~> (s6989586621679206418 Data.Singletons.Internal.~> t6989586621679206419)) (a6989586621679210679 :: a6989586621679206416 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679206417). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetsSym2 a6989586621679210680 a6989586621679210679)
 instance forall a b s t (d1 :: (a Data.Singletons.Internal.~> b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> t)) (d2 :: a Data.Singletons.Internal.~> Data.Functor.Identity.Identity b). (Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.SetsSym2 d1 d2)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.ToSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.ToSym0
-instance forall r6989586621679169056 s6989586621679169054 a6989586621679169055 (a6989586621679173443 :: s6989586621679169054 Data.Singletons.Internal.~> a6989586621679169055). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ToSym1 a6989586621679173443)
+instance forall r6989586621679206415 s6989586621679206413 a6989586621679206414 (a6989586621679210662 :: s6989586621679206413 Data.Singletons.Internal.~> a6989586621679206414). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ToSym1 a6989586621679210662)
 instance forall s a r (d :: s Data.Singletons.Internal.~> a). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.ToSym1 d)
-instance forall r6989586621679169056 s6989586621679169054 a6989586621679169055 (a6989586621679173444 :: s6989586621679169054 Data.Singletons.Internal.~> a6989586621679169055) (a6989586621679173443 :: a6989586621679169055 Data.Singletons.Internal.~> Data.Functor.Const.Const r6989586621679169056 a6989586621679169055). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ToSym2 a6989586621679173444 a6989586621679173443)
+instance forall r6989586621679206415 s6989586621679206413 a6989586621679206414 (a6989586621679210663 :: s6989586621679206413 Data.Singletons.Internal.~> a6989586621679206414) (a6989586621679210662 :: a6989586621679206414 Data.Singletons.Internal.~> Data.Functor.Const.Const r6989586621679206415 a6989586621679206414). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ToSym2 a6989586621679210663 a6989586621679210662)
 instance forall s a r (d1 :: s Data.Singletons.Internal.~> a) (d2 :: a Data.Singletons.Internal.~> Data.Functor.Const.Const r a). (Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.ToSym2 d1 d2)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.MkLensSym0
 instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.MkLensSym0
-instance forall b6989586621679169052 (f6989586621679169049 :: * -> *) t6989586621679169053 s6989586621679169050 a6989586621679169051 (a6989586621679173431 :: s6989586621679169050 Data.Singletons.Internal.~> a6989586621679169051). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.MkLensSym1 a6989586621679173431)
+instance forall b6989586621679206411 (f6989586621679206408 :: * -> *) t6989586621679206412 s6989586621679206409 a6989586621679206410 (a6989586621679210650 :: s6989586621679206409 Data.Singletons.Internal.~> a6989586621679206410). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.MkLensSym1 a6989586621679210650)
 instance forall s a b t (f :: * -> *) (d :: s Data.Singletons.Internal.~> a). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.MkLensSym1 d)
-instance forall (f6989586621679169049 :: * -> *) b6989586621679169052 t6989586621679169053 s6989586621679169050 a6989586621679169051 (a6989586621679173432 :: s6989586621679169050 Data.Singletons.Internal.~> a6989586621679169051) (a6989586621679173431 :: s6989586621679169050 Data.Singletons.Internal.~> (b6989586621679169052 Data.Singletons.Internal.~> t6989586621679169053)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.MkLensSym2 a6989586621679173432 a6989586621679173431)
+instance forall (f6989586621679206408 :: * -> *) b6989586621679206411 t6989586621679206412 s6989586621679206409 a6989586621679206410 (a6989586621679210651 :: s6989586621679206409 Data.Singletons.Internal.~> a6989586621679206410) (a6989586621679210650 :: s6989586621679206409 Data.Singletons.Internal.~> (b6989586621679206411 Data.Singletons.Internal.~> t6989586621679206412)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.MkLensSym2 a6989586621679210651 a6989586621679210650)
 instance forall s a b t (f :: * -> *) (d1 :: s Data.Singletons.Internal.~> a) (d2 :: s Data.Singletons.Internal.~> (b Data.Singletons.Internal.~> t)). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.MkLensSym2 d1 d2)
-instance forall (f6989586621679169049 :: * -> *) b6989586621679169052 t6989586621679169053 s6989586621679169050 a6989586621679169051 (a6989586621679173433 :: s6989586621679169050 Data.Singletons.Internal.~> a6989586621679169051) (a6989586621679173432 :: s6989586621679169050 Data.Singletons.Internal.~> (b6989586621679169052 Data.Singletons.Internal.~> t6989586621679169053)) (a6989586621679173431 :: a6989586621679169051 Data.Singletons.Internal.~> f6989586621679169049 b6989586621679169052). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.MkLensSym3 a6989586621679173433 a6989586621679173432 a6989586621679173431)
+instance forall (f6989586621679206408 :: * -> *) b6989586621679206411 t6989586621679206412 s6989586621679206409 a6989586621679206410 (a6989586621679210652 :: s6989586621679206409 Data.Singletons.Internal.~> a6989586621679206410) (a6989586621679210651 :: s6989586621679206409 Data.Singletons.Internal.~> (b6989586621679206411 Data.Singletons.Internal.~> t6989586621679206412)) (a6989586621679210650 :: a6989586621679206410 Data.Singletons.Internal.~> f6989586621679206408 b6989586621679206411). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.MkLensSym3 a6989586621679210652 a6989586621679210651 a6989586621679210650)
 instance forall s a b t (f :: * -> *) (d1 :: s Data.Singletons.Internal.~> a) (d2 :: s Data.Singletons.Internal.~> (b Data.Singletons.Internal.~> t)) (d3 :: a Data.Singletons.Internal.~> f b). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2, Data.Singletons.Internal.SingI d3) => Data.Singletons.Internal.SingI (Data.Type.Lens.MkLensSym3 d1 d2 d3)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.CloneLensSym0
+instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.CloneLensSym0
+instance forall (f6989586621679206403 :: * -> *) s6989586621679206406 a6989586621679206404 b6989586621679206405 t6989586621679206407 (a6989586621679210624 :: (a6989586621679206404 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a6989586621679206404 b6989586621679206405 b6989586621679206405) Data.Singletons.Internal.~> (s6989586621679206406 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a6989586621679206404 b6989586621679206405 t6989586621679206407)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.CloneLensSym1 a6989586621679210624)
+instance forall a b s t (f :: * -> *) (d :: (a Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a b b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a b t)). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.CloneLensSym1 d)
+instance forall (f6989586621679206403 :: * -> *) s6989586621679206406 a6989586621679206404 b6989586621679206405 t6989586621679206407 (a6989586621679210625 :: (a6989586621679206404 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a6989586621679206404 b6989586621679206405 b6989586621679206405) Data.Singletons.Internal.~> (s6989586621679206406 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a6989586621679206404 b6989586621679206405 t6989586621679206407)) (a6989586621679210624 :: a6989586621679206404 Data.Singletons.Internal.~> f6989586621679206403 b6989586621679206405). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.CloneLensSym2 a6989586621679210625 a6989586621679210624)
+instance forall a b s t (f :: * -> *) (d1 :: (a Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a b b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Type.Lens.Internal.Context a b t)) (d2 :: a Data.Singletons.Internal.~> f b). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.CloneLensSym2 d1 d2)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.ToListOfSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.ToListOfSym0
-instance forall a6989586621679169047 s6989586621679169048 (a6989586621679173411 :: (a6989586621679169047 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679169047] a6989586621679169047) Data.Singletons.Internal.~> (s6989586621679169048 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679169047] s6989586621679169048)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ToListOfSym1 a6989586621679173411)
+instance forall a6989586621679206401 s6989586621679206402 (a6989586621679210604 :: (a6989586621679206401 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679206401] a6989586621679206401) Data.Singletons.Internal.~> (s6989586621679206402 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679206401] s6989586621679206402)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ToListOfSym1 a6989586621679210604)
 instance forall a s (d :: (a Data.Singletons.Internal.~> Data.Functor.Const.Const [a] a) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Const.Const [a] s)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.ToListOfSym1 d)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.UnsafePreviewSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.UnsafePreviewSym0
-instance forall a6989586621679169043 s6989586621679169044 (a6989586621679173398 :: (a6989586621679169043 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679169043) a6989586621679169043) Data.Singletons.Internal.~> (s6989586621679169044 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679169043) s6989586621679169044)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.UnsafePreviewSym1 a6989586621679173398)
+instance forall a6989586621679206397 s6989586621679206398 (a6989586621679210591 :: (a6989586621679206397 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679206397) a6989586621679206397) Data.Singletons.Internal.~> (s6989586621679206398 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679206397) s6989586621679206398)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.UnsafePreviewSym1 a6989586621679210591)
 instance forall a s (d :: (a Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a) a) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a) s)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.UnsafePreviewSym1 d)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173404Scrutinee_6989586621679169169Sym0
-instance forall a6989586621679169045 k1 (l6989586621679173402 :: (a6989586621679169045 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679169045) a6989586621679169045) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679169045) k1)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173404Scrutinee_6989586621679169169Sym1 l6989586621679173402)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210597Scrutinee_6989586621679206544Sym0
+instance forall a6989586621679206399 k1 (l6989586621679210595 :: (a6989586621679206399 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679206399) a6989586621679206399) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679206399) k1)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210597Scrutinee_6989586621679206544Sym1 l6989586621679210595)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.PreviewSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.PreviewSym0
-instance forall a6989586621679169045 s6989586621679169046 (a6989586621679173385 :: (a6989586621679169045 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679169045) a6989586621679169045) Data.Singletons.Internal.~> (s6989586621679169046 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679169045) s6989586621679169046)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.PreviewSym1 a6989586621679173385)
+instance forall a6989586621679206399 s6989586621679206400 (a6989586621679210578 :: (a6989586621679206399 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679206399) a6989586621679206399) Data.Singletons.Internal.~> (s6989586621679206400 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679206399) s6989586621679206400)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.PreviewSym1 a6989586621679210578)
 instance forall a s (d :: (a Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a) a) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a) s)). Data.Singletons.Internal.SingI d => Data.Singletons.Internal.SingI (Data.Type.Lens.PreviewSym1 d)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.FoldingSym0
 instance (Data.Singletons.Prelude.Foldable.SFoldable f, Data.Singletons.Prelude.Monoid.SMonoid r) => Data.Singletons.Internal.SingI Data.Type.Lens.FoldingSym0
-instance forall r6989586621679169040 s6989586621679169041 (f6989586621679169039 :: * -> *) a6989586621679169042 (a6989586621679173368 :: s6989586621679169041 Data.Singletons.Internal.~> f6989586621679169039 a6989586621679169042). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.FoldingSym1 a6989586621679173368)
+instance forall r6989586621679206394 s6989586621679206395 (f6989586621679206393 :: * -> *) a6989586621679206396 (a6989586621679210561 :: s6989586621679206395 Data.Singletons.Internal.~> f6989586621679206393 a6989586621679206396). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.FoldingSym1 a6989586621679210561)
 instance forall s (f :: * -> *) a r (d :: s Data.Singletons.Internal.~> f a). (Data.Singletons.Prelude.Foldable.SFoldable f, Data.Singletons.Prelude.Monoid.SMonoid r, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.FoldingSym1 d)
-instance forall r6989586621679169040 s6989586621679169041 (f6989586621679169039 :: * -> *) a6989586621679169042 (a6989586621679173369 :: s6989586621679169041 Data.Singletons.Internal.~> f6989586621679169039 a6989586621679169042) (a6989586621679173368 :: a6989586621679169042 Data.Singletons.Internal.~> Data.Functor.Const.Const r6989586621679169040 a6989586621679169042). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.FoldingSym2 a6989586621679173369 a6989586621679173368)
+instance forall r6989586621679206394 s6989586621679206395 (f6989586621679206393 :: * -> *) a6989586621679206396 (a6989586621679210562 :: s6989586621679206395 Data.Singletons.Internal.~> f6989586621679206393 a6989586621679206396) (a6989586621679210561 :: a6989586621679206396 Data.Singletons.Internal.~> Data.Functor.Const.Const r6989586621679206394 a6989586621679206396). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.FoldingSym2 a6989586621679210562 a6989586621679210561)
 instance forall s (f :: * -> *) a r (d1 :: s Data.Singletons.Internal.~> f a) (d2 :: a Data.Singletons.Internal.~> Data.Functor.Const.Const r a). (Data.Singletons.Prelude.Foldable.SFoldable f, Data.Singletons.Prelude.Monoid.SMonoid r, Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.FoldingSym2 d1 d2)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.FoldedSym0
 instance (Data.Singletons.Prelude.Foldable.SFoldable f, Data.Singletons.Prelude.Monoid.SMonoid r) => Data.Singletons.Internal.SingI Data.Type.Lens.FoldedSym0
-instance forall (f6989586621679169036 :: * -> *) r6989586621679169037 a6989586621679169038 (a6989586621679173355 :: a6989586621679169038 Data.Singletons.Internal.~> Data.Functor.Const.Const r6989586621679169037 a6989586621679169038). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.FoldedSym1 a6989586621679173355)
+instance forall (f6989586621679206390 :: * -> *) r6989586621679206391 a6989586621679206392 (a6989586621679210548 :: a6989586621679206392 Data.Singletons.Internal.~> Data.Functor.Const.Const r6989586621679206391 a6989586621679206392). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.FoldedSym1 a6989586621679210548)
 instance forall a r (f :: * -> *) (d :: a Data.Singletons.Internal.~> Data.Functor.Const.Const r a). (Data.Singletons.Prelude.Foldable.SFoldable f, Data.Singletons.Prelude.Monoid.SMonoid r, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.FoldedSym1 d)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.CloneTraversalSym0
+instance Data.Singletons.Prelude.Monad.Internal.SApplicative f => Data.Singletons.Internal.SingI Data.Type.Lens.CloneTraversalSym0
+instance forall (f6989586621679206385 :: * -> *) s6989586621679206388 a6989586621679206386 b6989586621679206387 t6989586621679206389 (a6989586621679210531 :: (a6989586621679206386 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a6989586621679206386 b6989586621679206387 b6989586621679206387) Data.Singletons.Internal.~> (s6989586621679206388 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a6989586621679206386 b6989586621679206387 t6989586621679206389)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.CloneTraversalSym1 a6989586621679210531)
+instance forall a b s t (f :: * -> *) (d :: (a Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a b b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a b t)). (Data.Singletons.Prelude.Monad.Internal.SApplicative f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.CloneTraversalSym1 d)
+instance forall (f6989586621679206385 :: * -> *) s6989586621679206388 a6989586621679206386 b6989586621679206387 t6989586621679206389 (a6989586621679210532 :: (a6989586621679206386 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a6989586621679206386 b6989586621679206387 b6989586621679206387) Data.Singletons.Internal.~> (s6989586621679206388 Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a6989586621679206386 b6989586621679206387 t6989586621679206389)) (a6989586621679210531 :: a6989586621679206386 Data.Singletons.Internal.~> f6989586621679206385 b6989586621679206387). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.CloneTraversalSym2 a6989586621679210532 a6989586621679210531)
+instance forall a b s t (f :: * -> *) (d1 :: (a Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a b b) Data.Singletons.Internal.~> (s Data.Singletons.Internal.~> Data.Type.Lens.Internal.Bazaar a b t)) (d2 :: a Data.Singletons.Internal.~> f b). (Data.Singletons.Prelude.Monad.Internal.SApplicative f, Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.CloneTraversalSym2 d1 d2)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.L1Sym0
 instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.L1Sym0
-instance forall c6989586621679169034 a6989586621679169033 (f6989586621679169032 :: * -> *) b6989586621679169035 (a6989586621679173340 :: a6989586621679169033 Data.Singletons.Internal.~> f6989586621679169032 b6989586621679169035). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.L1Sym1 a6989586621679173340)
+instance forall c6989586621679206383 a6989586621679206382 (f6989586621679206381 :: * -> *) b6989586621679206384 (a6989586621679210516 :: a6989586621679206382 Data.Singletons.Internal.~> f6989586621679206381 b6989586621679206384). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.L1Sym1 a6989586621679210516)
 instance forall a (f :: * -> *) b c (d :: a Data.Singletons.Internal.~> f b). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.L1Sym1 d)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.L2Sym0
 instance Data.Singletons.Prelude.Monad.Internal.SFunctor f => Data.Singletons.Internal.SingI Data.Type.Lens.L2Sym0
-instance forall a6989586621679169029 b6989586621679169030 (f6989586621679169028 :: * -> *) c6989586621679169031 (a6989586621679173325 :: b6989586621679169030 Data.Singletons.Internal.~> f6989586621679169028 c6989586621679169031). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.L2Sym1 a6989586621679173325)
+instance forall a6989586621679206378 b6989586621679206379 (f6989586621679206377 :: * -> *) c6989586621679206380 (a6989586621679210501 :: b6989586621679206379 Data.Singletons.Internal.~> f6989586621679206377 c6989586621679206380). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.L2Sym1 a6989586621679210501)
 instance forall b (f :: * -> *) c a (d :: b Data.Singletons.Internal.~> f c). (Data.Singletons.Prelude.Monad.Internal.SFunctor f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.L2Sym1 d)
-instance forall (f6989586621679169026 :: * -> *) a6989586621679169027 (a6989586621679173305 :: Data.Type.Lens.N) (a6989586621679173304 :: a6989586621679169027 Data.Singletons.Internal.~> f6989586621679169026 a6989586621679169027). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.IxListSym2 a6989586621679173305 a6989586621679173304)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.IxListSym1 a6989586621679173304)
+instance forall (f6989586621679206375 :: * -> *) a6989586621679206376 (a6989586621679210481 :: Data.Type.Lens.N) (a6989586621679210480 :: a6989586621679206376 Data.Singletons.Internal.~> f6989586621679206375 a6989586621679206376). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.IxListSym2 a6989586621679210481 a6989586621679210480)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.IxListSym1 a6989586621679210480)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.IxListSym0
 instance Data.Singletons.Prelude.Monad.Internal.SApplicative f => Data.Singletons.Internal.SingI Data.Type.Lens.IxListSym0
 instance (Data.Singletons.Prelude.Monad.Internal.SApplicative f, Data.Singletons.Internal.SingI d) => Data.Singletons.Internal.SingI (Data.Type.Lens.IxListSym1 d)
 instance forall a (f :: * -> *) (d1 :: Data.Type.Lens.N) (d2 :: a Data.Singletons.Internal.~> f a). (Data.Singletons.Prelude.Monad.Internal.SApplicative f, Data.Singletons.Internal.SingI d1, Data.Singletons.Internal.SingI d2) => Data.Singletons.Internal.SingI (Data.Type.Lens.IxListSym2 d1 d2)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679173529Sym0
-instance forall k1 k2 k3 k4 (l6989586621679173526 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173529Sym1 l6989586621679173526)
-instance forall k1 k2 k3 k4 (y6989586621679173527 :: k4) (l6989586621679173526 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173529Sym2 y6989586621679173527 l6989586621679173526)
-instance forall k1 k2 k3 k4 (a_69895866216791735246989586621679173528 :: k4) (y6989586621679173527 :: k3) (l6989586621679173526 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173529Sym3 a_69895866216791735246989586621679173528 y6989586621679173527 l6989586621679173526)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173510Scrutinee_6989586621679169137Sym0
-instance forall a6989586621679919356 b6989586621679919354 k1 k (l6989586621679173507 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679919354) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173510Scrutinee_6989586621679169137Sym1 l6989586621679173507)
-instance forall a6989586621679919356 b6989586621679919354 k1 k (f6989586621679173508 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679919354) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)) (l6989586621679173507 :: a6989586621679919356 Data.Singletons.Internal.~> b6989586621679919354). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173510Scrutinee_6989586621679169137Sym2 f6989586621679173508 l6989586621679173507)
-instance forall a6989586621679095349 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173494Scrutinee_6989586621679169142Sym0
-instance forall a6989586621679095349 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k (l6989586621679173492 :: (Data.Singletons.Internal.TyFun a6989586621679095349 (Data.Functor.Const.Const a6989586621679095349 b6989586621679095350) -> *) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173494Scrutinee_6989586621679169142Sym1 l6989586621679173492)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679173471Sym0
-instance forall k1 k2 k3 k4 (f6989586621679173468 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173471Sym1 f6989586621679173468)
-instance forall k1 k2 k3 k4 (g6989586621679173469 :: k4) (f6989586621679173468 :: k2 Data.Singletons.Internal.~> Data.Functor.Identity.Identity k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173471Sym2 g6989586621679173469 f6989586621679173468)
-instance forall k1 k2 k3 k4 (a_69895866216791734666989586621679173470 :: k4) (g6989586621679173469 :: k2 Data.Singletons.Internal.~> Data.Functor.Identity.Identity k3) (f6989586621679173468 :: k1). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173471Sym3 a_69895866216791734666989586621679173470 g6989586621679173469 f6989586621679173468)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173474Scrutinee_6989586621679169147Sym0
-instance forall k1 k2 k3 k4 (f6989586621679173468 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173474Scrutinee_6989586621679169147Sym1 f6989586621679173468)
-instance forall k1 k2 k3 k4 (g6989586621679173469 :: k4) (f6989586621679173468 :: k2 Data.Singletons.Internal.~> k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173474Scrutinee_6989586621679169147Sym2 g6989586621679173469 f6989586621679173468)
-instance forall k1 k2 k3 k4 (x6989586621679173473 :: k4) (g6989586621679173469 :: k2 Data.Singletons.Internal.~> k3) (f6989586621679173468 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173474Scrutinee_6989586621679169147Sym3 x6989586621679173473 g6989586621679173469 f6989586621679173468)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173452Scrutinee_6989586621679169150Sym0
-instance forall k k2 k3 (f6989586621679173449 :: k2 Data.Singletons.Internal.~> k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173452Scrutinee_6989586621679169150Sym1 f6989586621679173449)
-instance forall k k2 k3 (g6989586621679173450 :: k2 Data.Singletons.Internal.~> k3) (f6989586621679173449 :: k3 Data.Singletons.Internal.~> k). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173452Scrutinee_6989586621679169150Sym2 g6989586621679173450 f6989586621679173449)
-instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173417Scrutinee_6989586621679169155Sym0
-instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k (l6989586621679173415 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679919356] b6989586621679095350) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173417Scrutinee_6989586621679169155Sym1 l6989586621679173415)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679173418Sym0
-instance forall k1 k2 k3 (l6989586621679173415 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173418Sym1 l6989586621679173415)
-instance forall k1 k2 k3 (x6989586621679173416 :: k3) (l6989586621679173415 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173418Sym2 x6989586621679173416 l6989586621679173415)
-instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173391Scrutinee_6989586621679169162Sym0
-instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k (l6989586621679173389 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679919356) b6989586621679095350) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173391Scrutinee_6989586621679169162Sym1 l6989586621679173389)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173377Scrutinee_6989586621679169175Sym0
-instance forall b6989586621680695205 (f6989586621680695203 :: * -> *) k1 (t6989586621680695202 :: * -> *) a6989586621680695204 (f6989586621679173374 :: k1 Data.Singletons.Internal.~> t6989586621680695202 a6989586621680695204). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173377Scrutinee_6989586621679169175Sym1 f6989586621679173374)
-instance forall (f6989586621680695203 :: * -> *) b6989586621680695205 k1 (t6989586621680695202 :: * -> *) a6989586621680695204 (g6989586621679173375 :: k1 Data.Singletons.Internal.~> t6989586621680695202 a6989586621680695204) (f6989586621679173374 :: a6989586621680695204 Data.Singletons.Internal.~> f6989586621680695203 b6989586621680695205). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173377Scrutinee_6989586621679169175Sym2 g6989586621679173375 f6989586621679173374)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679173361Scrutinee_6989586621679169180Sym0
-instance forall (t6989586621680695202 :: * -> *) a6989586621680695204 (f6989586621680695203 :: * -> *) b6989586621680695205 (f6989586621679173359 :: a6989586621680695204 Data.Singletons.Internal.~> f6989586621680695203 b6989586621680695205). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679173361Scrutinee_6989586621679169180Sym1 f6989586621679173359)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679173347Sym0
-instance forall k2 k3 k4 k5 (f6989586621679173344 :: k5). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173347Sym1 f6989586621679173344)
-instance forall k2 k3 k4 k5 (x6989586621679173345 :: k5) (f6989586621679173344 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173347Sym2 x6989586621679173345 f6989586621679173344)
-instance forall k2 k3 k4 k5 (y6989586621679173346 :: k5) (x6989586621679173345 :: k4) (f6989586621679173344 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173347Sym3 y6989586621679173346 x6989586621679173345 f6989586621679173344)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679173332Sym0
-instance forall k2 k3 k4 k5 (f6989586621679173329 :: k5). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173332Sym1 f6989586621679173329)
-instance forall k2 k3 k4 k5 (x6989586621679173330 :: k5) (f6989586621679173329 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173332Sym2 x6989586621679173330 f6989586621679173329)
-instance forall k2 k3 k4 k5 (y6989586621679173331 :: k5) (x6989586621679173330 :: k4) (f6989586621679173329 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173332Sym3 y6989586621679173331 x6989586621679173330 f6989586621679173329)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679173313Sym0
-instance forall k1 k2 k3 (f6989586621679173310 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173313Sym1 f6989586621679173310)
-instance forall k1 k2 k3 (x6989586621679173311 :: k3) (f6989586621679173310 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173313Sym2 x6989586621679173311 f6989586621679173310)
-instance forall k1 k2 k3 (xs6989586621679173312 :: k3) (x6989586621679173311 :: k2) (f6989586621679173310 :: [k1]). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679173313Sym3 xs6989586621679173312 x6989586621679173311 f6989586621679173310)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210748Sym0
+instance forall k1 k2 k3 k4 (l6989586621679210745 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210748Sym1 l6989586621679210745)
+instance forall k1 k2 k3 k4 (y6989586621679210746 :: k4) (l6989586621679210745 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210748Sym2 y6989586621679210746 l6989586621679210745)
+instance forall k1 k2 k3 k4 (a_69895866216792107436989586621679210747 :: k4) (y6989586621679210746 :: k3) (l6989586621679210745 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210748Sym3 a_69895866216792107436989586621679210747 y6989586621679210746 l6989586621679210745)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210729Scrutinee_6989586621679206507Sym0
+instance forall a6989586621679919356 b6989586621679919354 k1 k (l6989586621679210726 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679919354) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210729Scrutinee_6989586621679206507Sym1 l6989586621679210726)
+instance forall a6989586621679919356 b6989586621679919354 k1 k (f6989586621679210727 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679919354) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)) (l6989586621679210726 :: a6989586621679919356 Data.Singletons.Internal.~> b6989586621679919354). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210729Scrutinee_6989586621679206507Sym2 f6989586621679210727 l6989586621679210726)
+instance forall a6989586621679095349 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210713Scrutinee_6989586621679206512Sym0
+instance forall a6989586621679095349 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k (l6989586621679210711 :: (Data.Singletons.Internal.TyFun a6989586621679095349 (Data.Functor.Const.Const a6989586621679095349 b6989586621679095350) -> *) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210713Scrutinee_6989586621679206512Sym1 l6989586621679210711)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210690Sym0
+instance forall k1 k2 k3 k4 (f6989586621679210687 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210690Sym1 f6989586621679210687)
+instance forall k1 k2 k3 k4 (g6989586621679210688 :: k4) (f6989586621679210687 :: k2 Data.Singletons.Internal.~> Data.Functor.Identity.Identity k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210690Sym2 g6989586621679210688 f6989586621679210687)
+instance forall k1 k2 k3 k4 (a_69895866216792106856989586621679210689 :: k4) (g6989586621679210688 :: k2 Data.Singletons.Internal.~> Data.Functor.Identity.Identity k3) (f6989586621679210687 :: k1). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210690Sym3 a_69895866216792106856989586621679210689 g6989586621679210688 f6989586621679210687)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210693Scrutinee_6989586621679206517Sym0
+instance forall k1 k2 k3 k4 (f6989586621679210687 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210693Scrutinee_6989586621679206517Sym1 f6989586621679210687)
+instance forall k1 k2 k3 k4 (g6989586621679210688 :: k4) (f6989586621679210687 :: k2 Data.Singletons.Internal.~> k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210693Scrutinee_6989586621679206517Sym2 g6989586621679210688 f6989586621679210687)
+instance forall k1 k2 k3 k4 (x6989586621679210692 :: k4) (g6989586621679210688 :: k2 Data.Singletons.Internal.~> k3) (f6989586621679210687 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210693Scrutinee_6989586621679206517Sym3 x6989586621679210692 g6989586621679210688 f6989586621679210687)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210671Scrutinee_6989586621679206520Sym0
+instance forall k k2 k3 (f6989586621679210668 :: k2 Data.Singletons.Internal.~> k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210671Scrutinee_6989586621679206520Sym1 f6989586621679210668)
+instance forall k k2 k3 (g6989586621679210669 :: k2 Data.Singletons.Internal.~> k3) (f6989586621679210668 :: k3 Data.Singletons.Internal.~> k). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210671Scrutinee_6989586621679206520Sym2 g6989586621679210669 f6989586621679210668)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210633Scrutinee_6989586621679206525Sym0
+instance forall k2 k3 t k4 k (l6989586621679210630 :: (Data.Singletons.Internal.TyFun k3 (Data.Type.Lens.Internal.Context k3 t t) -> *) Data.Singletons.Internal.~> (k4 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210633Scrutinee_6989586621679206525Sym1 l6989586621679210630)
+instance forall k2 k3 t k4 k (f6989586621679210631 :: (Data.Singletons.Internal.TyFun k3 (Data.Type.Lens.Internal.Context k3 t t) -> *) Data.Singletons.Internal.~> (k4 Data.Singletons.Internal.~> k)) (l6989586621679210630 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210633Scrutinee_6989586621679206525Sym2 f6989586621679210631 l6989586621679210630)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210634Sym0
+instance forall k1 k2 k3 t k4 (l6989586621679210630 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210634Sym1 l6989586621679210630)
+instance forall k1 k2 t k3 k4 (f6989586621679210631 :: k4) (l6989586621679210630 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210634Sym2 f6989586621679210631 l6989586621679210630)
+instance forall k1 t k2 k3 k4 (x6989586621679210632 :: k4) (f6989586621679210631 :: k3) (l6989586621679210630 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210634Sym3 x6989586621679210632 f6989586621679210631 l6989586621679210630)
+instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210610Scrutinee_6989586621679206530Sym0
+instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k (l6989586621679210608 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Const.Const [a6989586621679919356] b6989586621679095350) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210610Scrutinee_6989586621679206530Sym1 l6989586621679210608)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210611Sym0
+instance forall k1 k2 k3 (l6989586621679210608 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210611Sym1 l6989586621679210608)
+instance forall k1 k2 k3 (x6989586621679210609 :: k3) (l6989586621679210608 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210611Sym2 x6989586621679210609 l6989586621679210608)
+instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210584Scrutinee_6989586621679206537Sym0
+instance forall a6989586621679919356 k6989586621679095348 (b6989586621679095350 :: k6989586621679095348) k1 k (l6989586621679210582 :: (a6989586621679919356 Data.Singletons.Internal.~> Data.Functor.Const.Const (Data.Monoid.First a6989586621679919356) b6989586621679095350) Data.Singletons.Internal.~> (k1 Data.Singletons.Internal.~> k)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210584Scrutinee_6989586621679206537Sym1 l6989586621679210582)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210570Scrutinee_6989586621679206550Sym0
+instance forall b6989586621680695205 (f6989586621680695203 :: * -> *) k1 (t6989586621680695202 :: * -> *) a6989586621680695204 (f6989586621679210567 :: k1 Data.Singletons.Internal.~> t6989586621680695202 a6989586621680695204). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210570Scrutinee_6989586621679206550Sym1 f6989586621679210567)
+instance forall (f6989586621680695203 :: * -> *) b6989586621680695205 k1 (t6989586621680695202 :: * -> *) a6989586621680695204 (g6989586621679210568 :: k1 Data.Singletons.Internal.~> t6989586621680695202 a6989586621680695204) (f6989586621679210567 :: a6989586621680695204 Data.Singletons.Internal.~> f6989586621680695203 b6989586621680695205). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210570Scrutinee_6989586621679206550Sym2 g6989586621679210568 f6989586621679210567)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Let6989586621679210554Scrutinee_6989586621679206555Sym0
+instance forall (t6989586621680695202 :: * -> *) a6989586621680695204 (f6989586621680695203 :: * -> *) b6989586621680695205 (f6989586621679210552 :: a6989586621680695204 Data.Singletons.Internal.~> f6989586621680695203 b6989586621680695205). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Let6989586621679210554Scrutinee_6989586621679206555Sym1 f6989586621679210552)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210540Sym0
+instance forall k1 k2 k3 t k4 (l6989586621679210537 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210540Sym1 l6989586621679210537)
+instance forall k1 k2 t k3 k4 (f6989586621679210538 :: k4) (l6989586621679210537 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210540Sym2 f6989586621679210538 l6989586621679210537)
+instance forall k1 t k2 k3 k4 (xs6989586621679210539 :: k4) (f6989586621679210538 :: k3) (l6989586621679210537 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210540Sym3 xs6989586621679210539 f6989586621679210538 l6989586621679210537)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210523Sym0
+instance forall k2 k3 k4 k5 (f6989586621679210520 :: k5). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210523Sym1 f6989586621679210520)
+instance forall k2 k3 k4 k5 (x6989586621679210521 :: k5) (f6989586621679210520 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210523Sym2 x6989586621679210521 f6989586621679210520)
+instance forall k2 k3 k4 k5 (y6989586621679210522 :: k5) (x6989586621679210521 :: k4) (f6989586621679210520 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210523Sym3 y6989586621679210522 x6989586621679210521 f6989586621679210520)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210508Sym0
+instance forall k2 k3 k4 k5 (f6989586621679210505 :: k5). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210508Sym1 f6989586621679210505)
+instance forall k2 k3 k4 k5 (x6989586621679210506 :: k5) (f6989586621679210505 :: k4). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210508Sym2 x6989586621679210506 f6989586621679210505)
+instance forall k2 k3 k4 k5 (y6989586621679210507 :: k5) (x6989586621679210506 :: k4) (f6989586621679210505 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210508Sym3 y6989586621679210507 x6989586621679210506 f6989586621679210505)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.Lambda_6989586621679210489Sym0
+instance forall k1 k2 k3 (f6989586621679210486 :: k3). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210489Sym1 f6989586621679210486)
+instance forall k1 k2 k3 (x6989586621679210487 :: k3) (f6989586621679210486 :: k2). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210489Sym2 x6989586621679210487 f6989586621679210486)
+instance forall k1 k2 k3 (xs6989586621679210488 :: k3) (x6989586621679210487 :: k2) (f6989586621679210486 :: [k1]). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.Lambda_6989586621679210489Sym3 xs6989586621679210488 x6989586621679210487 f6989586621679210486)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.SSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.SSym0
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.GettingSym0
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.GettingSym1 r6989586621679120342)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.GettingSym2 s6989586621679120343 r6989586621679120342)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.GettingSym1 r6989586621679201800)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.GettingSym2 s6989586621679201801 r6989586621679201800)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.ASetterSym0
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ASetterSym1 s6989586621679120345)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ASetterSym2 t6989586621679120346 s6989586621679120345)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ASetterSym3 a6989586621679120347 t6989586621679120346 s6989586621679120345)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ASetterSym1 s6989586621679201803)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ASetterSym2 t6989586621679201804 s6989586621679201803)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.ASetterSym3 a6989586621679201805 t6989586621679201804 s6989586621679201803)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.LensLike'Sym0
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLike'Sym1 f6989586621679120349)
-instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLike'Sym2 s6989586621679120350 f6989586621679120349)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLike'Sym1 f6989586621679201807)
+instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLike'Sym2 s6989586621679201808 f6989586621679201807)
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.LensLikeSym0
-instance forall k6989586621679120367 (f6989586621679120352 :: k6989586621679120367 -> *). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym1 f6989586621679120352)
-instance forall k6989586621679120367 (s6989586621679120353 :: k6989586621679120367 -> *) f6989586621679120352. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym2 s6989586621679120353 f6989586621679120352)
-instance forall k6989586621679120367 (t6989586621679120354 :: k6989586621679120367 -> *) s6989586621679120353 (f6989586621679120352 :: k6989586621679120367). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym3 t6989586621679120354 s6989586621679120353 f6989586621679120352)
-instance forall k6989586621679120367 (a6989586621679120355 :: k6989586621679120367 -> *) t6989586621679120354 (s6989586621679120353 :: k6989586621679120367) f6989586621679120352. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym4 a6989586621679120355 t6989586621679120354 s6989586621679120353 f6989586621679120352)
+instance forall k6989586621679201825 (f6989586621679201810 :: k6989586621679201825 -> *). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym1 f6989586621679201810)
+instance forall k6989586621679201825 (s6989586621679201811 :: k6989586621679201825 -> *) f6989586621679201810. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym2 s6989586621679201811 f6989586621679201810)
+instance forall k6989586621679201825 (t6989586621679201812 :: k6989586621679201825 -> *) s6989586621679201811 (f6989586621679201810 :: k6989586621679201825). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym3 t6989586621679201812 s6989586621679201811 f6989586621679201810)
+instance forall k6989586621679201825 (a6989586621679201813 :: k6989586621679201825 -> *) t6989586621679201812 (s6989586621679201811 :: k6989586621679201825) f6989586621679201810. Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.LensLikeSym4 a6989586621679201813 t6989586621679201812 s6989586621679201811 f6989586621679201810)
 instance Data.Singletons.Internal.SingKind Data.Type.Lens.N
 instance Data.Singletons.Internal.SingI 'Data.Type.Lens.Z
 instance Data.Singletons.Internal.SingI n => Data.Singletons.Internal.SingI ('Data.Type.Lens.S n)
 instance Data.Singletons.Internal.SingI (Data.Singletons.Internal.TyCon1 'Data.Type.Lens.S)
 
+
+-- | See source for examples of using type-level lenses from
+--   <a>Data.Type.Lens</a>.
 module Data.Type.Lens.Example
 
 -- | <pre>
