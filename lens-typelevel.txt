@@ -9,6 +9,9 @@
 @version 0.1.0.0
 
 module Data.Type.Lens
+
+-- | A settable "lens". Usable with <a>Over</a>, constructable with
+--   <a>To</a> or any of the general lens constructors.
 type ASetter s t a b = LensLike Identity s t a b
 type family Over (a_aGAt :: (~>) ((~>) a_aFqZ (Identity b_aFr0)) ((~>) s_aFqX (Identity t_aFqY))) (a_aGAu :: (~>) a_aFqZ b_aFr0) (a_aGAv :: s_aFqX) :: t_aFqY
 type l %~ f = OverSym2 l f
@@ -21,6 +24,10 @@ sSet :: forall s_aFqT t_aFqU a_aFqV b_aFqW (t_aGCa :: (~>) ((~>) a_aFqV (Identit
 type Sets_ f = SetsSym1 f
 type family Sets (a_aGzO :: (~>) ((~>) a_aFqN b_aFqO) ((~>) s_aFqP t_aFqQ)) (a_aGzP :: (~>) a_aFqN (Identity b_aFqO)) (a_aGzQ :: s_aFqP) :: Identity t_aFqQ
 sSets :: forall a_aFqN b_aFqO s_aFqP t_aFqQ (t_aGBU :: (~>) ((~>) a_aFqN b_aFqO) ((~>) s_aFqP t_aFqQ)) (t_aGBV :: (~>) a_aFqN (Identity b_aFqO)) (t_aGBW :: s_aFqP). Sing t_aGBU -> Sing t_aGBV -> Sing t_aGBW -> Sing (Apply (Apply (Apply SetsSym0 t_aGBU) t_aGBV) t_aGBW :: Identity t_aFqQ)
+
+-- | A retrieving "lens". If <tt>r</tt> is fixed to a type, it's a getter
+--   for that type. If <tt>r</tt> is polymorphic over all <a>Monoid</a>,
+--   then it's a Fold over <tt>a</tt>s.
 type Getting r s a = LensLike (Const r) s s a a
 type family View (a_aGAg :: (~>) ((~>) a_aFqR ((Const a_aFqR :: Type -> Type) a_aFqR)) ((~>) s_aFqS ((Const a_aFqR :: Type -> Type) s_aFqS))) (a_aGAh :: s_aFqS) :: a_aFqR
 type x ^. l = View l x
@@ -29,7 +36,30 @@ sView :: forall a_aFqR s_aFqS (t_aGC0 :: (~>) ((~>) a_aFqR ((Const a_aFqR :: Typ
 type To_ f = ToSym1 f
 type family To (a_aGzx :: (~>) s_aFqK a_aFqL) (a_aGzy :: (~>) a_aFqL ((Const r_aFqM :: Type -> Type) a_aFqL)) (a_aGzz :: s_aFqK) :: (Const r_aFqM :: Type -> Type) s_aFqK
 sTo :: forall s_aFqK a_aFqL r_aFqM (t_aGBO :: (~>) s_aFqK a_aFqL) (t_aGBP :: (~>) a_aFqL ((Const r_aFqM :: Type -> Type) a_aFqL)) (t_aGBQ :: s_aFqK). Sing t_aGBO -> Sing t_aGBP -> Sing t_aGBQ -> Sing (Apply (Apply (Apply ToSym0 t_aGBO) t_aGBP) t_aGBQ :: (Const r_aFqM :: Type -> Type) s_aFqK)
+
+-- | The general shape of optics in this library. ("van Laarhoven")
+--   
+--   For different levels of polymorphism on <tt>f</tt>, you get different
+--   types of optics:
+--   
+--   <ul>
+--   <li>If <tt>f</tt> can be any <a>Functor</a>, you have a Lens.</li>
+--   <li>If <tt>f</tt> is only <a>Identity</a>, you have a setter (see
+--   <a>ASetter</a>)</li>
+--   <li>If <tt>f</tt> is only <tt><a>Const</a> R</tt> for a specific
+--   <tt>R</tt>, you have a getter of <tt>R</tt> (see <a>Getting</a>)</li>
+--   <li>If <tt>f</tt> can be <tt><a>Const</a> r</tt> for any <a>Monoid</a>
+--   <tt>r</tt>, you have a Fold.</li>
+--   <li>If <tt>f</tt> can be any <a>Applicative</a>, you have a
+--   Traversal.</li>
+--   </ul>
+--   
+--   Normal lens libraries implement the constraints for lenses, folds, and
+--   traversals using RankN types, but we don't do that here to avoid
+--   working with RankN kinds.
 type LensLike f s t a b = (a -> f b) -> (s -> f t)
+
+-- | A <a>LensLike</a> that does not change any types.
 type LensLike' f s a = LensLike f s s a a
 type MkLens_ f g = MkLensSym2 f g
 type family MkLens (a_aGzl :: (~>) s_aFqG a_aFqH) (a_aGzm :: (~>) s_aFqG ((~>) b_aFqI t_aFqJ)) (a_aGzn :: (~>) a_aFqH (f_aFqF b_aFqI)) (a_aGzo :: s_aFqG) :: f_aFqF t_aFqJ
@@ -63,6 +93,8 @@ sL1 :: forall f_aFqo a_aFqp c_aFqq b_aFqr (t_aGBg :: (~>) a_aFqp (f_aFqo b_aFqr)
 type L2_ = L2Sym0
 type family L2 (a_aGxD :: (~>) b_aFqm (f_aFqk c_aFqn)) (a_aGxE :: (a_aFql, b_aFqm)) :: f_aFqk (a_aFql, c_aFqn)
 sL2 :: forall f_aFqk a_aFql b_aFqm c_aFqn (t_aGBc :: (~>) b_aFqm (f_aFqk c_aFqn)) (t_aGBd :: (a_aFql, b_aFqm)). SFunctor f_aFqk => Sing t_aGBc -> Sing t_aGBd -> Sing (Apply (Apply L2Sym0 t_aGBc) t_aGBd :: f_aFqk (a_aFql, c_aFqn))
+
+-- | Peano nats, used for implementation of list index traversals.
 data N
 Z :: N
 S :: N -> N
