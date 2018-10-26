@@ -79,14 +79,14 @@ import           Data.Singletons.Prelude.Maybe
 import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
 
-$(singletons [d|
-  type LensLike  f s t a b = (a -> f b) -> (s -> f t)
-  type LensLike' f s   a   = LensLike f         s s a a
-  type ASetter     s t a b = LensLike Identity  s t a b
-  type Getting   r s   a   = LensLike (Const r) s s a a
+type LensLike  f s t a b = (a -> f b) -> (s -> f t)
+type LensLike' f s   a   = LensLike f         s s a a
+type ASetter     s t a b = LensLike Identity  s t a b
+type Getting   r s   a   = LensLike (Const r) s s a a
 
-  data N = Z | S N
-  |])
+data N = Z | S N
+
+genSingletons [''LensLike, ''LensLike', ''ASetter, ''Getting, ''N]
 
 $(singletonsOnly [d|
   over :: ASetter s t a b -> (a -> b) -> (s -> t)
