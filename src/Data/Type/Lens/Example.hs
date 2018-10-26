@@ -23,6 +23,7 @@ module Data.Type.Lens.Example (
   , FoldExample
   , UnsafeExample
   , IxExample
+  , CloneExample
   -- * Operators
   , SetExample'
   , ViewExample'
@@ -33,6 +34,7 @@ module Data.Type.Lens.Example (
   , FoldExample'
   , IxExample'
   , UnsafeExample'
+  , CloneExample'
   ) where
 
 import           Data.Singletons.Prelude
@@ -78,10 +80,22 @@ type FoldExample      = ToListOf (Traverse_ .@ L1_)
                            , '("curry", 'False)
                            ]
 
+-- |
+-- >>> :kind! UnsafeExample
+-- Error "Failed indexing into empty traversal"
 type UnsafeExample    = UnsafePreview Traverse_ '[]
 
+-- |
+-- >>> :kind! IxExample
+-- '["hello", "haskell", "curry"]
 type IxExample        = Set   (IxList_ ('S 'Z)) "haskell"
                           '["hello", "world", "curry"]
+
+-- |
+-- >>> :kind! CloneExample
+-- "hello"
+type CloneExample     = View (CloneLens_ L1_)  '("hello", 6     )
+
 
 type SetExample'       = '("hello", 6     )         &  L1_             .~ 'True
 type ViewExample'      = '("hello", 6     )         ^. L2_
@@ -95,3 +109,4 @@ type FoldExample'      = '[ '("hello", 'True )
                           ] ^.. Traverse_ .@ L1_
 type UnsafeExample'    = '[] ^?! Traverse_
 type IxExample'        = '["hello","world","curry"] &  IxList_ ('S 'Z) .~ "haskell"
+type CloneExample'     = '("hello", 6     )         ^. CloneLens_ L1_

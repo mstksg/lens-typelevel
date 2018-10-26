@@ -35,6 +35,7 @@ import           Data.Singletons.Prelude.Maybe
 import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
 
+-- | A partially applied lens
 data Context a b t = MkContext (b ~> t) a
 
 type MkContextSym0     = TyCon2 'MkContext
@@ -58,6 +59,7 @@ instance PFunctor (Context a b) where
 instance SFunctor (Context a b) where
     sFmap = sFmapContext
 
+-- | A partially applied traversal
 data Bazaar a b t = Done t
                   | More a (Bazaar a b (b ~> t))
 

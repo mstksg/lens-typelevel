@@ -35,6 +35,16 @@ ghci> :kind! '["hello", "world", "curry"] & IxList_ ('S 'Z) .~ "haskell"
 '["hello", "haskell", "curry"]
 ```
 
+It's pretty much the exact same representation as the *lens* library; it's
+essentially an API-faithful port with the same representation and essentially
+the same implementation.  We even have `CloneLens_` and `CloneTraversal_`
+implemented using type-level versions of `Context` and `Bazaar`:
+
+```haskell
+ghci> :kind! '("hello", 6) ^. CloneLens_ L1_
+"hello"
+```
+
 Using prefix function names:
 
 ```haskell
