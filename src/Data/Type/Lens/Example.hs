@@ -10,6 +10,8 @@ module Data.Type.Lens.Example (
   , TraversalExample
   , NestedExample
   , FoldExample
+  , UnsafeExample
+  , IxExample
   -- * Operators
   , SetExample'
   , ViewExample'
@@ -18,6 +20,8 @@ module Data.Type.Lens.Example (
   , TraversalExample'
   , NestedExample'
   , FoldExample'
+  , IxExample'
+  , UnsafeExample'
   ) where
 
 import           Data.Singletons.Prelude
@@ -63,13 +67,20 @@ type FoldExample      = ToListOf (Traverse_ .@ L1_)
                            , '("curry", 'False)
                            ]
 
-type SetExample'       = '("hello", 6     )         &  L1_       .~ 'True
+type UnsafeExample    = UnsafePreview Traverse_ '[]
+
+type IxExample        = Set   (IxList_ ('S 'Z)) "haskell"
+                          '["hello", "world", "curry"]
+
+type SetExample'       = '("hello", 6     )         &  L1_             .~ 'True
 type ViewExample'      = '("hello", 6     )         ^. L2_
 type ToExample'        = '("hello", 6     )         ^. To_ SndSym0
-type OverExample'      = '("hello", 'True )         &  L2_       %~ NotSym0
-type TraversalExample' = '[ 'True, 'False, 'False ] &  Traverse_ %~ NotSym0
+type OverExample'      = '("hello", 'True )         &  L2_             %~ NotSym0
+type TraversalExample' = '[ 'True, 'False, 'False ] &  Traverse_       %~ NotSym0
 type NestedExample'    = '("hello", '(6, 'False ) ) ^. L2_ .@ L1_
 type FoldExample'      = '[ '("hello", 'True )
                           , '("world", 'False)
                           , '("curry", 'False)
                           ] ^.. Traverse_ .@ L1_
+type UnsafeExample'    = '[] ^?! Traverse_
+type IxExample'        = '["hello","world","curry"] &  IxList_ ('S 'Z) .~ "haskell"

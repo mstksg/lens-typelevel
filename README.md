@@ -27,6 +27,12 @@ ghci> :kind! '("hello", '(6, 'False ) ) ^. L2_ .@ L1_
 ghci> type TestList = '[ '("hello", 'True), '("world", 'False), '("curry", 'False)]
 ghci> :kind! TestLst ^.. Traverse_ .@ L1_
 '["hello", "world", "curry"]
+
+ghci> :kind! '[] ^?! Traverse_
+Error "Failed indexing into empty traversal"
+
+ghci> :kind! '["hello", "world", "curry"] & IxList_ ('S 'Z) .~ "haskell"
+'["hello", "haskell", "curry"]
 ```
 
 Using prefix function names:
@@ -53,4 +59,10 @@ ghci> :kind! View (L2_ .@ L1_)           '("hello", '(6, 'False ) )
 ghci> type TestList = '[ '("hello", 'True), '("world", 'False), '("curry", 'False)]
 ghci> :kind! ToListOf (Traverse_ .@ L1_) TestList
 '["hello", "world", "curry"]
+
+ghci> :kind! UnsafePreview Traverse_     '[]
+Error "Failed indexing into empty traversal"
+
+ghci> :kind! Set (IxList_ ('S 'Z)) "haskell" '["hello", "world", "curry"]
+'["hello", "haskell", "curry"]
 ```

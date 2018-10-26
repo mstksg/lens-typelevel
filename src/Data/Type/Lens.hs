@@ -9,42 +9,73 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 
+-- |
+-- Module      : Data.Type.Lens
+-- Copyright   : (c) Justin Le 2018
+-- License     : BSD3
+--
+-- Maintainer  : justin@jle.im
+-- Stability   : experimental
+-- Portability : non-portable
+--
+-- Lenses and optics for manipulating DataKind-based types, powered by
+-- /singletons/ defunctionalization.
+--
+-- See "Data.Type.Lens.Examples" for example usage and syntax.
+--
+-- For the most part, you should be able to use them just like you'd use
+-- the functions from the /lens/ or /microlens/ libraries; just remember
+-- to capitalize names like 'Over' and 'Set', since they are type families.
+--
+-- Note that the ways of "creating" a lens or optic ('Sets_', 'Traverse_',
+-- 'To_', 'MkLens_', etc. are all suffixed with @_@ for convenience, to
+-- reserve the underscoreless identifiers for the fully applied type family
+-- as per /singletons/ library convention.
 module Data.Type.Lens (
   -- * Setting
     ASetter
   -- ** Using
+  -- | Ways of consuming a setter.
   , Over, type (%~), sOver
   , Set, type (.~), sSet
   -- ** Making
+  -- | Ways of creating a setter-only.
   , Sets_, Sets, sSets
   -- * Getting
   , Getting
   -- ** Using
+  -- | Ways of consuming a getter
   , View, type (^.), sView
   -- ** Making
+  -- | Ways of creating a getter-only.
   , To_, To, sTo
   -- * Lenses
   , LensLike, LensLike'
   -- ** Making
+  -- | Ways of creating a lens
   , MkLens_, MkLens, sMkLens
   -- * Traversals and Folds
   -- ** Using
+  -- | Ways of consuming traversals and folds
   , Preview, type (^?), sPreview
   , ToListOf, type (^..), sToListOf
   , UnsafePreview, type (^?!), sUnsafePreview
   -- ** Making
+  -- | Ways of creating traversals and folds
   , Folding_, Folding, sFolding
   , Folded_, Folded, sFolded
   , Traverse_, Traverse, sTraverse
-  -- * Util
-  , type (.@)
   -- * Samples
+  -- | Some sample lenses and traversals
   -- ** Tuple
   , L1_, L1, sL1
   , L2_, L2, sL2
   -- ** List
   , N(..), SN
   , IxList_, IxList, sIxList
+  -- * Util
+  , type (.@)
+  , Sing (SZ, SS)
   -- * Defunctionalization Symbols
   , ASetterSym0, ASetterSym1, ASetterSym2, ASetterSym3, ASetterSym4
   , OverSym0, OverSym1, OverSym2, OverSym3
@@ -63,8 +94,6 @@ module Data.Type.Lens (
   , L2Sym0, L2Sym1, L2Sym2
   , ZSym0, SSym0, SSym1
   , IxListSym0, IxListSym1, IxListSym2, IxListSym3
-  -- * Sing
-  , Sing (SZ, SS)
   ) where
 
 import           Control.Applicative
@@ -79,11 +108,47 @@ import           Data.Singletons.Prelude.Maybe
 import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
 
+-- | The general shape of optics in this library. ("van Laarhoven")
+--
+-- For different levels of polymorphism on @f@, you get different types of
+-- optics:
+--
+--     * If @f@ can be any 'Functor', you have a Lens.
+--     * If @f@ is only 'Identity', you have a setter (see 'ASetter')
+--     * If @f@ is only @'Const' R@ for a specific @R@, you have a getter
+--       of @R@ (see 'Getting')
+--     * If @f@ can be @'Const' r@ for any 'Monoid' @r@, you have a Fold.
+--     * If @f@ can be any 'Applicative', you have a Traversal.
+--
+-- Normal lens libraries implement the constraints for lenses, folds, and
+-- traversals using RankN types, but we don't do that here to avoid working
+-- with RankN kinds.
 type LensLike  f s t a b = (a -> f b) -> (s -> f t)
+
+-- | A 'LensLike' that does not change any types.
 type LensLike' f s   a   = LensLike f         s s a a
+
+-- | A settable "lens".  Usable with 'Over' ('%~'), constructable with 'To'
+-- or any of the general lens constructors.
+--
+-- See 'LensLike' for more information.
 type ASetter     s t a b = LensLike Identity  s t a b
+
+-- | A retrieving "lens".  If @r@ is fixed to a type, it's a Getter for
+-- that type.  If @r@ is polymorphic over all 'Monoid', then it's a Fold
+-- over @a@s.
+--
+-- As a Getter, usable with 'View' ('^.'); as a Fold, usable with
+-- 'ToListOf' ('^..'), 'Preview' ('^?'), etc.
+--
+-- Normal lens libraries implement the constraints for folds using RankN
+-- types, but we don't do that here to avoid working with RankN kinds.
+--
+-- See 'LensLike' for more information.
 type Getting   r s   a   = LensLike (Const r) s s a a
 
+-- | Peano nats, used for implementation of list index traversals in
+-- a termination-sane way.
 data N = Z | S N
 
 genSingletons [''LensLike, ''LensLike', ''ASetter, ''Getting, ''N]
@@ -147,12 +212,26 @@ $(singletonsOnly [d|
   ixList (S i) f (x:xs) = (x:)  <$> ixList i f xs
   |])
 
+-- | Infix application of 'Over'
 type l %~  f = OverSym2 l f
+
+-- | Infix application of 'Set'
 type l .~  x = SetSym2 l x
+
+-- | Infix application of 'View'
 type x ^.  l = View l x
+
+-- | Infix application of 'Preview'
 type x ^?  l = Preview l x
+
+-- | Infix application of 'UnsafePreview'
 type x ^?! l = UnsafePreview l x
+
+-- | Infix application of 'ToListOf'
 type x ^.. l = ToListOf l x
+
+-- | Shorter name for type-level function composition
+type f .@ g = f .@#@$$$ g
 
 infixr 4 %~
 infixr 4 .~
@@ -160,20 +239,75 @@ infixl 8 ^.
 infixl 8 ^?
 infixl 8 ^?!
 infixl 8 ^..
-
-type f .@ g = f .@#@$$$ g
-
 infixr 9 .@
 
+-- | Create a Getter from a getting function.
+--
+-- @
+-- 'To_' :: (a ~> b) -> 'Getting' b a b
+-- @
 type To_     f   = ToSym1   f
+
+-- | Create a Setter from a setting function.
+--
+-- @
+-- 'Sets_' :: ((a ~> b) ~> (s ~> t)) -> 'ASetter' s t a b
+-- @
 type Sets_   f   = SetsSym1 f
+
+-- | Create a Lens from a setter and a getter.
+--
+-- @
+-- 'MkLens_'
+--     :: 'Functor' f
+--     => (s ~> a)
+--     -> (s ~> b ~> t)
+--     -> 'LensLike' f s t a b
+-- @
 type MkLens_ f g = MkLensSym2 f g
 
+-- | The canonical Traversal for any instance of 'Traversable'.
+--
+-- @
+-- 'Traverse_'
+--     :: 'Applicative' f
+--     => 'LensLike' f (t a) (t b) a b
+-- @
 type Traverse_  = TraverseSym0
+
+-- | Create a Fold from a "folding function":
+--
+-- @
+-- 'Folding_'
+--     :: ('Foldable' f, 'Monoid' r)
+--     => (s ~> f a)
+--     -> 'Getting' r s a
+-- @
 type Folding_ f = FoldingSym1 f
+
+-- | The canonical Fold for any instance of 'Foldable'.
+--
+-- @
+-- 'Folded_'
+--     :: 'Monoid' r
+--     => 'Getting' r (t a) a
+-- @
 type Folded_    = FoldedSym0
 
+-- | Lens into the first field of a tuple
 type L1_       = L1Sym0
+
+-- | Lens into the second field of a tuple
 type L2_       = L2Sym0
+
+-- | @'IxList' i@ is a Traversal into the i-th item into a list.  Defined
+-- in terms of 'N' to allow for sane termination guaruntees.
+--
+-- @
+-- 'IxList_'
+--     :: 'Applicative' f
+--     => 'N'
+--     -> 'LensLike'' f [a] a
+-- @
 type IxList_ i = IxListSym1 i
 
