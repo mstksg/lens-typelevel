@@ -57,8 +57,8 @@ module Data.Type.Lens (
   , MkLens_, MkLens, sMkLens
   -- ** Cloning
   , CloneLens_, CloneLens, sCloneLens
-  , Context(..)
   -- * Traversals and Folds
+  , ATraversal
   -- ** Using
   -- | Ways of consuming traversals and folds
   , Preview, type (^?), sPreview
@@ -69,6 +69,8 @@ module Data.Type.Lens (
   , Folding_, Folding, sFolding
   , Folded_, Folded, sFolded
   , Traverse_, Traverse, sTraverse
+  -- ** Cloning
+  , CloneTraversal_, CloneTraversal, sCloneTraversal
   -- * Samples
   -- | Some sample lenses and traversals
   -- ** Tuple
@@ -93,7 +95,6 @@ module Data.Type.Lens (
   , LensLike'Sym0, LensLike'Sym1, LensLike'Sym2, LensLike'Sym3
   , MkLensSym0, MkLensSym1, MkLensSym2, MkLensSym3, MkLensSym4
   , CloneLensSym0, CloneLensSym1, CloneLensSym2, CloneLensSym3
-  , MkContextSym0, MkContextSym1, MkContextSym2
   , FoldingSym0, FoldingSym1, FoldingSym2, FoldingSym3
   , FoldedSym0, FoldedSym1, FoldedSym2
   , L1Sym0, L1Sym1, L1Sym2
@@ -128,7 +129,8 @@ import           Data.Type.Lens.Internal
 --     * If @f@ is only @'Const' R@ for a specific @R@, you have a getter
 --       of @R@ (see 'Getting')
 --     * If @f@ can be @'Const' r@ for any 'Monoid' @r@, you have a Fold.
---     * If @f@ can be any 'Applicative', you have a Traversal.
+--     * If @f@ can be any 'Applicative', you have a Traversal (see
+--       'ATraversal')
 --
 -- Normal lens libraries implement the constraints for lenses, folds, and
 -- traversals using RankN types, but we don't do that here to avoid working
@@ -168,6 +170,13 @@ genSingletons [''LensLike, ''LensLike', ''ASetter, ''Getting, ''N]
 --
 -- You can use an 'ALens' as a normal lens by using 'CloneLens_'.
 type ALens s t a b = LensLike (Context a b) s t a b
+
+-- | If a function expects an 'ATraversal', it can be given any Traversal
+-- (a @'LensLike' f@ that works for any 'Applicative' f).
+--
+-- You can use an 'ATraversal' as a normal traversal by using
+-- 'CloneTraversal_'.
+type ATraversal s t a b = LensLike (Bazaar a b) s t a b
 
 $(singletonsOnly [d|
   over :: ASetter s t a b -> (a -> b) -> (s -> t)
@@ -222,6 +231,12 @@ $(singletonsOnly [d|
   folded :: (Foldable f, Monoid r) => Getting r (f a) a
   folded f x = case traverse_ f x of
       Const y -> Const y
+
+  cloneTraversal
+      :: Applicative f
+      => LensLike (Bazaar a b) s t a b
+      -> LensLike f s t a b
+  cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
 
   l1 :: Functor f => LensLike f (a, c) (b, c) a b
   l1 f (x, y) = (\x' -> (x', y)) <$> f x
@@ -304,6 +319,21 @@ type MkLens_ f g = MkLensSym2 f g
 -- use it as a getter or setter.
 type CloneLens_ l = CloneLensSym1 l
 
+-- | "Clone" a polymorphic traversal so it can be used as more than one type of
+-- thing (fold, traversal, getter, setter...).
+--
+-- @
+-- 'CloneTraversal_'
+--     :: 'Functor' f
+--     => 'LensLike' (Bazaar a b) s t a b
+--     -> 'LensLike' f s t a b
+-- @
+--
+-- Useful for writing a function that takes a traversal and uses it in more
+-- than one way; if you have it take an 'ATraversal', you can then use
+-- 'CloneTraversal_' to use it as a fold or traversal or anything else.
+type CloneTraversal_ l = CloneTraversalSym1 l
+
 -- | The canonical Traversal for any instance of 'Traversable'.
 --
 -- @
@@ -349,39 +379,3 @@ type L2_       = L2Sym0
 -- @
 type IxList_ i = IxListSym1 i
 
--- data Bazaar a b t = Done t
---                   | More a (Bazaar a b (b -> t))
-
--- instance Functor (Bazaar a b) where
---     fmap f (Done t)   = Done (f t)
---     fmap f (More x b) = More x (fmap (f .) b)
-
--- instance Applicative (Bazaar a b) where
---     pure = Done
---     Done f   <*> c = f <$> c
---     More a b <*> c = More a $ flip <$> b <*> c
-
--- unBazaar :: Applicative f => (a -> f b) -> Bazaar a b t -> f t
--- unBazaar f (Done x)   = pure x
--- unBazaar f (More x b) = (&) <$> f x <*> unBazaar f b
-
--- cloneTraversal
---     :: Applicative f
---     => LensLike (Bazaar a b) s t a b
---     -> LensLike f s t a b
--- cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
-
-
--- cloneTraversal l f xs = case l (`More` Done id) xs of
---     Done x   -> pure x
---     More x b -> _ <$> f x
---     Done x   -> pure x
---     More x b -> _ <$> f x
-    -- MkBazaar g ys -> _
-
---   cloneLens
---       :: Functor f
---       => LensLike (Context a b) s t a b
---       -> LensLike f s t a b
---   cloneLens l f x = case l (\y -> MkContext id y) x of
---       MkContext g y -> g <$> f y
