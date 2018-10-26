@@ -4,7 +4,9 @@
 
 -- | Type-level lenses using singletons
 --   
---   Have you ever wanted lenses, but at the TYPE LEVEL????
+--   Type-level lenses using singletons and its defunctionalization system,
+--   implemented using the same van Laarhoven encoding as the <i>lens</i>
+--   package. See README for more information.
 @package lens-typelevel
 @version 0.1.0.0
 
