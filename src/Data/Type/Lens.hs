@@ -105,9 +105,7 @@ module Data.Type.Lens (
 
 import           Control.Applicative
 import           Data.Foldable
-import           Data.Function
 import           Data.Functor.Identity
-import           Data.Kind
 import           Data.Monoid
 import           Data.Singletons.Prelude.Const
 import           Data.Singletons.Prelude.Foldable hiding (Traverse_)

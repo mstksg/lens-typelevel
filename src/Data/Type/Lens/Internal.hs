@@ -15,24 +15,16 @@ module Data.Type.Lens.Internal (
   , Bazaar(..)
   , UnBazaar, sUnBazaar
   , Sing (SMkContext, SDone, SMore)
-  -- * Defunctionalization SYmbols
+  -- * Defunctionalization Symbols
   , MkContextSym0, MkContextSym1, MkContextSym2
   , DoneSym0, DoneSym1, MoreSym0, MoreSym1, MoreSym2
   , UnBazaarSym0, UnBazaarSym1, UnBazaarSym2
   ) where
 
-import           Control.Applicative
-import           Data.Foldable
-import           Data.Functor.Identity
 import           Data.Kind
-import           Data.Monoid
 import           Data.Singletons.Prelude.Const
-import           Data.Singletons.Prelude.Foldable hiding (Traverse_)
 import           Data.Singletons.Prelude.Function hiding (Const, ConstSym0)
 import           Data.Singletons.Prelude.Functor
-import           Data.Singletons.Prelude.Identity
-import           Data.Singletons.Prelude.Maybe
-import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
 
 -- | A partially applied lens
