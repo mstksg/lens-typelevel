@@ -78,12 +78,8 @@ $(singletonsOnly [d|
   liftA2Bazaar f (Done x  ) c = fmapBazaar (f x) c
   liftA2Bazaar f (More x b) c = More x (liftA2Bazaar (\g r y -> f (g y) r) b c)
 
-  apBazaar :: Bazaar a b (t -> q) -> Bazaar a b t -> Bazaar a b q
-  apBazaar (Done f  ) c = fmapBazaar f c
-  apBazaar (More a b) c = More a (liftA2Bazaar flip b c)
-
   unBazaar :: Applicative f => (a -> f b) -> Bazaar a b t -> f t
-  unBazaar _ (Done x)   = pure x
+  unBazaar _ (Done x  ) = pure x
   unBazaar f (More x b) = (&) <$> f x <*> unBazaar f b
   |])
 
@@ -96,4 +92,7 @@ instance SFunctor (Bazaar a b) where
 instance PApplicative (Bazaar a b) where
     type Pure x       = PureBazaar x
     type LiftA2 f x y = LiftA2Bazaar f x y
-    type f <*> x      = ApBazaar f x
+
+instance SApplicative (Bazaar a b) where
+    sPure   = sPureBazaar
+    sLiftA2 = sLiftA2Bazaar
