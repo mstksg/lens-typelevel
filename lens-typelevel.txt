@@ -8,31 +8,75 @@
 @package lens-typelevel
 @version 0.1.0.0
 
+
+-- | Lenses and optics for manipulating DataKind-based types, powered by
+--   <i>singletons</i> defunctionalization.
+--   
+--   See <a>Data.Type.Lens.Examples</a> for example usage and syntax.
+--   
+--   For the most part, you should be able to use them just like you'd use
+--   the functions from the <i>lens</i> or <i>microlens</i> libraries; just
+--   remember to capitalize names like <a>Over</a> and <a>Set</a>, since
+--   they are type families.
+--   
+--   Note that the ways of "creating" a lens or optic (<a>Sets_</a>,
+--   <a>Traverse_</a>, <a>To_</a>, <a>MkLens_</a>, etc. are all suffixed
+--   with <tt>_</tt> for convenience, to reserve the underscoreless
+--   identifiers for the fully applied type family as per <i>singletons</i>
+--   library convention.
 module Data.Type.Lens
 
--- | A settable "lens". Usable with <a>Over</a>, constructable with
---   <a>To</a> or any of the general lens constructors.
+-- | A settable "lens". Usable with <a>Over</a> (<a>%~</a>), constructable
+--   with <a>To</a> or any of the general lens constructors.
+--   
+--   See <a>LensLike</a> for more information.
 type ASetter s t a b = LensLike Identity s t a b
 type family Over (a_aGAt :: (~>) ((~>) a_aFqZ (Identity b_aFr0)) ((~>) s_aFqX (Identity t_aFqY))) (a_aGAu :: (~>) a_aFqZ b_aFr0) (a_aGAv :: s_aFqX) :: t_aFqY
+
+-- | Infix application of <a>Over</a>
 type l %~ f = OverSym2 l f
 infixr 4 %~
 sOver :: forall s_aFqX t_aFqY a_aFqZ b_aFr0 (t_aGC4 :: (~>) ((~>) a_aFqZ (Identity b_aFr0)) ((~>) s_aFqX (Identity t_aFqY))) (t_aGC5 :: (~>) a_aFqZ b_aFr0) (t_aGC6 :: s_aFqX). Sing t_aGC4 -> Sing t_aGC5 -> Sing t_aGC6 -> Sing (Apply (Apply (Apply OverSym0 t_aGC4) t_aGC5) t_aGC6 :: t_aFqY)
 type family Set (a_aGAK :: (~>) ((~>) a_aFqV (Identity b_aFqW)) ((~>) s_aFqT (Identity t_aFqU))) (a_aGAL :: b_aFqW) (a_aGAM :: s_aFqT) :: t_aFqU
+
+-- | Infix application of <a>Set</a>
 type l .~ x = SetSym2 l x
 infixr 4 .~
 sSet :: forall s_aFqT t_aFqU a_aFqV b_aFqW (t_aGCa :: (~>) ((~>) a_aFqV (Identity b_aFqW)) ((~>) s_aFqT (Identity t_aFqU))) (t_aGCb :: b_aFqW) (t_aGCc :: s_aFqT). Sing t_aGCa -> Sing t_aGCb -> Sing t_aGCc -> Sing (Apply (Apply (Apply SetSym0 t_aGCa) t_aGCb) t_aGCc :: t_aFqU)
+
+-- | Create a Setter from a setting function.
+--   
+--   <pre>
+--   <a>Sets_</a> :: ((a ~&gt; b) ~&gt; (s ~&gt; t)) -&gt; <a>ASetter</a> s t a b
+--   </pre>
 type Sets_ f = SetsSym1 f
 type family Sets (a_aGzO :: (~>) ((~>) a_aFqN b_aFqO) ((~>) s_aFqP t_aFqQ)) (a_aGzP :: (~>) a_aFqN (Identity b_aFqO)) (a_aGzQ :: s_aFqP) :: Identity t_aFqQ
 sSets :: forall a_aFqN b_aFqO s_aFqP t_aFqQ (t_aGBU :: (~>) ((~>) a_aFqN b_aFqO) ((~>) s_aFqP t_aFqQ)) (t_aGBV :: (~>) a_aFqN (Identity b_aFqO)) (t_aGBW :: s_aFqP). Sing t_aGBU -> Sing t_aGBV -> Sing t_aGBW -> Sing (Apply (Apply (Apply SetsSym0 t_aGBU) t_aGBV) t_aGBW :: Identity t_aFqQ)
 
--- | A retrieving "lens". If <tt>r</tt> is fixed to a type, it's a getter
+-- | A retrieving "lens". If <tt>r</tt> is fixed to a type, it's a Getter
 --   for that type. If <tt>r</tt> is polymorphic over all <a>Monoid</a>,
 --   then it's a Fold over <tt>a</tt>s.
+--   
+--   As a Getter, usable with <a>View</a> (<a>^.</a>); as a Fold, usable
+--   with <a>ToListOf</a> (<a>^..</a>), <a>Preview</a> (<a>^?</a>), etc.
+--   
+--   Normal lens libraries implement the constraints for folds using RankN
+--   types, but we don't do that here to avoid working with RankN kinds.
+--   
+--   See <a>LensLike</a> for more information.
 type Getting r s a = LensLike (Const r) s s a a
 type family View (a_aGAg :: (~>) ((~>) a_aFqR ((Const a_aFqR :: Type -> Type) a_aFqR)) ((~>) s_aFqS ((Const a_aFqR :: Type -> Type) s_aFqS))) (a_aGAh :: s_aFqS) :: a_aFqR
+
+-- | Infix application of <a>View</a>
 type x ^. l = View l x
 infixl 8 ^.
 sView :: forall a_aFqR s_aFqS (t_aGC0 :: (~>) ((~>) a_aFqR ((Const a_aFqR :: Type -> Type) a_aFqR)) ((~>) s_aFqS ((Const a_aFqR :: Type -> Type) s_aFqS))) (t_aGC1 :: s_aFqS). Sing t_aGC0 -> Sing t_aGC1 -> Sing (Apply (Apply ViewSym0 t_aGC0) t_aGC1 :: a_aFqR)
+
+-- | Create a Getter from a getting function.
+--   
+--   <pre>
+--   <a>To_</a> :: (a ~&gt; b) -&gt; <a>Getting</a> b a b
+--   </pre>
 type To_ f = ToSym1 f
 type family To (a_aGzx :: (~>) s_aFqK a_aFqL) (a_aGzy :: (~>) a_aFqL ((Const r_aFqM :: Type -> Type) a_aFqL)) (a_aGzz :: s_aFqK) :: (Const r_aFqM :: Type -> Type) s_aFqK
 sTo :: forall s_aFqK a_aFqL r_aFqM (t_aGBO :: (~>) s_aFqK a_aFqL) (t_aGBP :: (~>) a_aFqL ((Const r_aFqM :: Type -> Type) a_aFqL)) (t_aGBQ :: s_aFqK). Sing t_aGBO -> Sing t_aGBP -> Sing t_aGBQ -> Sing (Apply (Apply (Apply ToSym0 t_aGBO) t_aGBP) t_aGBQ :: (Const r_aFqM :: Type -> Type) s_aFqK)
@@ -61,47 +105,109 @@ type LensLike f s t a b = (a -> f b) -> (s -> f t)
 
 -- | A <a>LensLike</a> that does not change any types.
 type LensLike' f s a = LensLike f s s a a
+
+-- | Create a Lens from a setter and a getter.
+--   
+--   <pre>
+--   <a>MkLens_</a>
+--       :: <a>Functor</a> f
+--       =&gt; (s ~&gt; a)
+--       -&gt; (s ~&gt; b ~&gt; t)
+--       -&gt; <a>LensLike</a> f s t a b
+--   </pre>
 type MkLens_ f g = MkLensSym2 f g
 type family MkLens (a_aGzl :: (~>) s_aFqG a_aFqH) (a_aGzm :: (~>) s_aFqG ((~>) b_aFqI t_aFqJ)) (a_aGzn :: (~>) a_aFqH (f_aFqF b_aFqI)) (a_aGzo :: s_aFqG) :: f_aFqF t_aFqJ
 sMkLens :: forall f_aFqF s_aFqG a_aFqH b_aFqI t_aFqJ (t_aGBG :: (~>) s_aFqG a_aFqH) (t_aGBH :: (~>) s_aFqG ((~>) b_aFqI t_aFqJ)) (t_aGBI :: (~>) a_aFqH (f_aFqF b_aFqI)) (t_aGBJ :: s_aFqG). SFunctor f_aFqF => Sing t_aGBG -> Sing t_aGBH -> Sing t_aGBI -> Sing t_aGBJ -> Sing (Apply (Apply (Apply (Apply MkLensSym0 t_aGBG) t_aGBH) t_aGBI) t_aGBJ :: f_aFqF t_aFqJ)
 type family Preview (a_aGyB :: (~>) ((~>) a_aFqB ((Const (First a_aFqB) :: Type -> Type) a_aFqB)) ((~>) s_aFqC ((Const (First a_aFqB) :: Type -> Type) s_aFqC))) (a_aGyC :: s_aFqC) :: Maybe a_aFqB
+
+-- | Infix application of <a>Preview</a>
 type x ^? l = Preview l x
 infixl 8 ^?
 sPreview :: forall a_aFqB s_aFqC (t_aGBu :: (~>) ((~>) a_aFqB ((Const (First a_aFqB) :: Type -> Type) a_aFqB)) ((~>) s_aFqC ((Const (First a_aFqB) :: Type -> Type) s_aFqC))) (t_aGBv :: s_aFqC). Sing t_aGBu -> Sing t_aGBv -> Sing (Apply (Apply PreviewSym0 t_aGBu) t_aGBv :: Maybe a_aFqB)
 type family ToListOf (a_aGz1 :: (~>) ((~>) a_aFqD ((Const [a_aFqD] :: Type -> Type) a_aFqD)) ((~>) s_aFqE ((Const [a_aFqD] :: Type -> Type) s_aFqE))) (a_aGz2 :: s_aFqE) :: [a_aFqD]
+
+-- | Infix application of <a>ToListOf</a>
 type x ^.. l = ToListOf l x
 infixl 8 ^..
 sToListOf :: forall a_aFqD s_aFqE (t_aGBC :: (~>) ((~>) a_aFqD ((Const [a_aFqD] :: Type -> Type) a_aFqD)) ((~>) s_aFqE ((Const [a_aFqD] :: Type -> Type) s_aFqE))) (t_aGBD :: s_aFqE). Sing t_aGBC -> Sing t_aGBD -> Sing (Apply (Apply ToListOfSym0 t_aGBC) t_aGBD :: [a_aFqD])
 type family UnsafePreview (a_aGyO :: (~>) ((~>) a_aFqz ((Const (First a_aFqz) :: Type -> Type) a_aFqz)) ((~>) s_aFqA ((Const (First a_aFqz) :: Type -> Type) s_aFqA))) (a_aGyP :: s_aFqA) :: a_aFqz
+
+-- | Infix application of <a>UnsafePreview</a>
 type x ^?! l = UnsafePreview l x
 infixl 8 ^?!
 sUnsafePreview :: forall a_aFqz s_aFqA (t_aGBy :: (~>) ((~>) a_aFqz ((Const (First a_aFqz) :: Type -> Type) a_aFqz)) ((~>) s_aFqA ((Const (First a_aFqz) :: Type -> Type) s_aFqA))) (t_aGBz :: s_aFqA). Sing t_aGBy -> Sing t_aGBz -> Sing (Apply (Apply UnsafePreviewSym0 t_aGBy) t_aGBz :: a_aFqz)
+
+-- | Create a Fold from a "folding function":
+--   
+--   <pre>
+--   <a>Folding_</a>
+--       :: (<a>Foldable</a> f, <a>Monoid</a> r)
+--       =&gt; (s ~&gt; f a)
+--       -&gt; <a>Getting</a> r s a
+--   </pre>
 type Folding_ f = FoldingSym1 f
 type family Folding (a_aGyk :: (~>) s_aFqx (f_aFqv a_aFqy)) (a_aGyl :: (~>) a_aFqy ((Const r_aFqw :: Type -> Type) a_aFqy)) (a_aGym :: s_aFqx) :: (Const r_aFqw :: Type -> Type) s_aFqx
 sFolding :: forall f_aFqv r_aFqw s_aFqx a_aFqy (t_aGBo :: (~>) s_aFqx (f_aFqv a_aFqy)) (t_aGBp :: (~>) a_aFqy ((Const r_aFqw :: Type -> Type) a_aFqy)) (t_aGBq :: s_aFqx). (SFoldable f_aFqv, SMonoid r_aFqw) => Sing t_aGBo -> Sing t_aGBp -> Sing t_aGBq -> Sing (Apply (Apply (Apply FoldingSym0 t_aGBo) t_aGBp) t_aGBq :: (Const r_aFqw :: Type -> Type) s_aFqx)
+
+-- | The canonical Fold for any instance of <a>Foldable</a>.
+--   
+--   <pre>
+--   <a>Folded_</a>
+--       :: <a>Monoid</a> r
+--       =&gt; <a>Getting</a> r (t a) a
+--   </pre>
 type Folded_ = FoldedSym0
 type family Folded (a_aGy7 :: (~>) a_aFqu ((Const r_aFqt :: Type -> Type) a_aFqu)) (a_aGy8 :: f_aFqs a_aFqu) :: (Const r_aFqt :: Type -> Type) (f_aFqs a_aFqu)
 sFolded :: forall f_aFqs r_aFqt a_aFqu (t_aGBk :: (~>) a_aFqu ((Const r_aFqt :: Type -> Type) a_aFqu)) (t_aGBl :: f_aFqs a_aFqu). (SFoldable f_aFqs, SMonoid r_aFqt) => Sing t_aGBk -> Sing t_aGBl -> Sing (Apply (Apply FoldedSym0 t_aGBk) t_aGBl :: (Const r_aFqt :: Type -> Type) (f_aFqs a_aFqu))
+
+-- | The canonical Traversal for any instance of <a>Traversable</a>.
+--   
+--   <pre>
+--   <a>Traverse_</a>
+--       :: <a>Applicative</a> f
+--       =&gt; <a>LensLike</a> f (t a) (t b) a b
+--   </pre>
 type Traverse_ = TraverseSym0
 type family Traverse (arg :: a ~> f b) (arg1 :: t a) :: f t b
 sTraverse :: (STraversable t, SApplicative f) => Sing t1 -> Sing t2 -> Sing (Apply (Apply (TraverseSym0 :: TyFun (a ~> f b) (t a ~> f (t b)) -> Type) t1) t2)
-type f .@ g = f .@#@$$$ g
-infixr 9 .@
+
+-- | Lens into the first field of a tuple
 type L1_ = L1Sym0
 type family L1 (a_aGxS :: (~>) a_aFqp (f_aFqo b_aFqr)) (a_aGxT :: (a_aFqp, c_aFqq)) :: f_aFqo (b_aFqr, c_aFqq)
 sL1 :: forall f_aFqo a_aFqp c_aFqq b_aFqr (t_aGBg :: (~>) a_aFqp (f_aFqo b_aFqr)) (t_aGBh :: (a_aFqp, c_aFqq)). SFunctor f_aFqo => Sing t_aGBg -> Sing t_aGBh -> Sing (Apply (Apply L1Sym0 t_aGBg) t_aGBh :: f_aFqo (b_aFqr, c_aFqq))
+
+-- | Lens into the second field of a tuple
 type L2_ = L2Sym0
 type family L2 (a_aGxD :: (~>) b_aFqm (f_aFqk c_aFqn)) (a_aGxE :: (a_aFql, b_aFqm)) :: f_aFqk (a_aFql, c_aFqn)
 sL2 :: forall f_aFqk a_aFql b_aFqm c_aFqn (t_aGBc :: (~>) b_aFqm (f_aFqk c_aFqn)) (t_aGBd :: (a_aFql, b_aFqm)). SFunctor f_aFqk => Sing t_aGBc -> Sing t_aGBd -> Sing (Apply (Apply L2Sym0 t_aGBc) t_aGBd :: f_aFqk (a_aFql, c_aFqn))
 
--- | Peano nats, used for implementation of list index traversals.
+-- | Peano nats, used for implementation of list index traversals in a
+--   termination-sane way.
 data N
 Z :: N
 S :: N -> N
 type SN = (Sing :: N -> Type)
+
+-- | <tt><a>IxList</a> i</tt> is a Traversal into the i-th item into a
+--   list. Defined in terms of <a>N</a> to allow for sane termination
+--   guaruntees.
+--   
+--   <pre>
+--   <a>IxList_</a>
+--       :: <a>Applicative</a> f
+--       =&gt; <a>N</a>
+--       -&gt; <a>LensLike'</a> f [a] a
+--   </pre>
 type IxList_ i = IxListSym1 i
 type family IxList (a_aGxi :: N) (a_aGxj :: (~>) a_aFqj (f_aFqi a_aFqj)) (a_aGxk :: [a_aFqj]) :: f_aFqi [a_aFqj]
 sIxList :: forall f_aFqi a_aFqj (t_aGB6 :: N) (t_aGB7 :: (~>) a_aFqj (f_aFqi a_aFqj)) (t_aGB8 :: [a_aFqj]). SApplicative f_aFqi => Sing t_aGB6 -> Sing t_aGB7 -> Sing t_aGB8 -> Sing (Apply (Apply (Apply IxListSym0 t_aGB6) t_aGB7) t_aGB8 :: f_aFqi [a_aFqj])
+
+-- | Shorter name for type-level function composition
+type f .@ g = f .@#@$$$ g
+infixr 9 .@
+
+-- | The singleton kind-indexed data family.
+data family Sing (a :: k) :: Type
 data ASetterSym0 s6989586621679120345
 data ASetterSym1 (s6989586621679120345 :: Type) t6989586621679120346
 data ASetterSym2 (s6989586621679120345 :: Type) (t6989586621679120346 :: Type) a6989586621679120347
@@ -168,9 +274,6 @@ data IxListSym0 :: forall a6989586621679169027 f6989586621679169026. (~>) N ((~>
 data IxListSym1 (a6989586621679173304 :: N) :: forall a6989586621679169027 f6989586621679169026. (~>) ((~>) a6989586621679169027 (f6989586621679169026 a6989586621679169027)) ((~>) [a6989586621679169027] (f6989586621679169026 [a6989586621679169027]))
 data IxListSym2 (a6989586621679173304 :: N) (a6989586621679173305 :: (~>) a6989586621679169027 (f6989586621679169026 a6989586621679169027)) :: (~>) [a6989586621679169027] (f6989586621679169026 [a6989586621679169027])
 type IxListSym3 (a6989586621679173304 :: N) (a6989586621679173305 :: (~>) a6989586621679169027 (f6989586621679169026 a6989586621679169027)) (a6989586621679173306 :: [a6989586621679169027]) = IxList a6989586621679173304 a6989586621679173305 a6989586621679173306
-
--- | The singleton kind-indexed data family.
-data family Sing (a :: k) :: Type
 instance Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings Data.Type.Lens.SetSym0
 instance Data.Singletons.Internal.SingI Data.Type.Lens.SetSym0
 instance forall a6989586621679169065 b6989586621679169066 s6989586621679169063 t6989586621679169064 (a6989586621679173518 :: (a6989586621679169065 Data.Singletons.Internal.~> Data.Functor.Identity.Identity b6989586621679169066) Data.Singletons.Internal.~> (s6989586621679169063 Data.Singletons.Internal.~> Data.Functor.Identity.Identity t6989586621679169064)). Data.Singletons.SuppressUnusedWarnings.SuppressUnusedWarnings (Data.Type.Lens.SetSym1 a6989586621679173518)
@@ -354,6 +457,8 @@ type NestedExample = View (L2_ .@ L1_) '("hello", '(6,  'False))
 --   '["hello", "world", "curry"]
 --   </pre>
 type FoldExample = ToListOf (Traverse_ .@ L1_) '['("hello",  'True), '("world",  'False), '("curry",  'False)]
+type UnsafeExample = UnsafePreview Traverse_ '[]
+type IxExample = Set (IxList_ ( 'S  'Z)) "haskell" '["hello", "world", "curry"]
 type SetExample' = '("hello", 6) & L1_ .~  'True
 type ViewExample' = '("hello", 6) ^. L2_
 type ToExample' = '("hello", 6) ^. To_ SndSym0
@@ -361,3 +466,5 @@ type OverExample' = '("hello",  'True) & L2_ %~ NotSym0
 type TraversalExample' = '[ 'True,  'False,  'False] & Traverse_ %~ NotSym0
 type NestedExample' = '("hello", '(6,  'False)) ^. L2_ .@ L1_
 type FoldExample' = '['("hello",  'True), '("world",  'False), '("curry",  'False)] ^.. Traverse_ .@ L1_
+type IxExample' = '["hello", "world", "curry"] & IxList_ ( 'S  'Z) .~ "haskell"
+type UnsafeExample' = '[] ^?! Traverse_
