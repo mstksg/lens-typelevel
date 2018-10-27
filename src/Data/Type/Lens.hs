@@ -41,16 +41,16 @@
 -- First, you can write them by hand using 'singletonsOnly':
 -- 
 -- @
--- $(singletonsOnly [d|
---   l1 :: Functor f => LensLike (a, c) (b, c) a b
---   l1 f (x, y) = (\x' -> (x', y)) <$> f x
--- 
---   l1Alt :: Functor f => LensLike (a, c) (b, c) a b
---   l1Alt = mkLens fst (\(_, y) x -> (x', y))
--- 
---   getFirst :: Getting a (a, b) a
---   getFirst = to fst
---   |])
+--  $(singletonsOnly [d|
+--    l1 :: Functor f => LensLike (a, c) (b, c) a b
+--    l1 f (x, y) = (\x' -> (x', y)) <$> f x
+--  
+--    l1Alt :: Functor f => LensLike (a, c) (b, c) a b
+--    l1Alt = mkLens fst (\(_, y) x -> (x', y))
+--  
+--    getFirst :: Getting a (a, b) a
+--    getFirst = to fst
+--    |])
 -- @
 -- 
 -- This creates the /type families/ @L1@, @L1Alt@, and @GetFirst@; however,
@@ -289,22 +289,6 @@ $(singletonsOnly [d|
   folded f x = case traverse_ f x of
       Const y -> Const y
 
-  l1 :: Functor f => LensLike f (a, c) (b, c) a b
-  l1 f (x, y) = (\x' -> (x', y)) <$> f x
-
-  l2 :: Functor f => LensLike f (a, b) (a, c) b c
-  l2 f (x, y) = (\y' -> (x, y')) <$> f y
-
-  |])
-
-$(singletons [d|
-  ixList :: Applicative f => N -> LensLike' f [a] a
-  ixList _     _ []     = pure []
-  ixList Z     f (x:xs) = (:xs) <$> f x
-  ixList (S i) f (x:xs) = (x:)  <$> ixList i f xs
-  |])
-
-$(singletonsOnly [d|
   cloneLens
       :: Functor f
       => LensLike (Context a b) s t a b
@@ -317,8 +301,20 @@ $(singletonsOnly [d|
       => LensLike (Bazaar a b) s t a b
       -> LensLike f s t a b
   cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
+
+  l1 :: Functor f => LensLike f (a, c) (b, c) a b
+  l1 f (x, y) = (\x' -> (x', y)) <$> f x
+
+  l2 :: Functor f => LensLike f (a, b) (a, c) b c
+  l2 f (x, y) = (\y' -> (x, y')) <$> f y
   |])
 
+$(singletons [d|
+  ixList :: Applicative f => N -> LensLike' f [a] a
+  ixList _     _ []     = pure []
+  ixList Z     f (x:xs) = (:xs) <$> f x
+  ixList (S i) f (x:xs) = (x:)  <$> ixList i f xs
+  |])
 
 -- | Infix application of 'Over'
 type l %~  f = OverSym2 l f
