@@ -36,55 +36,61 @@
 -- reserve the underscoreless identifiers for the fully applied type family
 -- as per /singletons/ library convention.
 --
+-- "Value level" versions of these lenses and functions are not exported,
+-- because they would be more or less completely compatible with the same
+-- functions from /microlens/ and /lens/ packages.  However, when the names
+-- of these functions differ from the names of their /lens/ counterpart
+-- ('mkLens' and 'ixList'), value-level versions are provided.
+--
 -- There are two main ways to define optics.
--- 
+--
 -- First, you can write them by hand using 'singletonsOnly':
--- 
+--
 -- @
 --  $(singletonsOnly [d|
 --    l1 :: Functor f => LensLike (a, c) (b, c) a b
 --    l1 f (x, y) = (\x' -> (x', y)) <$> f x
---  
+--
 --    l1Alt :: Functor f => LensLike (a, c) (b, c) a b
 --    l1Alt = mkLens fst (\(_, y) x -> (x', y))
---  
+--
 --    getFirst :: Getting a (a, b) a
 --    getFirst = to fst
 --    |])
 -- @
--- 
+--
 -- This creates the /type families/ @L1@, @L1Alt@, and @GetFirst@; however,
 -- these aren't lenses, because they aren't partially applied.  The lactual
 -- lenses are @L1Sym0@, @L1AltSym0@, and @GetFirstSym0@.  As a convention,
 -- it is recommend to alias the /actual/ lenses with an underscore suffix:
--- 
+--
 -- @
 -- -- L1_       :: Functor f => LensLike f (a, c) (b, c) a b
 -- type L1_       = L1Sym0
--- 
+--
 -- -- L1Alt_    :: Functor f => LensLike f (a, c) (b, c) a b
 -- type L1Alt     = L1AltSym0
--- 
+--
 -- -- GetFirst_ :: Getting a (a, b) a
 -- type GetFirst_ = GetFirstSym0
 -- @
--- 
+--
 -- The number after the @Sym@ is determined by how many arguments you need
 -- to apply to your function before you get to the actual lens.  For
 -- example, `IxList` requires one argument (the index) to get to the actual
 -- traversal, so the definition in the library is:
--- 
+--
 -- @
 -- type IxList_ i = IxListSym1 i
 -- @
--- 
+--
 -- Second, you can write them directly at the type level using combinators
 -- like 'MkLens_' and 'To_':
--- 
+--
 -- @
 -- type GetFirst_ = 'To_' 'FstSym0'
 -- @
--- 
+--
 -- ('FstSym0' is the promotion of 'fst' from
 -- "Data.Singletons.Prelude.Tuple")
 module Data.Type.Lens (
@@ -110,7 +116,7 @@ module Data.Type.Lens (
   , ALens
   -- ** Making
   -- | Ways of creating a lens
-  , MkLens_, MkLens, sMkLens
+  , MkLens_, MkLens, sMkLens, mkLens
   -- ** Cloning
   , CloneLens_, CloneLens
   -- * Traversals and Folds
@@ -134,8 +140,6 @@ module Data.Type.Lens (
   , L1_, L1, sL1
   , L2_, L2, sL2
   -- ** List
-  -- | Note 'ixList' (at the value level) is exported because there is no
-  -- /microlens/ or /lens/ equivalent.
   , N(..), SN
   , IxList_, IxList, sIxList, ixList
   -- * Util
@@ -261,13 +265,6 @@ $(singletonsOnly [d|
   to f g x = case g (f x) of
       Const y -> Const y
 
-  mkLens
-      :: Functor f
-      => (s -> a)
-      -> (s -> b -> t)
-      -> LensLike f s t a b
-  mkLens v s f x = s x <$> f (v x)
-
   toListOf :: Getting [a] s a -> s -> [a]
   toListOf l x = case l (Const . (:[])) x of
       Const ys -> ys
@@ -310,6 +307,13 @@ $(singletonsOnly [d|
   |])
 
 $(singletons [d|
+  mkLens
+      :: Functor f
+      => (s -> a)
+      -> (s -> b -> t)
+      -> LensLike f s t a b
+  mkLens v s f x = s x <$> f (v x)
+
   ixList :: Applicative f => N -> LensLike' f [a] a
   ixList _     _ []     = pure []
   ixList Z     f (x:xs) = (:xs) <$> f x
