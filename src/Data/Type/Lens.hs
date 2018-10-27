@@ -41,8 +41,8 @@ module Data.Type.Lens (
   , ASetter
   -- ** Using
   -- | Ways of consuming a setter.
-  , Over, type (%~), sOver, over
-  , Set, type (.~), sSet, set
+  , Over, type (%~), sOver, over, (%~)
+  , Set, type (.~), sSet, set, (.~)
   -- ** Making
   -- | Ways of creating a setter-only.
   , Sets_, Sets, sSets, sets
@@ -50,7 +50,7 @@ module Data.Type.Lens (
   , Getting
   -- ** Using
   -- | Ways of consuming a getter
-  , View, type (^.), sView, view
+  , View, type (^.), sView, view, (^.)
   -- ** Making
   -- | Ways of creating a getter-only.
   , To_, To, sTo, to
@@ -60,14 +60,14 @@ module Data.Type.Lens (
   -- | Ways of creating a lens
   , MkLens_, MkLens, sMkLens, mkLens
   -- ** Cloning
-  , CloneLens_, CloneLens, sCloneLens
+  , CloneLens_, CloneLens, sCloneLens, cloneLens
   -- * Traversals and Folds
   , ATraversal
   -- ** Using
   -- | Ways of consuming traversals and folds
-  , Preview, type (^?), sPreview, preview
-  , ToListOf, type (^..), sToListOf, toListOf
-  , UnsafePreview, type (^?!), sUnsafePreview, unsafePreview
+  , Preview, type (^?), sPreview, preview, (^?)
+  , ToListOf, type (^..), sToListOf, toListOf, (^..)
+  , UnsafePreview, type (^?!), sUnsafePreview, unsafePreview, (^?!)
   -- ** Making
   -- | Ways of creating traversals and folds
   , Folding_, Folding, sFolding, folding
@@ -119,7 +119,7 @@ import           Data.Singletons.Prelude.Functor
 import           Data.Singletons.Prelude.Identity
 import           Data.Singletons.Prelude.Maybe
 import           Data.Singletons.Prelude.Monoid
-import           Data.Singletons.TH
+import           Data.Singletons.TH hiding               ((%~))
 import           Data.Type.Lens.Internal
 import           Data.Typeable                           (Typeable)
 import           GHC.Generics                            (Generic)
@@ -262,26 +262,58 @@ $(singletonsOnly [d|
   cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
   |])
 
+cloneLens
+    :: Functor f
+    => LensLike (Context a b) s t a b
+    -> LensLike f s t a b
+cloneLens l f = unContext (\g y -> g <$> f y)
+              . l (MkContext id)
+
+
 
 -- | Infix application of 'Over'
 type l %~  f = OverSym2 l f
 
+-- | Infix application of 'over'
+(%~) :: ASetter s t a b -> (a -> b) -> s -> t
+l %~ f = over l f
+
 -- | Infix application of 'Set'
 type l .~  x = SetSym2 l x
+
+-- | Infix application of 'set'
+(.~) :: ASetter s t a b -> b -> s -> t
+l .~ x = set l x
 
 -- | Infix application of 'View'
 type x ^.  l = View l x
 
+-- | Infix application of 'view'
+(^.) :: s -> Getting a s a -> a
+x ^.  l = view l x
+
 -- | Infix application of 'Preview'
 type x ^?  l = Preview l x
+
+-- | Infix application of 'preview'
+(^?) :: s -> Getting (First a) s a -> Maybe a
+x ^?  l = preview l x
 
 -- | Infix application of 'UnsafePreview'
 type x ^?! l = UnsafePreview l x
 
+-- | Infix application of 'unsafePreview'
+(^?!) :: s -> Getting (First a) s a -> a
+x ^?! l = unsafePreview l x
+
 -- | Infix application of 'ToListOf'
 type x ^.. l = ToListOf l x
 
--- | Shorter name for type-level function composition
+-- | Infix application of 'toListOf'
+(^..) :: s -> Getting [a] s a -> [a]
+x ^.. l = toListOf l x
+
+-- | Shorter name for type-level function composition, '.'
 type f .@ g = f .@#@$$$ g
 
 infixr 4 %~

@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE GADTs                #-}
+{-# LANGUAGE InstanceSigs         #-}
 {-# LANGUAGE PolyKinds            #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TemplateHaskell      #-}
@@ -55,9 +56,6 @@ instance (SingKind a, SingKind b, SingKind t) => SingKind (PContext a b t) where
         SomeSing $ SMkContext sF sX
 
 $(singletonsOnly [d|
-  fmapContext :: (t -> q) -> PContext a b t -> PContext a b q
-  fmapContext f (MkContext g x) = MkContext (f . g) x
-
   unContext :: ((b -> t) -> a -> r) -> PContext a b t -> r
   unContext f (MkContext g x) = f g x
   |])
@@ -65,11 +63,13 @@ $(singletonsOnly [d|
 unContext :: ((b -> t) -> a -> r) -> Context a b t -> r
 unContext f (MkContext g x) = f g x
 
-instance PFunctor (PContext a b) where
-    type Fmap f c = FmapContext f c
+$(singletonsOnly [d|
+  instance Functor (PContext a b) where
+    fmap f (MkContext g x) = MkContext (f . g) x
+  |])
 
-instance SFunctor (PContext a b) where
-    sFmap = sFmapContext
+instance Functor (Context a b) where
+  fmap f (MkContext g x) = MkContext (f . g) x
 
 -- | A partially applied traversal
 data Bazaar a b t = Done t
