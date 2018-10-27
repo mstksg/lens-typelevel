@@ -252,8 +252,8 @@ $(singletonsOnly [d|
       :: Functor f
       => LensLike (PContext a b) s t a b
       -> LensLike f s t a b
-  cloneLens l f x = case l (\y -> MkContext id y) x of
-      MkContext g y -> g <$> f y
+  cloneLens l f = unContext (\g y -> g <$> f y)
+                . l (MkContext id)
 
   cloneTraversal
       :: Applicative f

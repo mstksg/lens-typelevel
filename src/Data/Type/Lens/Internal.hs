@@ -11,11 +11,13 @@
 
 module Data.Type.Lens.Internal (
     Context'(..), PContext, Context
+  , UnContext, sUnContext, unContext
   , Bazaar(..)
   , UnBazaar, sUnBazaar
   , Sing (SMkContext, SDone, SMore)
   -- * Defunctionalization Symbols
   , MkContextSym0, MkContextSym1, MkContextSym2
+  , UnContextSym0, UnContextSym1, UnContextSym2
   , DoneSym0, DoneSym1, MoreSym0, MoreSym1, MoreSym2
   , UnBazaarSym0, UnBazaarSym1, UnBazaarSym2
   ) where
@@ -37,9 +39,6 @@ data MkContextSym1 :: (b ~> t) -> a ~> PContext a b t
 
 type instance Apply MkContextSym0 f = MkContextSym1 f
 type instance Apply (MkContextSym1 f) x = 'MkContext f x
-
--- type MkContextSym0     = (TyCon2 'MkContext :: (b ~> t) ~> a ~> PContext a b t)
--- type MkContextSym1 (f :: b ~> t) = (TyCon1 ('MkContext f) :: a ~> PContext a b t)
 type MkContextSym2 (f :: b ~> t) (x :: a) = ('MkContext f x :: PContext a b t)
 
 data instance Sing :: forall a b t. PContext a b t -> Type where
@@ -58,7 +57,13 @@ instance (SingKind a, SingKind b, SingKind t) => SingKind (PContext a b t) where
 $(singletonsOnly [d|
   fmapContext :: (t -> q) -> PContext a b t -> PContext a b q
   fmapContext f (MkContext g x) = MkContext (f . g) x
+
+  unContext :: ((b -> t) -> a -> r) -> PContext a b t -> r
+  unContext f (MkContext g x) = f g x
   |])
+
+unContext :: ((b -> t) -> a -> r) -> Context a b t -> r
+unContext f (MkContext g x) = f g x
 
 instance PFunctor (PContext a b) where
     type Fmap f c = FmapContext f c
