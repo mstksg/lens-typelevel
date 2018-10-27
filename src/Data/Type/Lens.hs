@@ -1,5 +1,9 @@
+{-# LANGUAGE DeriveDataTypeable   #-}
+{-# LANGUAGE DeriveGeneric        #-}
+{-# LANGUAGE EmptyCase            #-}
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE GADTs                #-}
+{-# LANGUAGE InstanceSigs         #-}
 {-# LANGUAGE PolyKinds            #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TemplateHaskell      #-}
@@ -117,6 +121,8 @@ import           Data.Singletons.Prelude.Maybe
 import           Data.Singletons.Prelude.Monoid
 import           Data.Singletons.TH
 import           Data.Type.Lens.Internal
+import           Data.Typeable                           (Typeable)
+import           GHC.Generics                            (Generic)
 
 -- | The general shape of optics in this library. ("van Laarhoven")
 --
@@ -161,8 +167,13 @@ type Getting   r s   a   = LensLike (Const r) s s a a
 -- | Peano nats, used for implementation of list index traversals in
 -- a termination-sane way.
 data N = Z | S N
+  deriving (Show, Eq, Ord, Read, Generic, Typeable)
 
 genSingletons [''LensLike, ''LensLike', ''ASetter, ''Getting, ''N]
+singEqInstance ''N
+singOrdInstance ''N
+singDecideInstance ''N
+singShowInstance ''N
 
 -- | If a function expects an 'ALens', it can be given any Lens (a
 -- @'LensLike' f@ that works for any 'Functor' f).
