@@ -79,3 +79,57 @@ Error "Failed indexing into empty traversal"
 ghci> :kind! Set (IxList_ ('S 'Z)) "haskell" '["hello", "world", "curry"]
 '["hello", "haskell", "curry"]
 ```
+
+Defining lenses
+---------------
+
+There are two main ways to define optics.
+
+First, you can write them by hand using `singletonsOnly`:
+
+```haskell
+$(singletonsOnly [d|
+  l1 :: Functor f => LensLike (a, c) (b, c) a b
+  l1 f (x, y) = (\x' -> (x', y)) <$> f x
+
+  l1Alt :: Functor f => LensLike (a, c) (b, c) a b
+  l1Alt = mkLens fst (\(_, y) x -> (x', y))
+
+  getFirst :: Getting a (a, b) a
+  getFirst = to fst
+  |])
+```
+
+This creates the *type families* `L1`, `L1Alt`, and `GetFirst`; however, these
+aren't lenses, because they aren't partially applied.  The lactual lenses are
+`L1Sym0`, `L1AltSym0`, and `GetFirstSym0`.  As a convention, I
+recommend aliasing the *actual* lenses with an underscore suffix:
+
+```haskell
+-- L1_       :: Functor f => LensLike f (a, c) (b, c) a b
+type L1_       = L1Sym0
+
+-- L1Alt_    :: Functor f => LensLike f (a, c) (b, c) a b
+type L1Alt     = L1AltSym0
+
+-- GetFirst_ :: Getting a (a, b) a
+type GetFirst_ = GetFirstSym0
+```
+
+The number after the `Sym` is determined by how many arguments you need to
+apply to your function before you get to the actual lens.  For example,
+`IxList` requires one argument (the index) to get to the actual traversal, so
+the definition in the library is:
+
+```haskell
+type IxList_ i = IxListSym1 i
+```
+
+Second, you can write them directly at the type level using combinators like
+`MkLens_` and `To_`:
+
+```haskell
+type GetFirst_ = To_ FstSym0
+```
+
+(`FstSym0` is the promotion of `fst` from the *singletons* library)
