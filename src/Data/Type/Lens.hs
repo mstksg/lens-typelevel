@@ -74,7 +74,7 @@ module Data.Type.Lens (
   , Folded_, Folded, sFolded, folded
   , Traverse_, Traverse, sTraverse, traverse
   -- ** Cloning
-  , CloneTraversal_, CloneTraversal, sCloneTraversal
+  , CloneTraversal_, CloneTraversal, sCloneTraversal, cloneTraversal
   -- * Samples
   -- | Some sample lenses and traversals
   --
@@ -257,7 +257,7 @@ $(singletonsOnly [d|
 
   cloneTraversal
       :: Applicative f
-      => LensLike (Bazaar a b) s t a b
+      => LensLike (PBazaar a b) s t a b
       -> LensLike f s t a b
   cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
   |])
@@ -269,7 +269,11 @@ cloneLens
 cloneLens l f = unContext (\g y -> g <$> f y)
               . l (MkContext id)
 
-
+cloneTraversal
+    :: Applicative f
+    => LensLike (Bazaar a b) s t a b
+    -> LensLike f s t a b
+cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
 
 -- | Infix application of 'Over'
 type l %~  f = OverSym2 l f
