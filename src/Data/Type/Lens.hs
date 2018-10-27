@@ -41,49 +41,49 @@ module Data.Type.Lens (
   , ASetter
   -- ** Using
   -- | Ways of consuming a setter.
-  , Over, type (%~), sOver
-  , Set, type (.~), sSet
+  , Over, type (%~), sOver, over
+  , Set, type (.~), sSet, set
   -- ** Making
   -- | Ways of creating a setter-only.
-  , Sets_, Sets, sSets
+  , Sets_, Sets, sSets, sets
   -- * Getting
   , Getting
   -- ** Using
   -- | Ways of consuming a getter
-  , View, type (^.), sView
+  , View, type (^.), sView, view
   -- ** Making
   -- | Ways of creating a getter-only.
-  , To_, To, sTo
+  , To_, To, sTo, to
   -- * Lenses
   , ALens
   -- ** Making
   -- | Ways of creating a lens
-  , MkLens_, MkLens, sMkLens
+  , MkLens_, MkLens, sMkLens, mkLens
   -- ** Cloning
   , CloneLens_, CloneLens, sCloneLens
   -- * Traversals and Folds
   , ATraversal
   -- ** Using
   -- | Ways of consuming traversals and folds
-  , Preview, type (^?), sPreview
-  , ToListOf, type (^..), sToListOf
-  , UnsafePreview, type (^?!), sUnsafePreview
+  , Preview, type (^?), sPreview, preview
+  , ToListOf, type (^..), sToListOf, toListOf
+  , UnsafePreview, type (^?!), sUnsafePreview, unsafePreview
   -- ** Making
   -- | Ways of creating traversals and folds
-  , Folding_, Folding, sFolding
-  , Folded_, Folded, sFolded
-  , Traverse_, Traverse, sTraverse
+  , Folding_, Folding, sFolding, folding
+  , Folded_, Folded, sFolded, folded
+  , Traverse_, Traverse, sTraverse, traverse
   -- ** Cloning
   , CloneTraversal_, CloneTraversal, sCloneTraversal
   -- * Samples
   -- | Some sample lenses and traversals
   --
   -- ** Tuple
-  , L1_, L1, sL1
-  , L2_, L2, sL2
+  , L1_, L1, sL1, l1
+  , L2_, L2, sL2, l2
   -- ** List
   , N(..), SN
-  , IxList_, IxList, sIxList
+  , IxList_, IxList, sIxList, ixList
   -- * Util
   , type (.@)
   , Sing (SZ, SS, SMkContext)
@@ -188,7 +188,7 @@ type ALens s t a b = LensLike (Context a b) s t a b
 -- 'CloneTraversal_'.
 type ATraversal s t a b = LensLike (Bazaar a b) s t a b
 
-$(singletonsOnly [d|
+$(singletons [d|
   over :: ASetter s t a b -> (a -> b) -> (s -> t)
   over l f x = case l (Identity . f) x of
       Identity y -> y
@@ -214,13 +214,6 @@ $(singletonsOnly [d|
       -> LensLike f s t a b
   mkLens v s f x = s x <$> f (v x)
 
-  cloneLens
-      :: Functor f
-      => LensLike (Context a b) s t a b
-      -> LensLike f s t a b
-  cloneLens l f x = case l (\y -> MkContext id y) x of
-      MkContext g y -> g <$> f y
-
   toListOf :: Getting [a] s a -> s -> [a]
   toListOf l x = case l (Const . (:[])) x of
       Const ys -> ys
@@ -242,12 +235,6 @@ $(singletonsOnly [d|
   folded f x = case traverse_ f x of
       Const y -> Const y
 
-  cloneTraversal
-      :: Applicative f
-      => LensLike (Bazaar a b) s t a b
-      -> LensLike f s t a b
-  cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
-
   l1 :: Functor f => LensLike f (a, c) (b, c) a b
   l1 f (x, y) = (\x' -> (x', y)) <$> f x
 
@@ -259,6 +246,22 @@ $(singletonsOnly [d|
   ixList Z     f (x:xs) = (:xs) <$> f x
   ixList (S i) f (x:xs) = (x:)  <$> ixList i f xs
   |])
+
+$(singletonsOnly [d|
+  cloneLens
+      :: Functor f
+      => LensLike (Context a b) s t a b
+      -> LensLike f s t a b
+  cloneLens l f x = case l (\y -> MkContext id y) x of
+      MkContext g y -> g <$> f y
+
+  cloneTraversal
+      :: Applicative f
+      => LensLike (Bazaar a b) s t a b
+      -> LensLike f s t a b
+  cloneTraversal l f xs = unBazaar f $ l (`More` Done id) xs
+  |])
+
 
 -- | Infix application of 'Over'
 type l %~  f = OverSym2 l f
@@ -389,3 +392,4 @@ type L2_       = L2Sym0
 -- @
 type IxList_ i = IxListSym1 i
 
+-- TODO: value level poerators
