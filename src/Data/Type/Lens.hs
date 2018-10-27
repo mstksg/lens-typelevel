@@ -250,7 +250,7 @@ $(singletons [d|
 $(singletonsOnly [d|
   cloneLens
       :: Functor f
-      => LensLike (Context a b) s t a b
+      => LensLike (PContext a b) s t a b
       -> LensLike f s t a b
   cloneLens l f x = case l (\y -> MkContext id y) x of
       MkContext g y -> g <$> f y

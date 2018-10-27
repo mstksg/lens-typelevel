@@ -1,7 +1,6 @@
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE GADTs                #-}
 {-# LANGUAGE PolyKinds            #-}
-{-# LANGUAGE PolyKinds            #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TemplateHaskell      #-}
 {-# LANGUAGE TypeFamilies         #-}
@@ -11,7 +10,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 module Data.Type.Lens.Internal (
-    Context(..)
+    Context'(..), PContext, Context
   , Bazaar(..)
   , UnBazaar, sUnBazaar
   , Sing (SMkContext, SDone, SMore)
@@ -28,27 +27,43 @@ import           Data.Singletons.Prelude.Functor
 import           Data.Singletons.TH
 
 -- | A partially applied lens
-data Context a b t = MkContext (b ~> t) a
+data Context' p a b t = MkContext (p @@ b @@ t) a
 
-type MkContextSym0     = TyCon2 'MkContext
-type MkContextSym1 f   = TyCon1 ('MkContext f)
-type MkContextSym2 f x = 'MkContext f x
+type PContext = Context' (~>@#@$)
+type Context  = Context' (TyCon2 (->))
 
-data instance Sing :: forall a b t. Context a b t -> Type where
+data MkContextSym0 :: (b ~> t) ~> a ~> PContext a b t
+data MkContextSym1 :: (b ~> t) -> a ~> PContext a b t
+
+type instance Apply MkContextSym0 f = MkContextSym1 f
+type instance Apply (MkContextSym1 f) x = 'MkContext f x
+
+-- type MkContextSym0     = (TyCon2 'MkContext :: (b ~> t) ~> a ~> PContext a b t)
+-- type MkContextSym1 (f :: b ~> t) = (TyCon1 ('MkContext f) :: a ~> PContext a b t)
+type MkContextSym2 (f :: b ~> t) (x :: a) = ('MkContext f x :: PContext a b t)
+
+data instance Sing :: forall a b t. PContext a b t -> Type where
     SMkContext
-        :: Sing f
-        -> Sing x
-        -> Sing ('MkContext f x)
+        :: Sing (f :: b ~> t)
+        -> Sing (x :: a)
+        -> Sing ('MkContext f x :: PContext a b t)
+
+instance (SingKind a, SingKind b, SingKind t) => SingKind (PContext a b t) where
+    type Demote (PContext a b t) = Context (Demote a) (Demote b) (Demote t)
+    fromSing (SMkContext f x) = MkContext (fromSing f) (fromSing x)
+    toSing (MkContext f x) = withSomeSing f $ \sF ->
+                             withSomeSing x $ \sX ->
+        SomeSing $ SMkContext sF sX
 
 $(singletonsOnly [d|
-  fmapContext :: (t -> q) -> Context a b t -> Context a b q
+  fmapContext :: (t -> q) -> PContext a b t -> PContext a b q
   fmapContext f (MkContext g x) = MkContext (f . g) x
   |])
 
-instance PFunctor (Context a b) where
+instance PFunctor (PContext a b) where
     type Fmap f c = FmapContext f c
 
-instance SFunctor (Context a b) where
+instance SFunctor (PContext a b) where
     sFmap = sFmapContext
 
 -- | A partially applied traversal
