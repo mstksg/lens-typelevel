@@ -38,7 +38,7 @@
 module Data.Type.Lens (
     LensLike, LensLike'
   -- * Setting
-  , ASetter
+  , ASetter, ASetter'
   -- ** Using
   -- | Ways of consuming a setter.
   , Over, type (%~), sOver, over, (%~)
@@ -55,14 +55,14 @@ module Data.Type.Lens (
   -- | Ways of creating a getter-only.
   , To_, To, sTo, to
   -- * Lenses
-  , ALens
+  , ALens, ALens'
   -- ** Making
   -- | Ways of creating a lens
   , MkLens_, MkLens, sMkLens, mkLens
   -- ** Cloning
   , CloneLens_, CloneLens, sCloneLens, cloneLens
   -- * Traversals and Folds
-  , ATraversal
+  , ATraversal, ATraversal'
   -- ** Using
   -- | Ways of consuming traversals and folds
   , Preview, type (^?), sPreview, preview, (^?)
@@ -151,6 +151,9 @@ type LensLike' f s   a   = LensLike f         s s a a
 -- See 'LensLike' for more information.
 type ASetter     s t a b = LensLike Identity  s t a b
 
+-- | A non-type-changing variant of 'ASetter'.
+type ASetter'    s   a   = ASetter s s a a
+
 -- | A retrieving "lens".  If @r@ is fixed to a type, it's a Getter for
 -- that type.  If @r@ is polymorphic over all 'Monoid', then it's a Fold
 -- over @a@s.
@@ -179,14 +182,20 @@ singShowInstance ''N
 -- @'LensLike' f@ that works for any 'Functor' f).
 --
 -- You can use an 'ALens' as a normal lens by using 'CloneLens_'.
-type ALens s t a b = LensLike (Context a b) s t a b
+type ALens  s t a b = LensLike (PContext a b) s t a b
+
+-- | A non-type-changing variant of 'ALens'.
+type ALens' s   a   = ALens s s a a
 
 -- | If a function expects an 'ATraversal', it can be given any Traversal
 -- (a @'LensLike' f@ that works for any 'Applicative' f).
 --
 -- You can use an 'ATraversal' as a normal traversal by using
 -- 'CloneTraversal_'.
-type ATraversal s t a b = LensLike (Bazaar a b) s t a b
+type ATraversal  s t a b = LensLike (PBazaar a b) s t a b
+
+-- | A non-type-changing version of 'ATraversal'.
+type ATraversal' s   a   = ATraversal s s a a
 
 $(singletons [d|
   over :: ASetter s t a b -> (a -> b) -> (s -> t)
@@ -428,4 +437,10 @@ type L2_       = L2Sym0
 -- @
 type IxList_ i = IxListSym1 i
 
+$(singletonsOnly [d|
+  foo :: ALens' (a, b) a -> (a, b) -> a
+  foo l = view (cloneLens l)
+  |])
+
 -- TODO: value level poerators
+
