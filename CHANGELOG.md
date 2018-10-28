@@ -1,15 +1,16 @@
 Changelog
 =========
 
-Version 0.1.1.0
+Version 0.1.0.1
 ---------------
 
-*Unreleased*
+*October 28, 2018*
 
-<https://github.com/mstksg/lens-typelevel/releases/tag/v0.1.1.0>
+<https://github.com/mstksg/lens-typelevel/releases/tag/v0.1.0.1>
 
 *   Instances for `N`.
 *   Export value-level `mkLens`.
+*   Extensive documentation additions.
 
 Version 0.1.0.0
 ---------------

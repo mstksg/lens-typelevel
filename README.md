@@ -44,8 +44,12 @@ the same implementation.  We even have `CloneLens_` and `CloneTraversal_`
 implemented using type-level versions of `Context` and `Bazaar`:
 
 ```haskell
-ghci> :kind! '("hello", 6) ^. CloneLens_ L1_
-"hello"
+ghci> type CloneExample l   = ('( 'True, 'False ) & CloneLens_ l %~ NotSym0)
+                                                  ^. CloneLens_ l
+ghci> :kind! CloneExample L1_
+'False
+ghci> :kind! CloneExample L2_
+'True
 ```
 
 Using prefix function names:

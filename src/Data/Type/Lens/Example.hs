@@ -92,9 +92,11 @@ type IxExample        = Set   (IxList_ ('S 'Z)) "haskell"
                           '["hello", "world", "curry"]
 
 -- |
--- >>> :kind! CloneExample
--- "hello"
-type CloneExample     = View (CloneLens_ L1_)  '("hello", 6     )
+-- >>> :kind! CloneExample L1_
+-- 'False
+-- >>> :kind! CloneExample L2_
+-- 'True
+type CloneExample l   = View (CloneLens_ l) (Over (CloneLens_ l) NotSym0 '( 'True, 'False ))
 
 
 type SetExample'       = '("hello", 6     )         &  L1_             .~ 'True
@@ -109,4 +111,4 @@ type FoldExample'      = '[ '("hello", 'True )
                           ] ^.. Traverse_ .@ L1_
 type UnsafeExample'    = '[] ^?! Traverse_
 type IxExample'        = '["hello","world","curry"] &  IxList_ ('S 'Z) .~ "haskell"
-type CloneExample'     = '("hello", 6     )         ^. CloneLens_ L1_
+type CloneExample' l   = ('( 'True, 'False ) & CloneLens_ l %~ NotSym0) ^. CloneLens_ l
