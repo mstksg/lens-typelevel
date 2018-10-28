@@ -8,7 +8,7 @@
 --   implemented using the same van Laarhoven encoding as the <i>lens</i>
 --   package. See README for more information.
 @package lens-typelevel
-@version 0.1.1.0
+@version 0.1.0.1
 
 module Data.Type.Lens.Internal
 
@@ -692,10 +692,13 @@ type UnsafeExample = UnsafePreview Traverse_ '[]
 type IxExample = Set (IxList_ ( 'S  'Z)) "haskell" '["hello", "world", "curry"]
 
 -- | <pre>
---   &gt;&gt;&gt; :kind! CloneExample
---   "hello"
+--   &gt;&gt;&gt; :kind! CloneExample L1_
+--   'False
+--   
+--   &gt;&gt;&gt; :kind! CloneExample L2_
+--   'True
 --   </pre>
-type CloneExample = View (CloneLens_ L1_) '("hello", 6)
+type CloneExample l = View (CloneLens_ l) (Over (CloneLens_ l) NotSym0 '( 'True,  'False))
 type SetExample' = '("hello", 6) & L1_ .~  'True
 type ViewExample' = '("hello", 6) ^. L2_
 type ToExample' = '("hello", 6) ^. To_ SndSym0
@@ -705,4 +708,4 @@ type NestedExample' = '("hello", '(6,  'False)) ^. L2_ .@ L1_
 type FoldExample' = '['("hello",  'True), '("world",  'False), '("curry",  'False)] ^.. Traverse_ .@ L1_
 type IxExample' = '["hello", "world", "curry"] & IxList_ ( 'S  'Z) .~ "haskell"
 type UnsafeExample' = '[] ^?! Traverse_
-type CloneExample' = '("hello", 6) ^. CloneLens_ L1_
+type CloneExample' l = ('( 'True,  'False) & CloneLens_ l %~ NotSym0) ^. CloneLens_ l
