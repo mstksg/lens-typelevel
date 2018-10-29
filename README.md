@@ -3,6 +3,11 @@
 [![lens-typelevel on Hackage](https://img.shields.io/hackage/v/lens-typelevel.svg?maxAge=86400)](https://hackage.haskell.org/package/lens-typelevel)
 [![Build Status](https://travis-ci.org/mstksg/lens-typelevel.svg?branch=master)](https://travis-ci.org/mstksg/lens-typelevel)
 
+
+([Rendered off-hackage documentation][docs])
+
+[docs]: https://mstksg.github.io/lens-typelevel/
+
 van Laarhoven lenses at the type level using *[singletons][]* defunctionalization.
 
 [lens-typelevel]: http://hackage.haskell.org/package/lens-typelevel
