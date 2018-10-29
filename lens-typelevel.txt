@@ -8,7 +8,7 @@
 --   implemented using the same van Laarhoven encoding as the <i>lens</i>
 --   package. See README for more information.
 @package lens-typelevel
-@version 0.1.0.1
+@version 0.1.1.0
 
 module Data.Type.Lens.Internal
 
@@ -185,12 +185,21 @@ type family Over (a_aRoI :: (~>) ((~>) a_aQjo (Identity b_aQjp)) ((~>) s_aQjm (I
 type l %~ f = OverSym2 l f
 infixr 4 %~
 sOver :: forall s_aQjm t_aQjn a_aQjo b_aQjp (t_aRqh :: (~>) ((~>) a_aQjo (Identity b_aQjp)) ((~>) s_aQjm (Identity t_aQjn))) (t_aRqi :: (~>) a_aQjo b_aQjp) (t_aRqj :: s_aQjm). Sing t_aRqh -> Sing t_aRqi -> Sing t_aRqj -> Sing (Apply (Apply (Apply OverSym0 t_aRqh) t_aRqi) t_aRqj :: t_aQjn)
+
+-- | Singleton mirror of <a>Over</a> and <a>%~</a>.
+--   
+--   Note that this conflicts in naming from <a>%%~</a> in <i>lens</i>,
+--   which is <a>id</a>.
+(%%~) :: Sing l -> Sing f -> Sing x -> Sing (x & (l %~ f))
 type family Set (a_aRoZ :: (~>) ((~>) a_aQjk (Identity b_aQjl)) ((~>) s_aQji (Identity t_aQjj))) (a_aRp0 :: b_aQjl) (a_aRp1 :: s_aQji) :: t_aQjj
 
 -- | Infix application of <a>Set</a>
 type l .~ x = SetSym2 l x
 infixr 4 .~
 sSet :: forall s_aQji t_aQjj a_aQjk b_aQjl (t_aRqn :: (~>) ((~>) a_aQjk (Identity b_aQjl)) ((~>) s_aQji (Identity t_aQjj))) (t_aRqo :: b_aQjl) (t_aRqp :: s_aQji). Sing t_aRqn -> Sing t_aRqo -> Sing t_aRqp -> Sing (Apply (Apply (Apply SetSym0 t_aRqn) t_aRqo) t_aRqp :: t_aQjj)
+
+-- | Singleton mirror of <a>Set</a> and <a>.~</a>.
+(%.~) :: Sing l -> Sing y -> Sing x -> Sing (x & (l .~ y))
 
 -- | Create a Setter from a setting function.
 --   
@@ -219,6 +228,9 @@ type family View (a_aRov :: (~>) ((~>) a_aQjg ((Const a_aQjg :: Type -> Type) a_
 type x ^. l = View l x
 infixl 8 ^.
 sView :: forall a_aQjg s_aQjh (t_aRqd :: (~>) ((~>) a_aQjg ((Const a_aQjg :: Type -> Type) a_aQjg)) ((~>) s_aQjh ((Const a_aQjg :: Type -> Type) s_aQjh))) (t_aRqe :: s_aQjh). Sing t_aRqd -> Sing t_aRqe -> Sing (Apply (Apply ViewSym0 t_aRqd) t_aRqe :: a_aQjg)
+
+-- | Singleton mirror of <a>View</a> and <a>%^.</a>.
+(%^.) :: Sing x -> Sing l -> Sing (x ^. l)
 
 -- | Create a Getter from a getting function.
 --   
@@ -279,18 +291,27 @@ type family Preview (a_aRn2 :: (~>) ((~>) a_aQj5 ((Const (First a_aQj5) :: Type 
 type x ^? l = Preview l x
 infixl 8 ^?
 sPreview :: forall a_aQj5 s_aQj6 (t_aRpP :: (~>) ((~>) a_aQj5 ((Const (First a_aQj5) :: Type -> Type) a_aQj5)) ((~>) s_aQj6 ((Const (First a_aQj5) :: Type -> Type) s_aQj6))) (t_aRpQ :: s_aQj6). Sing t_aRpP -> Sing t_aRpQ -> Sing (Apply (Apply PreviewSym0 t_aRpP) t_aRpQ :: Maybe a_aQj5)
+
+-- | Singleton mirror of <a>Preview</a> and <a>%^?</a>.
+(%^?) :: Sing x -> Sing l -> Sing (x ^? l)
 type family ToListOf (a_aRns :: (~>) ((~>) a_aQj7 ((Const [a_aQj7] :: Type -> Type) a_aQj7)) ((~>) s_aQj8 ((Const [a_aQj7] :: Type -> Type) s_aQj8))) (a_aRnt :: s_aQj8) :: [a_aQj7]
 
 -- | Infix application of <a>ToListOf</a>
 type x ^.. l = ToListOf l x
 infixl 8 ^..
 sToListOf :: forall a_aQj7 s_aQj8 (t_aRpX :: (~>) ((~>) a_aQj7 ((Const [a_aQj7] :: Type -> Type) a_aQj7)) ((~>) s_aQj8 ((Const [a_aQj7] :: Type -> Type) s_aQj8))) (t_aRpY :: s_aQj8). Sing t_aRpX -> Sing t_aRpY -> Sing (Apply (Apply ToListOfSym0 t_aRpX) t_aRpY :: [a_aQj7])
+
+-- | Singleton mirror of <a>ToListOf</a> and <a>%^..</a>.
+(%^..) :: Sing x -> Sing l -> Sing (x ^.. l)
 type family UnsafePreview (a_aRnf :: (~>) ((~>) a_aQj3 ((Const (First a_aQj3) :: Type -> Type) a_aQj3)) ((~>) s_aQj4 ((Const (First a_aQj3) :: Type -> Type) s_aQj4))) (a_aRng :: s_aQj4) :: a_aQj3
 
 -- | Infix application of <a>UnsafePreview</a>
 type x ^?! l = UnsafePreview l x
 infixl 8 ^?!
 sUnsafePreview :: forall a_aQj3 s_aQj4 (t_aRpT :: (~>) ((~>) a_aQj3 ((Const (First a_aQj3) :: Type -> Type) a_aQj3)) ((~>) s_aQj4 ((Const (First a_aQj3) :: Type -> Type) s_aQj4))) (t_aRpU :: s_aQj4). Sing t_aRpT -> Sing t_aRpU -> Sing (Apply (Apply UnsafePreviewSym0 t_aRpT) t_aRpU :: a_aQj3)
+
+-- | Singleton mirror of <a>UnsafePreview</a> and <a>%^?!</a>.
+(%^?!) :: Sing x -> Sing l -> Sing (x ^?! l)
 
 -- | Create a Fold from a "folding function":
 --   
