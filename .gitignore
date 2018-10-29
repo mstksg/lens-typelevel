@@ -1,3 +1,5 @@
 .stack-work/
 lens-typelevel.cabal
 *~
+.ghc*
+dist-newstyle/

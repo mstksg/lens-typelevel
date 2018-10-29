@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 0.1.1.0
+---------------
+
+*October 28, 2018*
+
+<https://github.com/mstksg/lens-typelevel/releases/tag/v0.1.1.0>
+
+*   Infix singletons mirror aliases of infix type aliases (`%^.`, etc.)
+
 Version 0.1.0.1
 ---------------
 

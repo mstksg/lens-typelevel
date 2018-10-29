@@ -7,6 +7,7 @@
 {-# LANGUAGE PolyKinds            #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TemplateHaskell      #-}
+{-# LANGUAGE TypeApplications     #-}
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE TypeInType           #-}
 {-# LANGUAGE TypeOperators        #-}
@@ -99,8 +100,8 @@ module Data.Type.Lens (
   , ASetter
   -- ** Using
   -- | Ways of consuming a setter.
-  , Over, type (%~), sOver
-  , Set, type (.~), sSet
+  , Over, type (%~), sOver, (%%~)
+  , Set, type (.~), sSet, (%.~)
   -- ** Making
   -- | Ways of creating a setter-only.
   , Sets_, Sets, sSets
@@ -108,7 +109,7 @@ module Data.Type.Lens (
   , Getting
   -- ** Using
   -- | Ways of consuming a getter
-  , View, type (^.), sView
+  , View, type (^.), sView, (%^.)
   -- ** Making
   -- | Ways of creating a getter-only.
   , To_, To, sTo
@@ -123,9 +124,9 @@ module Data.Type.Lens (
   , ATraversal
   -- ** Using
   -- | Ways of consuming traversals and folds
-  , Preview, type (^?), sPreview
-  , ToListOf, type (^..), sToListOf
-  , UnsafePreview, type (^?!), sUnsafePreview
+  , Preview, type (^?), sPreview, (%^?)
+  , ToListOf, type (^..), sToListOf, (%^..)
+  , UnsafePreview, type (^?!), sUnsafePreview, (%^?!)
   -- ** Making
   -- | Ways of creating traversals and folds
   , Folding_, Folding, sFolding
@@ -348,6 +349,44 @@ infixl 8 ^?
 infixl 8 ^?!
 infixl 8 ^..
 infixr 9 .@
+
+-- | Singleton mirror of 'Over' and '%~'.
+--
+-- Note that this conflicts in naming from '%%~' in /lens/, which is 'id'.
+--
+-- @since 0.1.1.0
+(%%~) :: Sing l -> Sing f -> Sing x -> Sing (x & l %~ f)
+(%%~) = sOver
+
+-- | Singleton mirror of 'Set' and '.~'.
+--
+-- @since 0.1.1.0
+(%.~) :: Sing l -> Sing y -> Sing x -> Sing (x & l .~ y)
+(%.~) = sSet
+
+-- | Singleton mirror of 'View' and '%^.'.
+--
+-- @since 0.1.1.0
+(%^.) :: Sing x -> Sing l -> Sing (x ^. l)
+(%^.) = flip sView
+
+-- | Singleton mirror of 'Preview' and '%^?'.
+--
+-- @since 0.1.1.0
+(%^?) :: Sing x -> Sing l -> Sing (x ^? l)
+(%^?) = flip sPreview
+
+-- | Singleton mirror of 'UnsafePreview' and '%^?!'.
+--
+-- @since 0.1.1.0
+(%^?!) :: Sing x -> Sing l -> Sing (x ^?! l)
+(%^?!) = flip sUnsafePreview
+
+-- | Singleton mirror of 'ToListOf' and '%^..'.
+--
+-- @since 0.1.1.0
+(%^..) :: Sing x -> Sing l -> Sing (x ^.. l)
+(%^..) = flip sToListOf
 
 -- | Create a Getter from a getting function.
 --
