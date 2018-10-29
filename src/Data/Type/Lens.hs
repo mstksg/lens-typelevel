@@ -70,7 +70,7 @@
 -- type L1_       = L1Sym0
 --
 -- -- L1Alt_    :: Functor f => LensLike f (a, c) (b, c) a b
--- type L1Alt     = L1AltSym0
+-- type L1Alt_    = L1AltSym0
 --
 -- -- GetFirst_ :: Getting a (a, b) a
 -- type GetFirst_ = GetFirstSym0

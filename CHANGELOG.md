@@ -4,7 +4,7 @@ Changelog
 Version 0.1.1.0
 ---------------
 
-*October 28, 2018*
+*October 29, 2018*
 
 <https://github.com/mstksg/lens-typelevel/releases/tag/v0.1.1.0>
 
