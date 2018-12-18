@@ -110,7 +110,7 @@ $(singletonsOnly [d|
 ```
 
 This creates the *type families* `L1`, `L1Alt`, and `GetFirst`; however, these
-aren't lenses, because they aren't partially applied.  The lactual lenses are
+aren't lenses, because they aren't partially applied.  The actual lenses are
 `L1Sym0`, `L1AltSym0`, and `GetFirstSym0`.  As a convention, I
 recommend aliasing the *actual* lenses with an underscore suffix:
 
